@@ -1,0 +1,4 @@
+#Tue May 07 09:42:10 KST 2024
+base.0=C\:\\Users\\BIPL\\BIPL_YJ\\Flutter\\toonflix\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
