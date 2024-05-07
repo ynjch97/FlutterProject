@@ -2,42 +2,65 @@
 
 import 'package:flutter/material.dart';
 
-void main() { // main(): Dart 프로그래밍 언어에서 쓰는 함수
-  /** void runApp(Widget app): material.dart 에서 가져온 void 함수
-   *  Widget: Flutter 의 모든 것은 Widget 이며, Widget 을 합쳐 앱을 만듦
-   *  Widget 을 만든다는 것은 class 를 만든다는 것
-   */
+void main() {
   runApp(App());
 }
 
-/** App(): 앱의 root Widget 역할
- *  - class 를 Widget 으로 만들기 위해서는, flutter SDK 에 있는 3개의 core Widget 중 하나를 상속(extends) 받아야 함
- *  - 앱의 root Widget 은 두 가지 옵션 중 하나를 return 해야 함 (buid() 에서)
- *  - 1. material (구글의 디자인 시스템) / 2. cupertino (애플의 디자인 시스템)
- */
 class App extends StatelessWidget {
-  /** buid()
-   *  - return 하려는 Widget 을 화면에 보여줌
-   *  - BuildContext 타입의 context 라는 parameter 를 받아옴
-   */
   @override
   Widget build(BuildContext context) {
     /** MaterialApp
-     *  - Widget? home : MaterialApp class 의 property 
-     *  - 화면은 scaffold(화면의 구조를 제공해줌) 를 가져야 함
+     *  - Widget 을 입력하고, 마우스를 갖다대어 필요한 타입을 확인
+     *  Column
+     *  - 수직 배열을 위함
+     *  - Center 는 child 를 가지지만, Column 은 children 이라는 List 를 가짐
+     *  - Rows 를 추가할 수 있음 (수평 배열을 위함)
      */
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar( // navigation bar
-            title: Text('Flutter Demo',),
-            centerTitle: true,
-            elevation: 100,
-            backgroundColor: Color.fromARGB(255, 123, 255, 0),
-          ),
-          body: Center(
-            child: Text('Hello World'),
-          ),
-      ),
+          backgroundColor: Color(
+              0xFF181818), // Color(0xFF) 를 적고 컬러 코드를 기재 or Color.fromARGB 사용하여 RGB 값 기재
+          body: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 0,
+              horizontal: 20,
+            ),
+            child: Column(
+              // Column 의 mainAxisAlignment : 수직 방향 / CrossAxisAlignment : 수평 방향
+              children: [
+                SizedBox(
+                  // 너무 상단부터 배치되고 있어서 size 가 있는 box 를 추가함
+                  height: 50,
+                ),
+                Row(
+                  // Row 의 mainAxisAlignment : 수평 방향 / CrossAxisAlignment : 수직 방향
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Hey, Selena',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        Text(
+                          'Welcome back',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          )),
     );
   }
 }
