@@ -1,9 +1,6 @@
 // ignore_for_file: slash_for_doc_comments
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:uichallenge/widgets/button.dart';
+import 'package:uichallenge/widgets/round_button.dart';
 import 'package:uichallenge/widgets/currency_card.dart';
 
 // compile 전에 이미 value 를 알고 있는 변수
@@ -168,33 +165,26 @@ class App extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  const CurrencyCard(
+                  CurrencyCard(
                     name: 'Euro',
                     code: 'EUR',
                     amount: '6 428',
                     icon: Icons.euro_symbol_sharp,
-                    isInverted: false,
+                    order: 1,
                   ),
-                  Transform.translate(
-                    // 카드가 겹쳐보이도록 Transform.translate > Offset 활용
-                    offset: const Offset(0, -25),
-                    child: const CurrencyCard(
-                      name: 'Dollar',
-                      code: 'USD',
-                      amount: '55 622',
-                      icon: Icons.attach_money_sharp,
-                      isInverted: true,
-                    ),
+                  CurrencyCard(
+                    name: 'Dollar',
+                    code: 'USD',
+                    amount: '55 622',
+                    icon: Icons.attach_money_sharp,
+                    order: 2,
                   ),
-                  Transform.translate(
-                    offset: const Offset(0, -50),
-                    child: const CurrencyCard(
-                      name: 'Bitcoin',
-                      code: 'BTC',
-                      amount: '9 875',
-                      icon: Icons.currency_bitcoin_outlined,
-                      isInverted: false,
-                    ),
+                  CurrencyCard(
+                    name: 'Bitcoin',
+                    code: 'BTC',
+                    amount: '9 875',
+                    icon: Icons.currency_bitcoin_outlined,
+                    order: 3,
                   ),
                 ],
               ),
