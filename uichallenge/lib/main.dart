@@ -1,6 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
+import 'package:uichallenge/widgets/button.dart';
 
 // compile 전에 이미 value 를 알고 있는 변수
 const taxAmount = 15;
@@ -96,15 +97,19 @@ class App extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                Row(
+                const Row(
                   /** Container
                    *  - <div> 와 같은 Widget (child 를 가지는 단순한 box)
                    *  - 버튼 디자인 시 사용하게 됨
                   */
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween, // 두 버튼 사이 align 값
                   children: [
+                    // Container 의 코드가 일부 색상 값 제외 유사하므로, 재사용 가능한 Button Widget 을 사용
+                    /*
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.amber,
+                        color: const Color(0xFFF2B33A),
                         borderRadius: BorderRadius.circular(45),
                       ),
                       child: const Padding(
@@ -112,9 +117,22 @@ class App extends StatelessWidget {
                             EdgeInsets.symmetric(vertical: 20, horizontal: 50),
                         child: Text(
                           'Transfer',
-                          style: TextStyle(fontSize: 22),
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
                       ),
+                    ),
+                    */
+                    Button(
+                      text: 'Transfer',
+                      bgColor: Color(0xFFF2B33A),
+                      textColor: Colors.black,
+                    ),
+                    Button(
+                      text: 'Request',
+                      bgColor: Color(0xFF1F2123),
+                      textColor: Colors.white,
                     ),
                   ],
                 ),
