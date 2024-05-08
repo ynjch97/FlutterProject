@@ -1,6 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:uichallenge/widgets/button.dart';
 
 // compile 전에 이미 value 를 알고 있는 변수
@@ -135,6 +136,84 @@ class App extends StatelessWidget {
                       textColor: Colors.white,
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 100,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'Wallets',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 36,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'View All',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white.withOpacity(0.8),
+                        // Opacity 는 컴파일 시 알 수 없는 값이라 const 위치 유의
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1F2123),
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Euro',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  '6 428',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  'EUR',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
