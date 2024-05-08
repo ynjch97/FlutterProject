@@ -1,5 +1,6 @@
 // ignore_for_file: slash_for_doc_comments
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:uichallenge/widgets/button.dart';
@@ -166,6 +167,8 @@ class App extends StatelessWidget {
                   height: 20,
                 ),
                 Container(
+                  // clipBehavior: overflow 된 아이템에 대해 어떻게 동작하게 할건지 알려주는 장치
+                  clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     color: const Color(0xFF1F2123),
                     borderRadius: BorderRadius.circular(25),
@@ -173,6 +176,7 @@ class App extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(30),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,6 +215,20 @@ class App extends StatelessWidget {
                             ),
                           ],
                         ),
+                        Transform.scale(
+                          // 아이콘이 overflow 되도록 transform.scale Widget 추가 (scale 설정 필수)
+                          scale: 2.2,
+                          child: Transform.translate(
+                            // 아이콘이 이동되도록 transform.translate Widget 추가 (offset 설정 필수)
+                            offset: const Offset(-5, 12),
+                            child: const Icon(
+                              Icons.euro_symbol_sharp,
+                              color: Colors.white,
+                              size: 88,
+                              // size 조절 : 카드 등 주변 요소까지 함께 커짐 -> transform : 해당 요소만 overflow 및 move
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
