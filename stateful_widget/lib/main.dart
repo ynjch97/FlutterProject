@@ -1,125 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+// Stateless Widget 그 자체
+class App extends StatefulWidget {
+  const App({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<App> createState() => _AppState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+// State : Widget 에 들어갈 데이터와 UI 를 저장
+class _AppState extends State<App> {
+  int counter = 0;
 
-  void _incrementCounter() {
+  // IconButton > onPressed
+  void onClicked() {
+    // setState : State 클래스에게 데이터가 변경되었다고 알리는 함수
+    // State 에게 새로운 데이터가 있음을 알리고 스스로 새로고침하게 함
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      // 호출 시마다 build() 메소드가 재실행 됨
+      counter += 1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return MaterialApp(
+        theme: ThemeData(
+          textTheme: const TextTheme(
+            titleLarge: TextStyle(color: Colors.red),
+          ),
         ),
+        home: Scaffold(
+          backgroundColor: const Color(0xFFF4EDDB),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Click Count',
+                  style: TextStyle(
+                    fontSize: 25,
+                  ),
+                ),
+                Text(
+                  '$counter',
+                  style: const TextStyle(
+                    fontSize: 35,
+                  ),
+                ),
+                IconButton(
+                  onPressed: onClicked, // 클릭할 때마다 실행될 함수를 할당
+                  iconSize: 40,
+                  icon: const Icon(
+                    Icons.add_circle_sharp,
+                  ),
+                ),
+                const MyLargeTitle(),
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+class MyLargeTitle extends StatelessWidget {
+  const MyLargeTitle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'My Large Title',
+      style: TextStyle(
+        fontSize: 25,
+        color: Theme.of(context).textTheme.titleLarge?.color,
+        // 부모 요소에서 context 의 Theme 를 가져옴
+        /** the property 'color' can't be unconditionally accessed because the receiver can be 'null'. 
+         *  - titleLarge, color 는 명확히 존재한다고 알려줌 -> titleLarge!.color 
+         *  - 아마 존재할 것이다 -> titleLarge?.color
+         * */
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
