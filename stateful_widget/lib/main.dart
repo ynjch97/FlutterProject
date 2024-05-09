@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(const App());
@@ -16,6 +15,8 @@ class App extends StatefulWidget {
 // State : Widget 에 들어갈 데이터와 UI 를 저장
 class _AppState extends State<App> {
   int counter = 0;
+  bool showSmallTitle = true;
+  IconData showIcon = Icons.toggle_on_outlined;
 
   // IconButton > onPressed
   void onClicked() {
@@ -27,12 +28,22 @@ class _AppState extends State<App> {
     });
   }
 
+  // IconButton > onPressed > 큰 타이틀 노출 토글
+  void toggleTitle() {
+    setState(() {
+      showSmallTitle = !showSmallTitle;
+      showIcon =
+          showSmallTitle ? Icons.toggle_on_outlined : Icons.toggle_off_outlined;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
           textTheme: const TextTheme(
             titleLarge: TextStyle(color: Colors.red),
+            titleSmall: TextStyle(color: Colors.lightGreen),
           ),
         ),
         home: Scaffold(
@@ -61,6 +72,12 @@ class _AppState extends State<App> {
                   ),
                 ),
                 const MyLargeTitle(),
+                showSmallTitle ? const MySmallTitle() : const Text(''),
+                IconButton(
+                  onPressed: toggleTitle,
+                  iconSize: 40,
+                  icon: Icon(showIcon),
+                ),
               ],
             ),
           ),
@@ -68,6 +85,7 @@ class _AppState extends State<App> {
   }
 }
 
+// MyLargeTitle = StatelessWidget
 class MyLargeTitle extends StatelessWidget {
   const MyLargeTitle({
     super.key,
@@ -78,8 +96,49 @@ class MyLargeTitle extends StatelessWidget {
     return Text(
       'My Large Title',
       style: TextStyle(
-        fontSize: 25,
+        fontSize: 30,
         color: Theme.of(context).textTheme.titleLarge?.color,
+        // 부모 요소에서 context 의 Theme 를 가져옴
+        /** the property 'color' can't be unconditionally accessed because the receiver can be 'null'. 
+         *  - titleLarge, color 는 명확히 존재한다고 알려줌 -> titleLarge!.color 
+         *  - 아마 존재할 것이다 -> titleLarge?.color
+         * */
+      ),
+    );
+  }
+}
+
+// MySmallTitle = StatefulWidget
+class MySmallTitle extends StatefulWidget {
+  const MySmallTitle({
+    super.key,
+  });
+
+  @override
+  State<MySmallTitle> createState() => _MySmallTitleState();
+}
+
+class _MySmallTitleState extends State<MySmallTitle> {
+  @override
+  void initState() {
+    super.initState();
+    print('initState-!'); // MySmallTitle 영역이 생성되면 print 됨
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print('dispose-!'); // MySmallTitle 영역이 사라지면 print 됨
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('build-!');
+    return Text(
+      'My Small Title',
+      style: TextStyle(
+        fontSize: 15,
+        color: Theme.of(context).textTheme.titleSmall?.color,
         // 부모 요소에서 context 의 Theme 를 가져옴
         /** the property 'color' can't be unconditionally accessed because the receiver can be 'null'. 
          *  - titleLarge, color 는 명확히 존재한다고 알려줌 -> titleLarge!.color 
