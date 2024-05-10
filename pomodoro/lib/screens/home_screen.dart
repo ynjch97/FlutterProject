@@ -15,10 +15,16 @@ class HomeScreen extends StatefulWidget {
  * - flex : 비율 지정 (px 값이 아님)
  */
 class _HomeScreenState extends State<HomeScreen> {
-  // 타이머용 총 소요시간 (초)
-  int totalSeconds = 1500;
-  late Timer
-      timer; // 미리 초기화 하지 않고 사용자가 버튼으 누를 때만 타이머가 생성되게 함 (late variable modifier 사용하는 것이 적합)
+  /**Timer
+   * - Dart 의 표준 라이브러리
+   * - 정해진 간격에 한 번씩 함수 실행 가능
+   * - periodic > 정해진 주기마다 내부의 함수 실행
+   * - 미리 초기화 하지 않고 사용자가 버튼을 누를 때만 타이머가 생성되게 함
+   * - late variable modifier 사용하는 것이 적합
+  */
+  late Timer timer;
+  int totalSeconds = 1500; // 타이머용 총 소요시간 (초)
+  bool isRunning = false; // 현재 작동 여부
 
   // 타이머가 바뀔 때마다 (= 1초마다) setState 를 실행함
   void onTick(Timer timer) {
@@ -27,11 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  /**Timer
-   * - Dart 의 표준 라이브러리
-   * - 정해진 간격에 한 번씩 함수 실행 가능
-   * - periodic > 정해진 주기마다 내부의 함수 실행
-  */
   void onStartPressed() {
     // (timer) 사용 함수 : 매 초마다 몇 초 째인지 print 할 수 있음
     // timer = Timer.periodic(
@@ -46,10 +47,17 @@ class _HomeScreenState extends State<HomeScreen> {
       const Duration(seconds: 1),
       onTick, // The argument type 'void Function()' can't be assigned to the parameter type 'void Function(Timer)' : Timer 를 인자로 넣어주면 됨
     );
+
+    setState(() {
+      isRunning = true;
+    });
   }
 
-  void onStopPressed() {
+  void onPausePressed() {
     timer.cancel();
+    setState(() {
+      isRunning = false;
+    });
   }
 
   @override
@@ -81,10 +89,12 @@ class _HomeScreenState extends State<HomeScreen> {
             flex: 2,
             child: Center(
               child: IconButton(
-                onPressed: onStartPressed,
+                onPressed: isRunning ? onPausePressed : onStartPressed,
                 color: Theme.of(context).cardColor,
                 iconSize: 120,
-                icon: const Icon(Icons.play_circle_outline),
+                icon: Icon(isRunning
+                    ? Icons.pause_circle_outline
+                    : Icons.play_circle_outline),
               ),
             ),
           ),
