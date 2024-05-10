@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments
+// ignore_for_file: slash_for_doc_comments, constant_identifier_names
 
 import 'dart:async';
 
@@ -23,14 +23,27 @@ class _HomeScreenState extends State<HomeScreen> {
    * - late variable modifier 사용하는 것이 적합
   */
   late Timer timer;
-  int totalSeconds = 1500; // 타이머용 총 소요시간 (초)
+
+  static const int SETTING_SECONDS = 1500;
   bool isRunning = false; // 현재 작동 여부
+  int totalSeconds = SETTING_SECONDS; // 타이머용 총 소요시간 (초)
+  int totalPomodoros = 0; // 총 Pomodoro 카운트
 
   // 타이머가 바뀔 때마다 (= 1초마다) setState 를 실행함
   void onTick(Timer timer) {
-    setState(() {
-      totalSeconds = totalSeconds - 1;
-    });
+    // 초를 다 세면, Pause 및 Restart + totalSeconds 초기화
+    if (totalSeconds == 0) {
+      setState(() {
+        totalPomodoros = totalPomodoros + 1;
+        isRunning = false;
+        totalSeconds = SETTING_SECONDS;
+      });
+      timer.cancel();
+    } else {
+      setState(() {
+        totalSeconds = totalSeconds - 1;
+      });
+    }
   }
 
   void onStartPressed() {
@@ -60,6 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  String format(int seconds) {
+    var duration = Duration(seconds: seconds);
+    return duration.toString().split('.').first.substring(2, 7);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
               // decoration: const BoxDecoration(color: Colors.amber),
               alignment: Alignment.bottomCenter,
               child: Text(
-                '$totalSeconds',
+                // '$totalSeconds',
+                // 포맷하여 보내기 위함
+                format(totalSeconds),
                 style: TextStyle(
                   color: Theme.of(context).cardColor, // 지정해놓은 cardColor 를 계속 사용
                   fontSize: 89,
@@ -124,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ), // displayLarge 의 값이 can be null 이라 오류 발생 > displayLarge! 로 확실히 존재함을 표시
                         ),
                         Text(
-                          '0',
+                          '$totalPomodoros',
                           style: TextStyle(
                             fontSize: 58,
                             fontWeight: FontWeight.w600,
