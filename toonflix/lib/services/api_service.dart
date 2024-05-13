@@ -1,6 +1,9 @@
 // ignore_for_file: slash_for_doc_comments
 
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:toonflix/models/webtoon_model.dart';
 
 /**API 조회 클래스
  * - Widget 이 아닌 하나의 클래스
@@ -10,7 +13,7 @@ class ApiService {
   final String baseUrl = "https://webtoon-crawler.nomadcoders.workers.dev";
   final String today = "today";
 
-  void getTodaysToons() async {
+  Future<List<WebtoonModel>> getTodaysToons() async {
     /**Future
      * - 미래에 받을 값의 타입
      * - http.get() 의 return 값 : Future<Response>
@@ -21,12 +24,18 @@ class ApiService {
      * - API 요청이 처리되고 응답이 반환될 때까지 async(비동기) programming 처리
      * - 비동기 함수(asynchronous function) 내에서만 사용 가능
      */
+    List<WebtoonModel> webtoonInstances = [];
     final url = Uri.parse('$baseUrl/$today');
-    final response = await http.get(url);
+    final response = await http.get(url); // JSON 형식의 데이터
 
     if (response.statusCode == 200) {
-      print(response.body);
-      return;
+      // response.body : String 형식
+      // jsonDecode() : return 값이 `dynamic` 타입이므로 어떤 타입이든 수용할 수 있게 됨
+      final List<dynamic> webtoons = jsonDecode(response.body);
+      for (var webtoon in webtoons) {
+        webtoonInstances.add(WebtoonModel.fromJson(webtoon));
+      }
+      return webtoonInstances;
     }
     throw Error();
   }
