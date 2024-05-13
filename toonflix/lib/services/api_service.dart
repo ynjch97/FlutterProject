@@ -10,10 +10,12 @@ import 'package:toonflix/models/webtoon_model.dart';
  * - HTTP 관련 패키지 설치 -> as ALIAS 로 이름을 지정하여 사용 가능
  */
 class ApiService {
-  final String baseUrl = "https://webtoon-crawler.nomadcoders.workers.dev";
-  final String today = "today";
+  // state 가 없는 클래스이므로 static 사용
+  static const String baseUrl =
+      "https://webtoon-crawler.nomadcoders.workers.dev";
+  static const String today = "today";
 
-  Future<List<WebtoonModel>> getTodaysToons() async {
+  static Future<List<WebtoonModel>> getTodaysToons() async {
     /**Future
      * - 미래에 받을 값의 타입
      * - http.get() 의 return 값 : Future<Response>
@@ -33,6 +35,7 @@ class ApiService {
       // jsonDecode() : return 값이 `dynamic` 타입이므로 어떤 타입이든 수용할 수 있게 됨
       final List<dynamic> webtoons = jsonDecode(response.body);
       for (var webtoon in webtoons) {
+        // named constructor(이름이 있는 클래스 생성자) WebtoonModel 로 초기화
         webtoonInstances.add(WebtoonModel.fromJson(webtoon));
       }
       return webtoonInstances;
