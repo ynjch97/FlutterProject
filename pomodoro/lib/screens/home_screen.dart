@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   */
   late Timer timer;
 
-  static const int SETTING_SECONDS = 1500;
+  static const int SETTING_SECONDS = 60;
   bool isRunning = false; // 현재 작동 여부
   int totalSeconds = SETTING_SECONDS; // 타이머용 총 소요시간 (초)
   int totalPomodoros = 0; // 총 Pomodoro 카운트
@@ -73,6 +73,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void onStopPressed() {
+    timer.cancel();
+    setState(() {
+      totalSeconds = SETTING_SECONDS;
+      isRunning = false;
+    });
+  }
+
   String format(int seconds) {
     var duration = Duration(seconds: seconds);
     return duration.toString().split('.').first.substring(2, 7);
@@ -107,15 +115,24 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Flexible(
             flex: 2,
-            child: Center(
-              child: IconButton(
-                onPressed: isRunning ? onPausePressed : onStartPressed,
-                color: Theme.of(context).cardColor,
-                iconSize: 120,
-                icon: Icon(isRunning
-                    ? Icons.pause_circle_outline
-                    : Icons.play_circle_outline),
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: isRunning ? onPausePressed : onStartPressed,
+                  color: Theme.of(context).cardColor,
+                  iconSize: 120,
+                  icon: Icon(isRunning
+                      ? Icons.pause_circle_outline
+                      : Icons.play_circle_outline),
+                ),
+                IconButton(
+                  onPressed: onStopPressed,
+                  color: Theme.of(context).cardColor,
+                  iconSize: 80,
+                  icon: const Icon(Icons.stop_circle_outlined),
+                ),
+              ],
             ),
           ),
           Flexible(
