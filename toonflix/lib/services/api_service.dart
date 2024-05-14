@@ -1,7 +1,6 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:toonflix/models/webtoon_model.dart';
@@ -17,6 +16,9 @@ class ApiService {
   static const String today = "today";
 
   static Future<List<WebtoonModel>> getTodaysToons() async {
+    // 테스트를 위한 딜레이
+    await Future.delayed(const Duration(seconds: 1));
+
     /**Future
      * - 미래에 받을 값의 타입
      * - http.get() 의 return 값 : Future<Response>

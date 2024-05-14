@@ -7,7 +7,7 @@ class HomeScreen extends StatelessWidget {
   // 클래스 안에 Future 가 있기 때문에, const 는 제거해야 함
   HomeScreen({super.key});
 
-  Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
+  final Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF00DC64),
+        backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         shadowColor: Colors.black,
@@ -33,9 +33,26 @@ class HomeScreen extends StatelessWidget {
         future: webtoons,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return const Text('there is data');
+            // snapshot 이 데이터를 가지고 있는 경우
+            return ListView.separated(
+              scrollDirection: Axis.horizontal, // 스크롤 방향
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                var webtoon = snapshot.data![index];
+                return Text('$index  ${webtoon.title}');
+              },
+              separatorBuilder: (context, index) {
+                return const SizedBox(
+                  width: 20,
+                );
+              },
+            );
           }
-          return const Text('loading...');
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Color(0xFF00DC64),
+            ),
+          );
         },
       ),
     );

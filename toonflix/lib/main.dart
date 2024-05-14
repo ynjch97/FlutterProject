@@ -13,6 +13,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: const Color(0xFF00DC64),
+      ),
       home: Scaffold(
         body: HomeScreen(),
       ),
