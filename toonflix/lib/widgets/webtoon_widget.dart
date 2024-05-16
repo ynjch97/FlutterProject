@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:toonflix/models/webtoon_model.dart';
 import 'package:toonflix/screens/detail_screen.dart';
 
@@ -27,22 +28,25 @@ class Webtoon extends StatelessWidget {
       },
       child: Column(
         children: [
-          Container(
-            width: 250,
-            clipBehavior: Clip.hardEdge,
-            // BorderRadius.circular 적용이 되지 않는 이유 : clipBehavior 때문
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 7,
-                  offset: const Offset(3, 3),
-                  color: Colors.black.withOpacity(0.5),
-                )
-              ],
-            ),
-            child: Image.network(
-              webtoon.thumb,
+          Hero(
+            tag: webtoon.id,
+            child: Container(
+              width: 250,
+              clipBehavior: Clip.hardEdge,
+              // BorderRadius.circular 적용이 되지 않는 이유 : clipBehavior 때문
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 7,
+                    offset: const Offset(3, 3),
+                    color: Colors.black.withOpacity(0.5),
+                  )
+                ],
+              ),
+              child: Image.network(
+                webtoon.thumb,
+              ),
             ),
           ),
           const SizedBox(
