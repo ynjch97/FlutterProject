@@ -1,6 +1,7 @@
-// ignore_for_file: slash_for_doc_comments
+// ignore_for_file: slash_for_doc_comments, constant_identifier_names, unused_field
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toonflix/models/webtoon_detail_model.dart';
 import 'package:toonflix/models/webtoon_episode_model.dart';
 import 'package:toonflix/models/webtoon_model.dart';
@@ -41,11 +42,57 @@ class _DetailScreenState extends State<DetailScreen> {
    * initState() 는 항상 build() 보다 먼저, 단 한 번만 실행된다는 특징
    */
 
+  /**좋아요 버튼 생성 및 핸드폰 저장소에 데이터 저장
+   * - appBar 의 Widget List 인 actions 사용
+   * - shared_preferences 패키지 활용
+   * - ID List 에 좋아요한 웹툰 목록을 CRUD
+   */
+  late SharedPreferences prefs;
+  bool isLiked = false;
+
+  // 핸드폰 저장소 데이터의 상수형 변수
+  static const String LIKED_TOONS = 'likedToons';
+
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    final likedToons = prefs.getStringList(LIKED_TOONS);
+    if (likedToons != null) {
+      if (likedToons.contains(widget.webtoon.id) == true) {
+        setState(() {
+          isLiked = true;
+        });
+      }
+    } else {
+      // likedToons == null 인 가장 최초 실행의 경우 빈 배열을 set
+      await prefs.setStringList(LIKED_TOONS, []);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     webtoonDetail = ApiService.getToonById(widget.webtoon.id);
     webtoonEpisodes = ApiService.getLatestEpisodesById(widget.webtoon.id);
+    initPrefs();
+  }
+
+  onLikeTap() async {
+    final likedToons = prefs.getStringList(LIKED_TOONS);
+
+    // null 체크를 해주지 않으면 오류 발생함
+    if (likedToons != null) {
+      if (isLiked) {
+        likedToons.remove(widget.webtoon.id.toString());
+      } else {
+        likedToons.add(widget.webtoon.id.toString());
+      }
+
+      await prefs.setStringList(LIKED_TOONS, likedToons);
+
+      setState(() {
+        isLiked = !isLiked;
+      });
+    }
   }
 
   @override
@@ -67,6 +114,14 @@ class _DetailScreenState extends State<DetailScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: onLikeTap,
+            icon: Icon(isLiked
+                ? Icons.favorite_rounded
+                : Icons.favorite_border_rounded),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
