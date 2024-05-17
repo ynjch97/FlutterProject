@@ -1,11 +1,12 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:toonflix/models/webtoon_detail_model.dart';
 import 'package:toonflix/models/webtoon_episode_model.dart';
 import 'package:toonflix/models/webtoon_model.dart';
 import 'package:toonflix/services/api_service.dart';
+
+import '../widgets/episode_widget.dart';
 
 /**상세 페이지
  * - 단순히 Widget 의 개념임
@@ -67,73 +68,104 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Hero(
-                tag: widget.webtoon.id,
-                child: Container(
-                  width: 250,
-                  clipBehavior: Clip.hardEdge,
-                  // BorderRadius.circular 적용이 되지 않는 이유 : clipBehavior 때문
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 7,
-                        offset: const Offset(3, 3),
-                        color: Colors.black.withOpacity(0.5),
-                      )
-                    ],
-                  ),
-                  child: Image.network(
-                    widget.webtoon.thumb,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Hero(
+                  tag: widget.webtoon.id,
+                  child: Container(
+                    width: 250,
+                    clipBehavior: Clip.hardEdge,
+                    // BorderRadius.circular 적용이 되지 않는 이유 : clipBehavior 때문
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 7,
+                          offset: const Offset(3, 3),
+                          color: Colors.black.withOpacity(0.5),
+                        )
+                      ],
+                    ),
+                    child: Image.network(
+                      widget.webtoon.thumb,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          FutureBuilder(
-            future: webtoonDetail,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: Column(
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            FutureBuilder(
+              future: webtoonDetail,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         snapshot.data!.about,
-                        style: const TextStyle(fontSize: 15),
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       const SizedBox(
-                        height: 15,
+                        height: 10,
                       ),
                       Text(
                         '${snapshot.data!.genre} / ${snapshot.data!.age}',
-                        style: const TextStyle(fontSize: 15),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
+                  );
+                }
+
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF00DC64),
                   ),
                 );
-              }
+              },
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: FutureBuilder(
+                  future: webtoonEpisodes,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      // 간단하게 구현할 때는 ListView 대신 Column 을 사용하는 것이 낫다
+                      // ListView, ListViewBuilder => 리스트가 길고 최적화가 중요할 때 사용
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (var episode in snapshot.data!)
+                            Episode(
+                              episode: episode,
+                              webtoonId: widget.webtoon.id,
+                            ),
+                        ],
+                      );
+                    }
 
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFF00DC64),
+                    return Container();
+                  },
                 ),
-              );
-            },
-          )
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

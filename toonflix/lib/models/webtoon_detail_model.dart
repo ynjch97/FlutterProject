@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class WebtoonDetailModel {
   final String title, about, genre, age;
 
