@@ -35,7 +35,7 @@ class Episode extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
-            color: Colors.green.shade400,
+            color: const Color(0xFF03C75A),
             strokeAlign: BorderSide.strokeAlignInside,
             width: 2,
           ),
@@ -59,17 +59,17 @@ class Episode extends StatelessWidget {
               Flexible(
                 child: Text(
                   episode.title,
-                  style: TextStyle(
-                    color: Colors.green.shade400,
+                  style: const TextStyle(
+                    color: Color(0xFF03C75A),
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
-              Icon(
+              const Icon(
                 Icons.chevron_right_rounded,
-                color: Colors.green.shade400,
+                color: Color(0xFF03C75A),
               ),
             ],
           ),

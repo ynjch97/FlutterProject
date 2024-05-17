@@ -25,7 +25,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: const Color(0xFF00DC64),
+        primaryColor: const Color(0xFF03C75A),
       ),
       home: Scaffold(
         body: HomeScreen(),

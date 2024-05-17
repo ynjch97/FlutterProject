@@ -131,7 +131,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
                 return const Center(
                   child: CircularProgressIndicator(
-                    color: Color(0xFF00DC64),
+                    color: Color(0xFF03C75A),
                   ),
                 );
               },

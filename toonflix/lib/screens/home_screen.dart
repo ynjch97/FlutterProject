@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
           // 아직 값이 안넘어온 상태 = 로딩 중
           return const Center(
             child: CircularProgressIndicator(
-              color: Color(0xFF00DC64),
+              color: Color(0xFF03C75A),
             ),
           );
         },

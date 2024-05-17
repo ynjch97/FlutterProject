@@ -32,7 +32,7 @@ class _HomeScreenStatefulState extends State<HomeScreenStateful> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF00DC64),
+        backgroundColor: const Color(0xFF03C75A),
         foregroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         shadowColor: Colors.black,
