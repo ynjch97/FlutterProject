@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:toonflix/models/webtoon_detail_model.dart';
 import 'package:toonflix/models/webtoon_model.dart';
 import 'package:toonflix/services/api_service.dart';
 
@@ -13,12 +14,10 @@ class DetailScreen extends StatelessWidget {
   final WebtoonModel webtoon;
 
   // 생성자에 WebtoonModel 파라미터 넣어주기 : 웹툰 상세 정보 조회를 위함
-  DetailScreen({
+  const DetailScreen({
     super.key,
     required this.webtoon,
   });
-
-  final Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
 
   @override
   Widget build(BuildContext context) {
