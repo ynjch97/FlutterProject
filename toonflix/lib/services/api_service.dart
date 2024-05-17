@@ -49,6 +49,9 @@ class ApiService {
   }
 
   static Future<WebtoonDetailModel> getToonById(String id) async {
+    // 테스트를 위한 딜레이
+    await Future.delayed(const Duration(seconds: 1));
+
     final url = Uri.parse('$baseUrl/$id');
     final response = await http.get(url); // JSON 형식의 데이터
 
@@ -62,6 +65,9 @@ class ApiService {
 
   static Future<List<WebtoonEpisodeModel>> getLatestEpisodesById(
       String id) async {
+    // 테스트를 위한 딜레이
+    await Future.delayed(const Duration(seconds: 1));
+
     List<WebtoonEpisodeModel> episopdeInstances = [];
     final url = Uri.parse('$baseUrl/$id/episodes');
     final response = await http.get(url);
