@@ -1,6 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 
 void main() {
   runApp(const TikTokApp());
@@ -12,13 +13,16 @@ void main() {
 class TikTokApp extends StatelessWidget {
   const TikTokApp({super.key});
 
-  // This widget is the root of your application.
+  /**Scaffold
+   * - navigation bar, body, navbar 사용
+   * - Text 방향, 사이즈 등을 설정
+   */
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TikTok Clone',
       theme: ThemeData(primaryColor: const Color(0xFFE9435A)),
-      home: Container(),
+      home: const SignUpScreen(),
     );
   }
 }
