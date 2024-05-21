@@ -12,21 +12,21 @@ class LoginScreen extends StatelessWidget {
   /**Navigator.push : 화면을 기존 화면 위에 쌓음
    * Navigator.pop : Navigator 가장 상단의 화면 즉, 유저가 현재 보고있는 화면을 stack 에서 제거
    */
-  void onSignUpTap(BuildContext context) {
+  void _onSignUpTap(BuildContext context) {
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const SafeArea(
+      body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Sizes.size40),
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.size40),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Gaps.v80,
-              Text(
+              const Text(
                 "Log in to TicTok",
                 style: TextStyle(
                   fontSize: Sizes.size24,
@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Gaps.v20,
-              Text(
+              const Text(
                 "Manage your account, check notifications, comment on videos, and more.",
                 style: TextStyle(
                     fontSize: Sizes.size16,
@@ -45,19 +45,21 @@ class LoginScreen extends StatelessWidget {
               Gaps.v40,
               AuthButton(
                 text: 'Use email & password',
-                icon: FaIcon(FontAwesomeIcons.user),
+                icon: const FaIcon(FontAwesomeIcons.user),
+                onTapFunction: (context) {},
               ),
               Gaps.v16,
               AuthButton(
                 text: 'Continue with Apple',
-                icon: FaIcon(FontAwesomeIcons.apple),
+                icon: const FaIcon(FontAwesomeIcons.apple),
+                onTapFunction: (context) {},
               ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.grey.shade100,
+        color: Colors.grey.shade50,
         elevation: 2,
         padding: const EdgeInsets.only(bottom: 10),
         child: Padding(
@@ -68,7 +70,7 @@ class LoginScreen extends StatelessWidget {
               const Text("Don't have an account?"),
               Gaps.h5,
               GestureDetector(
-                onTap: () => onSignUpTap(context),
+                onTap: () => _onSignUpTap(context),
                 child: Text(
                   "Sign up",
                   style: TextStyle(
