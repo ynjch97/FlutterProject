@@ -1,9 +1,14 @@
+// ignore_for_file: slash_for_doc_comments
+
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const TikTokApp());
 }
 
+/**TikTok UX/UI 참고 사이트 (iOS, Android 확인) : https://mobbin.com/
+ * 강의 기준 스크린샷 : https://nomadcoders.co/downloads/tiktok.zip
+ */
 class TikTokApp extends StatelessWidget {
   const TikTokApp({super.key});
 
