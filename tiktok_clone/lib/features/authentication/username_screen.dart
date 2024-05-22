@@ -1,7 +1,12 @@
+// ignore_for_file: slash_for_doc_comments
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/email_screen.dart';
+
+import 'widgets/form_button.dart';
 
 class UsernameScreen extends StatefulWidget {
   const UsernameScreen({super.key});
@@ -25,6 +30,27 @@ class _UsernameScreenState extends State<UsernameScreen> {
         _username = _usernameController.text;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    // _usernameController 와 연관된 이벤트 리스너를 모두 지움
+    _usernameController.dispose();
+
+    super.dispose();
+  }
+
+  /**StatelessWidget > _on*Tap(BuildContext context) 함수들과 다르게 context 를 받지 않아도 됨
+   * StatefulWidget > State 안에 있다면 어디서든 context 사용 가능
+   */
+  void _onNextTap() {
+    if (_username.isEmpty) return;
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const EmailScreen(),
+      ),
+    );
   }
 
   @override
@@ -74,28 +100,10 @@ class _UsernameScreenState extends State<UsernameScreen> {
               ),
             ),
             Gaps.v16,
-            FractionallySizedBox(
-              widthFactor: 1,
-              // 애니메이션 효과를 주기 위함 (decoration 이 변경되었을 때 효과가 적용됨)
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.symmetric(vertical: Sizes.size16),
-                decoration: BoxDecoration(
-                  color: _username.isEmpty
-                      ? Colors.grey.shade400
-                      : Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: const Text(
-                  "Next",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            )
+            GestureDetector(
+              onTap: _onNextTap,
+              child: FormButton(disabled: _username.isEmpty),
+            ),
           ],
         ),
       ),
