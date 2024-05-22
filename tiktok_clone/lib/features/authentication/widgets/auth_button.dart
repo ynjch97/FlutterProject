@@ -15,12 +15,12 @@ class AuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /**FractionallySizedBox
-     * - 양옆의 여유 공간을 다 사용
-     * - 부모 크기에 비례해 크기를 정하는 Box 위젯
-     */
     return GestureDetector(
       onTap: () => onTapFunction(context),
+      /**FractionallySizedBox
+      * - 양옆의 여유 공간을 다 사용
+      * - 부모 크기에 비례해 크기를 정하는 Box 위젯
+      */
       child: FractionallySizedBox(
         widthFactor: 1, // 1이면 100%, 0.5면 50% 공간을 차지
         child: Container(
