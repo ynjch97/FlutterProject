@@ -29,6 +29,7 @@ class TikTokApp extends StatelessWidget {
           // appBarTheme : AppBar 를 전역으로 꾸미기
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
+          surfaceTintColor: Colors.white,
           elevation: 0,
           centerTitle: true,
           titleTextStyle: TextStyle(

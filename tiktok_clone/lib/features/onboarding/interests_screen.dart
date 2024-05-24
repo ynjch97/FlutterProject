@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/onboarding/tutorial_screen.dart';
 
 import 'widgets/interest_button.dart';
 
@@ -83,6 +84,15 @@ class _InterestsScreenState extends State<InterestsScreen> {
     }
   }
 
+  // StatefulWidget > BuildContext context 받지 않아도 됨
+  void _onNextTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const TutorialScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,20 +156,23 @@ class _InterestsScreenState extends State<InterestsScreen> {
             horizontal: Sizes.size24,
             vertical: Sizes.size16,
           ),
-          child: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(
-              vertical: Sizes.size16,
-            ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-            ),
-            child: const Text(
-              'Next',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: Sizes.size16,
+          child: GestureDetector(
+            onTap: _onNextTap,
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(
+                vertical: Sizes.size16,
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              child: const Text(
+                'Next',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: Sizes.size16,
+                ),
               ),
             ),
           ),
