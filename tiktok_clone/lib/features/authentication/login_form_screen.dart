@@ -52,8 +52,15 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
           child: Column(
             children: [
               TextFormField(
-                decoration: const InputDecoration(
+                cursorColor: Theme.of(context).primaryColor,
+                decoration: InputDecoration(
                   hintText: "Email",
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor,
+                      width: 1.5,
+                    ),
+                  ),
                 ),
                 validator: _chkTextField,
                 // newValue : 저장된 순간의 입력값
@@ -63,8 +70,15 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
               ),
               Gaps.v16,
               TextFormField(
-                decoration: const InputDecoration(
+                cursorColor: Theme.of(context).primaryColor,
+                decoration: InputDecoration(
                   hintText: "Password",
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor,
+                      width: 1.5,
+                    ),
+                  ),
                 ),
                 validator: _chkTextField,
                 onSaved: (newValue) {
