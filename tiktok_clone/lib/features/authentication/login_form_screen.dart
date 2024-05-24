@@ -32,11 +32,21 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
          */
         _formKey.currentState!.save();
 
-        // 로그인이 완료되면 InterestsScreen 으로 이동
-        Navigator.of(context).push(
+        /**로그인이 완료되면 InterestsScreen 으로 이동
+         * But, 뒤로가기를 눌러도 로그인 화면으로 다시 돌아오면 안됨
+         * 
+         * pushAndRemoveUntil
+         * - push 와 동시에 모든 화면 기록을 삭제 
+         * - stack 위에 새 화면을 추가하고, 뒤에 있는 screen 중 지우고 싶은 화면 수 선택
+         * 
+         * bool Function(Route<dynamic>) predicate
+         * - 함수가 false return 시 Route 를 삭제, true return 시 Route 유지
+         */
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const InterestsScreen(),
           ),
+          (route) => false,
         );
       }
     }

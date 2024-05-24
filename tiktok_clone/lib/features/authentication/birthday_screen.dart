@@ -41,10 +41,11 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
    * StatefulWidget > State 안에 있다면 어디서든 context 사용 가능
    */
   void _onNextTap() {
-    Navigator.of(context).push(
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => const InterestsScreen(),
       ),
+      (route) => false,
     );
   }
 
