@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
+import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 
 /**Form
  * - 고유 식별자 역할을 하는 Global Key 필요
@@ -30,6 +31,13 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
          * - 모든 텍스트 입력에 onSaved 콜백 함수 실행
          */
         _formKey.currentState!.save();
+
+        // 로그인이 완료되면 InterestsScreen 으로 이동
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const InterestsScreen(),
+          ),
+        );
       }
     }
   }
