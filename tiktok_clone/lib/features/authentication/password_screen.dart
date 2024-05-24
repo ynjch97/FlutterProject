@@ -1,7 +1,5 @@
 // ignore_for_file: slash_for_doc_comments
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -18,7 +16,8 @@ class PasswordScreen extends StatefulWidget {
 }
 
 class _PasswordScreenState extends State<PasswordScreen> {
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordController =
+      TextEditingController(text: "abcd1234");
 
   String _password = "";
   bool _obscureText = true;

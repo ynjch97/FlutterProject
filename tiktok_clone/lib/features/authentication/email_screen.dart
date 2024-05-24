@@ -15,7 +15,8 @@ class EmailScreen extends StatefulWidget {
 }
 
 class _EmailScreenState extends State<EmailScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailController =
+      TextEditingController(text: "ynjch@gmail.com");
 
   String _email = "";
 
