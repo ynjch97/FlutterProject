@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -27,44 +28,21 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("MainNavigationScreen"),
-      ),
-      body: screens[_selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onNavTap,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-        indicatorColor: Colors.transparent,
-        backgroundColor: Colors.grey.shade400,
-        destinations: [
-          NavigationDestination(
-            icon: const FaIcon(
-              FontAwesomeIcons.house,
-              color: Colors.white,
-            ),
-            selectedIcon: FaIcon(
-              FontAwesomeIcons.house,
-              color: Theme.of(context).primaryColor,
-            ),
+    // MaterialApp 도 CupertinoApp 으로 변경해주어야 함
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.house),
             label: "Home",
-            tooltip: "Home",
           ),
-          NavigationDestination(
-            icon: const FaIcon(
-              FontAwesomeIcons.magnifyingGlass,
-              color: Colors.white,
-            ),
-            selectedIcon: FaIcon(
-              FontAwesomeIcons.magnifyingGlass,
-              color: Theme.of(context).primaryColor,
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.search),
             label: "Search",
-            tooltip: "Search",
           ),
         ],
       ),
+      tabBuilder: (context, index) => screens[index],
     );
   }
 }
