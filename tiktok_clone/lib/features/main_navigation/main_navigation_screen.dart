@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/main_navigation/stf_screen.dart';
 
 import 'widgets/nav_tab.dart';
 
@@ -14,12 +15,24 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
 
-  final screens = const [
-    Center(child: Text("Home")),
-    Center(child: Text("Discover")),
-    Center(child: Text("+")),
-    Center(child: Text("Inbox")),
-    Center(child: Text("Profile"))
+  final screens = [
+    StfScreen(
+      text: "Home",
+      key: GlobalKey(),
+    ),
+    StfScreen(
+      text: "Discover",
+      key: GlobalKey(),
+    ),
+    Container(),
+    StfScreen(
+      text: "Inbox",
+      key: GlobalKey(),
+    ),
+    StfScreen(
+      text: "Profile",
+      key: GlobalKey(),
+    )
   ];
 
   void _onNavTap(int index) {
@@ -34,7 +47,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       appBar: AppBar(
         title: const Text("MainNavigationScreen"),
       ),
-      body: screens[_selectedIndex],
+      // screens[_selectedIndex] 로도 작성 가능
+      body: screens.elementAt(_selectedIndex),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
         child: Padding(
@@ -43,26 +57,30 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NavTab(
-                icon: FontAwesomeIcons.house,
                 text: "Home",
+                icon: FontAwesomeIcons.house,
+                selectedIcon: FontAwesomeIcons.houseChimney,
                 isSelected: _selectedIndex == 0,
                 onTap: () => _onNavTap(0),
               ),
               NavTab(
-                icon: FontAwesomeIcons.magnifyingGlass,
                 text: "Discover",
+                icon: FontAwesomeIcons.magnifyingGlass,
+                selectedIcon: FontAwesomeIcons.solidCompass,
                 isSelected: _selectedIndex == 1,
                 onTap: () => _onNavTap(1),
               ),
               NavTab(
-                icon: FontAwesomeIcons.inbox,
                 text: "Inbox",
+                icon: FontAwesomeIcons.inbox,
+                selectedIcon: FontAwesomeIcons.solidMessage,
                 isSelected: _selectedIndex == 3,
                 onTap: () => _onNavTap(3),
               ),
               NavTab(
-                icon: FontAwesomeIcons.user,
                 text: "Profile",
+                icon: FontAwesomeIcons.user,
+                selectedIcon: FontAwesomeIcons.solidUser,
                 isSelected: _selectedIndex == 4,
                 onTap: () => _onNavTap(4),
               ),
