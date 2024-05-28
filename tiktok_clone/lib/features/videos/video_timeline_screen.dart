@@ -10,6 +10,8 @@ class VideoTimelineScreen extends StatefulWidget {
 class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   int _itemCount = 4;
 
+  final PageController _pageController = PageController();
+
   List<Color> colors = [
     Colors.blue,
     Colors.red,
@@ -18,6 +20,13 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   ];
 
   void _onPageChanged(int page) {
+    // 애니메이션과 함께 페이지 이동
+    _pageController.animateToPage(
+      page, // 현재 페이지 파라미터
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.linear,
+    );
+
     if (page == colors.length - 1) {
       _itemCount = colors.length + 4;
       colors.addAll([
@@ -35,6 +44,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
     // Scaffold 안에서 렌더링 되고 있으므로 바로 Widget 사용
     // PageView.builder : itemBuilder 를 이용해 필요한 만큼만 렌더링
     return PageView.builder(
+      controller: _pageController,
       scrollDirection: Axis.vertical,
       onPageChanged: _onPageChanged,
       itemCount: _itemCount,
