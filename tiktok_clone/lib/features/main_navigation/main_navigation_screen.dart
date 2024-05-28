@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/main_navigation/stf_screen.dart';
+import 'package:tiktok_clone/features/main_navigation/widgets/post_video_button.dart';
 
 import 'widgets/nav_tab.dart';
 
@@ -14,21 +18,7 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
-
-  final screens = [
-    StfScreen(
-      text: "Home",
-      key: GlobalKey(),
-    ),
-    StfScreen(
-      text: "Discover",
-      key: GlobalKey(),
-    ),
-    Container(),
-    const StfScreen(
-      text: "Profile",
-    )
-  ];
+  bool _isTapDown = false;
 
   void _onNavTap(int index) {
     setState(() {
@@ -36,12 +26,26 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     });
   }
 
+  void _onPostVideoTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: const Text("Record Video"),
+          ),
+        ),
+        fullscreenDialog: true, // 전체 화면으로
+      ),
+    );
+
+    setState(() {
+      _isTapDown = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("MainNavigationScreen"),
-      ),
       body: Stack(
         children: [
           Offstage(
@@ -70,7 +74,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
         ],
       ),
-      // body: screens.elementAt(_selectedIndex),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
         child: Padding(
@@ -92,6 +95,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 isSelected: _selectedIndex == 1,
                 onTap: () => _onNavTap(1),
               ),
+              Gaps.h24,
+              GestureDetector(
+                onTapDown: (details) {
+                  setState(() {
+                    _isTapDown = true;
+                  });
+                },
+                onTapUp: (details) => _onPostVideoTap(),
+                child: PostVideoButton(
+                  isTapDown: _isTapDown,
+                ),
+              ),
+              Gaps.h24,
               NavTab(
                 text: "Inbox",
                 icon: FontAwesomeIcons.inbox,
