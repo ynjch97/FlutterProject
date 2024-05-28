@@ -25,13 +25,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       key: GlobalKey(),
     ),
     Container(),
-    StfScreen(
-      text: "Inbox",
-      key: GlobalKey(),
-    ),
-    StfScreen(
+    const StfScreen(
       text: "Profile",
-      key: GlobalKey(),
     )
   ];
 
@@ -47,8 +42,35 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       appBar: AppBar(
         title: const Text("MainNavigationScreen"),
       ),
-      // screens[_selectedIndex] 로도 작성 가능
-      body: screens.elementAt(_selectedIndex),
+      body: Stack(
+        children: [
+          Offstage(
+            offstage: _selectedIndex != 0,
+            child: const StfScreen(
+              text: "Home",
+            ),
+          ),
+          Offstage(
+            offstage: _selectedIndex != 1,
+            child: const StfScreen(
+              text: "Discover",
+            ),
+          ),
+          Offstage(
+            offstage: _selectedIndex != 3,
+            child: const StfScreen(
+              text: "Inbox",
+            ),
+          ),
+          Offstage(
+            offstage: _selectedIndex != 4,
+            child: const StfScreen(
+              text: "Profile",
+            ),
+          ),
+        ],
+      ),
+      // body: screens.elementAt(_selectedIndex),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
         child: Padding(
