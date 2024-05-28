@@ -32,41 +32,36 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         title: const Text("MainNavigationScreen"),
       ),
       body: screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _onNavTap,
-        currentIndex: _selectedIndex,
-        type: BottomNavigationBarType.shifting, // 전환 효과
-        selectedItemColor: Theme.of(context).primaryColor,
-        // _AssertionError (Failed assertion: 'items.length >= 2' : is not true.) => item 하위에 2개 이상의 item 이 존재해야 함
-        items: const [
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: _onNavTap,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        indicatorColor: Colors.transparent,
+        backgroundColor: Colors.grey.shade400,
+        destinations: [
+          NavigationDestination(
+            icon: const FaIcon(
+              FontAwesomeIcons.house,
+              color: Colors.white,
+            ),
+            selectedIcon: FaIcon(
+              FontAwesomeIcons.house,
+              color: Theme.of(context).primaryColor,
+            ),
             label: "Home",
             tooltip: "Home",
           ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
+          NavigationDestination(
+            icon: const FaIcon(
+              FontAwesomeIcons.magnifyingGlass,
+              color: Colors.white,
+            ),
+            selectedIcon: FaIcon(
+              FontAwesomeIcons.magnifyingGlass,
+              color: Theme.of(context).primaryColor,
+            ),
             label: "Search",
             tooltip: "Search",
-            backgroundColor: Colors.blueGrey,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house),
-            label: "Home",
-            tooltip: "Home",
-            backgroundColor: Colors.amberAccent,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: "Search",
-            tooltip: "Search",
-            backgroundColor: Colors.blueGrey,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house),
-            label: "Home",
-            tooltip: "Home",
-            backgroundColor: Colors.amberAccent,
           ),
         ],
       ),
