@@ -57,9 +57,9 @@ class _VideoPostState extends State<VideoPost>
      * build() 가 값이 바뀌는 것을 알게 하려면? _animationController 에 이벤트 리스너 추가
      * 모든 단계에서 build 메서드를 실행하기 위해 이벤트 리스너에 setState() 추가
      */
-    _animationController.addListener(() {
-      setState(() {});
-    });
+    // _animationController.addListener(() {
+    //   setState(() {});
+    // });
   }
 
   @override
@@ -126,8 +126,15 @@ class _VideoPostState extends State<VideoPost>
             child: IgnorePointer(
               child: Center(
                 // 사이즈 조절을 위해 AnimationController 사용
-                child: Transform.scale(
-                  scale: _animationController.value,
+                child: AnimatedBuilder(
+                  animation: _animationController,
+                  // AnimatedBuilder 가 애니메이션의 변화를 감지하고, builder 가 최신 값으로 return 하도록 함
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: _animationController.value,
+                      child: child,
+                    );
+                  },
                   // Animated Widget 을 사용
                   child: AnimatedOpacity(
                     opacity: _isPaused ? 1 : 0,
