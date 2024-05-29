@@ -18,10 +18,16 @@ class VideoPost extends StatefulWidget {
   State<VideoPost> createState() => _VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost> {
+class _VideoPostState extends State<VideoPost>
+    with SingleTickerProviderStateMixin {
   // VideoPlayerController 사용 시, 초기화 작업을 해주어야 영상을 불러올 수 있음
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset("assets/videos/video01.mp4");
+
+  late final AnimationController _animationController;
+
+  final Duration _animationDuration = const Duration(milliseconds: 200);
+  bool _isPaused = false;
 
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize(); // 초기화
@@ -36,6 +42,24 @@ class _VideoPostState extends State<VideoPost> {
   void initState() {
     super.initState();
     _initVideoPlayer();
+
+    _animationController = AnimationController(
+      vsync: this,
+      lowerBound: 1.0, // 크기 지정
+      upperBound: 1.5, // 크기 지정
+      value: 1.5, // default 크기
+      duration: _animationDuration,
+    );
+
+    /**_animationController.reverse()
+     * 수행 시, 1.5 => 1.0 으로 값이 바뀌게 되는데,
+     * build() 는 1.5, 1.0 일 때만 재수행 되고 있음
+     * build() 가 값이 바뀌는 것을 알게 하려면? _animationController 에 이벤트 리스너 추가
+     * 모든 단계에서 build 메서드를 실행하기 위해 이벤트 리스너에 setState() 추가
+     */
+    _animationController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -66,9 +90,14 @@ class _VideoPostState extends State<VideoPost> {
   void _onTogglePause() {
     if (_videoPlayerController.value.isPlaying) {
       _videoPlayerController.pause();
+      _animationController.reverse(); // lowerBound
     } else {
       _videoPlayerController.play();
+      _animationController.forward(); // upperBound
     }
+    setState(() {
+      _isPaused = !_isPaused;
+    });
   }
 
   @override
@@ -92,14 +121,23 @@ class _VideoPostState extends State<VideoPost> {
               onTap: _onTogglePause,
             ),
           ),
-          const Positioned.fill(
+          Positioned.fill(
             // 클릭 이벤트를 무시하도록 함 (위의 _onTogglePause 가 먹도록)
             child: IgnorePointer(
               child: Center(
-                child: FaIcon(
-                  FontAwesomeIcons.play,
-                  color: Colors.white,
-                  size: Sizes.size52,
+                // 사이즈 조절을 위해 AnimationController 사용
+                child: Transform.scale(
+                  scale: _animationController.value,
+                  // Animated Widget 을 사용
+                  child: AnimatedOpacity(
+                    opacity: _isPaused ? 1 : 0,
+                    duration: _animationDuration,
+                    child: const FaIcon(
+                      FontAwesomeIcons.play,
+                      color: Colors.white,
+                      size: Sizes.size52,
+                    ),
+                  ),
                 ),
               ),
             ),
