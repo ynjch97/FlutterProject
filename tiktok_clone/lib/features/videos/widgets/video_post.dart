@@ -1,3 +1,5 @@
+// ignore_for_file: slash_for_doc_comments
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -18,6 +20,11 @@ class VideoPost extends StatefulWidget {
   State<VideoPost> createState() => _VideoPostState();
 }
 
+/**With ~Mixin : 해당 클래스를 복사해오겠다는 의미 
+ * vsync : 불필요한 리소스 사용을 방지 (위젯이 안보일 때는 애니메이션이 작동하지 않음)
+ * SingleTickerProviderStateMixin : 매 프레임마다 callback 을 호출
+ * - 단, 위젯이 화면에 있을 때만 작동함
+ */
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
   // VideoPlayerController 사용 시, 초기화 작업을 해주어야 영상을 불러올 수 있음
