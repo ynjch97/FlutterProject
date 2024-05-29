@@ -4,8 +4,13 @@ import 'package:tiktok_clone/constants/sizes.dart';
 
 class PostVideoButton extends StatelessWidget {
   final bool isTapDown;
+  final bool inverted;
 
-  const PostVideoButton({super.key, required this.isTapDown});
+  const PostVideoButton({
+    super.key,
+    required this.isTapDown,
+    required this.inverted,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +54,13 @@ class PostVideoButton extends StatelessWidget {
           height: Sizes.size30,
           padding: const EdgeInsets.symmetric(horizontal: Sizes.size10),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: !inverted ? Colors.white : Colors.black,
             borderRadius: BorderRadius.circular(Sizes.size8),
           ),
-          child: const Center(
+          child: Center(
             child: FaIcon(
               FontAwesomeIcons.plus,
-              color: Colors.black,
+              color: !inverted ? Colors.black : Colors.white,
               size: Sizes.size18,
             ),
           ),

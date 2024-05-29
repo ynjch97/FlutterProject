@@ -77,7 +77,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
+        color: _selectedIndex == 0 ? Colors.black : Colors.white,
+        surfaceTintColor: _selectedIndex == 0 ? Colors.black : Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Sizes.size10),
           child: Row(
@@ -88,6 +89,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 icon: FontAwesomeIcons.house,
                 selectedIcon: FontAwesomeIcons.houseChimney,
                 isSelected: _selectedIndex == 0,
+                selectedIndex: _selectedIndex,
                 onTap: () => _onNavTap(0),
               ),
               NavTab(
@@ -95,6 +97,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 icon: FontAwesomeIcons.magnifyingGlass,
                 selectedIcon: FontAwesomeIcons.solidCompass,
                 isSelected: _selectedIndex == 1,
+                selectedIndex: _selectedIndex,
                 onTap: () => _onNavTap(1),
               ),
               Gaps.h24,
@@ -107,6 +110,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 onTapUp: (details) => _onPostVideoTap(),
                 child: PostVideoButton(
                   isTapDown: _isTapDown,
+                  inverted: _selectedIndex != 0,
                 ),
               ),
               Gaps.h24,
@@ -115,6 +119,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 icon: FontAwesomeIcons.inbox,
                 selectedIcon: FontAwesomeIcons.solidMessage,
                 isSelected: _selectedIndex == 3,
+                selectedIndex: _selectedIndex,
                 onTap: () => _onNavTap(3),
               ),
               NavTab(
@@ -122,6 +127,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 icon: FontAwesomeIcons.user,
                 selectedIcon: FontAwesomeIcons.solidUser,
                 isSelected: _selectedIndex == 4,
+                selectedIndex: _selectedIndex,
                 onTap: () => _onNavTap(4),
               ),
             ],
