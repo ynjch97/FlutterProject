@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import 'video_button.dart';
+import 'video_comments.dart';
 
 class VideoPost extends StatefulWidget {
   final Function onVideoFinished;
@@ -40,20 +41,6 @@ class _VideoPostState extends State<VideoPost>
   final Duration _animationDuration = const Duration(milliseconds: 200);
   bool _isPaused = false;
 
-  void _initVideoPlayer() async {
-    _videoPlayerController =
-        VideoPlayerController.asset("assets/videos/video01.mp4");
-    await _videoPlayerController.initialize(); // 초기화
-    // _videoPlayerController.play(); // 자동 재생 X
-
-    // 영상이 반복되도록 설정 (7.8 Video UI)
-    await _videoPlayerController.setLooping(true);
-    setState(() {});
-
-    // 영상이 끝났는지 확인하기 위한 Listener
-    _videoPlayerController.addListener(_onVideoChange);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -84,6 +71,20 @@ class _VideoPostState extends State<VideoPost>
     super.dispose();
   }
 
+  void _initVideoPlayer() async {
+    _videoPlayerController =
+        VideoPlayerController.asset("assets/videos/video01.mp4");
+    await _videoPlayerController.initialize(); // 초기화
+    // _videoPlayerController.play(); // 자동 재생 X
+
+    // 영상이 반복되도록 설정 (7.8 Video UI)
+    await _videoPlayerController.setLooping(true);
+    setState(() {});
+
+    // 영상이 끝났는지 확인하기 위한 Listener
+    _videoPlayerController.addListener(_onVideoChange);
+  }
+
   void _onVideoChange() {
     // 초기화 되었는지
     if (_videoPlayerController.value.isInitialized) {
@@ -97,7 +98,9 @@ class _VideoPostState extends State<VideoPost>
 
   // Widget 이 다 보이는데, 동영상이 재생 중이 아니면 재생하기
   void _onVisibilityChanged(VisibilityInfo info) {
-    if (info.visibleFraction == 1 && !_videoPlayerController.value.isPlaying) {
+    if (info.visibleFraction == 1 &&
+        !_isPaused &&
+        !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
   }
@@ -114,6 +117,20 @@ class _VideoPostState extends State<VideoPost>
     setState(() {
       _isPaused = !_isPaused;
     });
+  }
+
+  //
+  void _onCommentsTap(BuildContext context) async {
+    if (_videoPlayerController.value.isPlaying) {
+      _onTogglePause();
+    }
+    // 이 await 는 사용자가 BottomSheet 를 닫을 때 resolve 됨
+    await showModalBottomSheet(
+      context: context, // context 를 받아옴
+      backgroundColor: Colors.transparent,
+      builder: (context) => const VideoComments(),
+    );
+    _onTogglePause();
   }
 
   @override
@@ -190,12 +207,12 @@ class _VideoPostState extends State<VideoPost>
               ],
             ),
           ),
-          const Positioned(
+          Positioned(
             bottom: 30,
             right: 25,
             child: Column(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 16,
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
@@ -208,17 +225,20 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
                 Gaps.v24,
-                VideoButton(
+                const VideoButton(
                   icon: FontAwesomeIcons.solidHeart,
                   text: "2.9M",
                 ),
                 Gaps.v24,
-                VideoButton(
-                  icon: FontAwesomeIcons.solidComment,
-                  text: "33K",
+                GestureDetector(
+                  onTap: () => _onCommentsTap(context),
+                  child: const VideoButton(
+                    icon: FontAwesomeIcons.solidComment,
+                    text: "33K",
+                  ),
                 ),
                 Gaps.v24,
-                VideoButton(
+                const VideoButton(
                   icon: FontAwesomeIcons.share,
                   text: "Share",
                 )
