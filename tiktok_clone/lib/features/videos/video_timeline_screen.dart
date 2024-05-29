@@ -1,4 +1,7 @@
+// ignore_for_file: slash_for_doc_comments
+
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_post.dart';
 
 class VideoTimelineScreen extends StatefulWidget {
   const VideoTimelineScreen({super.key});
@@ -12,31 +15,47 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
 
   final PageController _pageController = PageController();
 
-  List<Color> colors = [
-    Colors.blue,
-    Colors.red,
-    Colors.yellow,
-    Colors.teal,
-  ];
+  final Duration _scrollDuration = const Duration(milliseconds: 250);
+  final Curve _scrollCurve = Curves.linear;
 
   void _onPageChanged(int page) {
     // 애니메이션과 함께 페이지 이동
     _pageController.animateToPage(
       page, // 현재 페이지 파라미터
+      duration: _scrollDuration,
+      curve: _scrollCurve,
+    );
+
+    if (page == _itemCount - 1) {
+      _itemCount = _itemCount + 4;
+      setState(() {});
+    }
+  }
+
+  /**영상이 끝날 때 다음 화면으로 넘기는 애니메이션
+   * 영상이 끝나면 호출되어, 다음 영상으로 넘어갈 것임
+   * 영상이 끝났는지는 VideoPost() 안에서 확인 가능
+   */
+  void _onVideoFinished() {
+    // 현재 페이지 파라미터를 알려주는 방식
+    /*
+    _pageController.animateToPage(
+      page,
       duration: const Duration(milliseconds: 150),
       curve: Curves.linear,
     );
+    */
+    _pageController.nextPage(
+      duration: _scrollDuration,
+      curve: _scrollCurve,
+    );
+  }
 
-    if (page == colors.length - 1) {
-      _itemCount = colors.length + 4;
-      colors.addAll([
-        Colors.blue,
-        Colors.red,
-        Colors.yellow,
-        Colors.teal,
-      ]);
-      setState(() {});
-    }
+  @override
+  void dispose() {
+    // Controller dispose 를 해주어야 함
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,15 +67,8 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
       scrollDirection: Axis.vertical,
       onPageChanged: _onPageChanged,
       itemCount: _itemCount,
-      itemBuilder: (context, index) => Container(
-        color: colors[index],
-        child: Center(
-          child: Text(
-            "Screen $index,\r\nitemCount $_itemCount",
-            style: const TextStyle(fontSize: 38),
-          ),
-        ),
-      ),
+      itemBuilder: (context, index) =>
+          VideoPost(onVideoFinished: _onVideoFinished),
     );
   }
 }
