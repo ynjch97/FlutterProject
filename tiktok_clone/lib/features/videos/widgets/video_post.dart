@@ -119,7 +119,7 @@ class _VideoPostState extends State<VideoPost>
     });
   }
 
-  //
+  // 댓글창
   void _onCommentsTap(BuildContext context) async {
     if (_videoPlayerController.value.isPlaying) {
       _onTogglePause();
@@ -127,6 +127,10 @@ class _VideoPostState extends State<VideoPost>
     // 이 await 는 사용자가 BottomSheet 를 닫을 때 resolve 됨
     await showModalBottomSheet(
       context: context, // context 를 받아옴
+      /**The [isScrollControlled] parameter specifies whether this is a route for a bottom sheet that will utilize [DraggableScrollableSheet]. Consider setting this parameter to true if this bottom sheet has a scrollable child, such as a [ListView] or a [GridView], to have the bottom sheet be draggable.
+       * BottomSheet 에서 ListView 사용 시 true 설정해야 한다고 함
+       */
+      isScrollControlled: true, // BottomSheet 크기 조절 시 true 로 설정해야 함
       backgroundColor: Colors.transparent,
       builder: (context) => const VideoComments(),
     );
