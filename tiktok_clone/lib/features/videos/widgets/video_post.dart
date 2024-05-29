@@ -96,12 +96,16 @@ class _VideoPostState extends State<VideoPost>
     }
   }
 
-  // Widget 이 다 보이는데, 동영상이 재생 중이 아니면 재생하기
   void _onVisibilityChanged(VisibilityInfo info) {
+    // Widget 이 다 보이는데, 동영상이 재생 중이 아니면 재생하기
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
+    }
+    // Offstage 위젯을 사용했기 때문에, 모든 화면들이 dispose 되지 않고 살아있음 => 다른 탭으로 이동 시 멈추게 함
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      _onTogglePause();
     }
   }
 
