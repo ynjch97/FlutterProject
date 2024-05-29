@@ -211,6 +211,7 @@ class _VideoPostState extends State<VideoPost>
             bottom: 30,
             right: 25,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const CircleAvatar(
                   radius: 16,
