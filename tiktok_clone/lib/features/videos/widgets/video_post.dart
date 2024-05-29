@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+import 'video_button.dart';
 
 class VideoPost extends StatefulWidget {
   final Function onVideoFinished;
@@ -24,12 +27,13 @@ class VideoPost extends StatefulWidget {
  * vsync : 불필요한 리소스 사용을 방지 (위젯이 안보일 때는 애니메이션이 작동하지 않음)
  * SingleTickerProviderStateMixin : 매 프레임마다 callback 을 호출
  * - 단, 위젯이 화면에 있을 때만 작동함
+ * - 애니메이션이 여러 개라면, TickerProviderStateMixin 사용
  */
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
-  // VideoPlayerController 사용 시, 초기화 작업을 해주어야 영상을 불러올 수 있음
-  final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset("assets/videos/video01.mp4");
+  // VideoPlayerController 사용 시, initialize() 로 초기화 해주어야 영상을 불러올 수 있음
+  // final VideoPlayerController _videoPlayerController = VideoPlayerController.asset("assets/videos/video01.mp4");
+  late final VideoPlayerController _videoPlayerController;
 
   late final AnimationController _animationController;
 
@@ -37,8 +41,13 @@ class _VideoPostState extends State<VideoPost>
   bool _isPaused = false;
 
   void _initVideoPlayer() async {
+    _videoPlayerController =
+        VideoPlayerController.asset("assets/videos/video01.mp4");
     await _videoPlayerController.initialize(); // 초기화
     // _videoPlayerController.play(); // 자동 재생 X
+
+    // 영상이 반복되도록 설정 (7.8 Video UI)
+    await _videoPlayerController.setLooping(true);
     setState(() {});
 
     // 영상이 끝났는지 확인하기 위한 Listener
@@ -154,6 +163,66 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
               ),
+            ),
+          ),
+          const Positioned(
+            bottom: 30,
+            left: 25,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "@Slash",
+                  style: TextStyle(
+                    fontSize: Sizes.size20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Gaps.v10,
+                Text(
+                  "The River Is Rising Tour!", // todo: See more Code Challenge
+                  style: TextStyle(
+                    fontSize: Sizes.size16,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+          const Positioned(
+            bottom: 30,
+            right: 25,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 16,
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  foregroundImage: NetworkImage(
+                    "https://avatars.githubusercontent.com/u/69029517",
+                  ),
+                  child: Text(
+                    "YNJCH",
+                    style: TextStyle(fontSize: Sizes.size8),
+                  ),
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "2.9M",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidComment,
+                  text: "33K",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.share,
+                  text: "Share",
+                )
+              ],
             ),
           ),
         ],

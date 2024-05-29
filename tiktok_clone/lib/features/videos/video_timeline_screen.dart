@@ -37,6 +37,9 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
    * 영상이 끝났는지는 VideoPost() 안에서 확인 가능
    */
   void _onVideoFinished() {
+    // 자동으로 다음 영상으로 넘어가도록 처리했다가 막음 (7.8 Video UI)
+    return;
+
     // 현재 페이지 파라미터를 알려주는 방식
     /*
     _pageController.animateToPage(
