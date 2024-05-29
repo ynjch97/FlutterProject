@@ -18,6 +18,13 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   final Duration _scrollDuration = const Duration(milliseconds: 250);
   final Curve _scrollCurve = Curves.linear;
 
+  @override
+  void dispose() {
+    // Controller dispose 를 해주어야 함
+    _pageController.dispose();
+    super.dispose();
+  }
+
   void _onPageChanged(int page) {
     // 애니메이션과 함께 페이지 이동
     _pageController.animateToPage(
@@ -48,30 +55,40 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
       curve: Curves.linear,
     );
     */
+    // 페이지 파라미터 없이 다음 페이지로 넘기는 방식
+    /*
     _pageController.nextPage(
       duration: _scrollDuration,
       curve: _scrollCurve,
     );
+    */
   }
 
-  @override
-  void dispose() {
-    // Controller dispose 를 해주어야 함
-    _pageController.dispose();
-    super.dispose();
+  Future<void> _onRefresh() {
+    // 새로고침 시 3초간 sleep 한다고 가정
+    return Future.delayed(
+      const Duration(seconds: 3),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     // Scaffold 안에서 렌더링 되고 있으므로 바로 Widget 사용
-    // PageView.builder : itemBuilder 를 이용해 필요한 만큼만 렌더링
-    return PageView.builder(
-      controller: _pageController,
-      scrollDirection: Axis.vertical,
-      onPageChanged: _onPageChanged,
-      itemCount: _itemCount,
-      itemBuilder: (context, index) =>
-          VideoPost(onVideoFinished: _onVideoFinished, index: index),
+    // RefreshIndicator : 당겨서 타임라인을 새로고침할 때 사용
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      displacement: 50, // 화면을 당긴 후 indicator 돌아갈 위치
+      edgeOffset: 20, // 어디에서 부터 시작할 것인지
+      color: Theme.of(context).primaryColor,
+      // PageView.builder : itemBuilder 를 이용해 필요한 만큼만 렌더링
+      child: PageView.builder(
+        controller: _pageController,
+        scrollDirection: Axis.vertical,
+        onPageChanged: _onPageChanged,
+        itemCount: _itemCount,
+        itemBuilder: (context, index) =>
+            VideoPost(onVideoFinished: _onVideoFinished, index: index),
+      ),
     );
   }
 }
