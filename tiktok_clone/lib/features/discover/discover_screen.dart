@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
 final tabs = [
@@ -50,7 +52,7 @@ class DiscoverScreen extends StatelessWidget {
             GridView.builder(
               itemCount: 20,
               padding: const EdgeInsets.all(
-                Sizes.size6,
+                Sizes.size8,
               ),
               // gridDelegate : GridView 를 구성하는데 도움을 주는 역할
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -58,13 +60,70 @@ class DiscoverScreen extends StatelessWidget {
                 crossAxisSpacing: Sizes.size10,
                 mainAxisSpacing: Sizes.size10,
                 // 가로/세로 비율
-                childAspectRatio: 9 / 16,
+                childAspectRatio: 9 / 20,
               ),
-              itemBuilder: (context, index) => Container(
-                color: Colors.indigo,
-                child: Center(
-                  child: Text("$index"),
-                ),
+              itemBuilder: (context, index) => Column(
+                children: [
+                  // 특정한 비율을 따르도록 설정할 수 있음
+                  AspectRatio(
+                    aspectRatio: 9 / 16,
+                    // FadeInImage.assetNetwork : 네트워크에서 이미지를 로딩하는 동안에는 assets 폴더 내의 이미지를 보여줌
+                    child: FadeInImage.assetNetwork(
+                      fit: BoxFit.cover, // 부모 요소에 어떻게 fit 시킬건지
+                      placeholder: "assets/images/kota.jpg",
+                      image:
+                          "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+                    ),
+                  ),
+                  Gaps.v10,
+                  const Text(
+                    "This is a very long caption for my tiktok that im upload just now currently.",
+                    // 두 줄은 제외하고 말줄임표로 숨김 처리
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: Sizes.size16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Gaps.v8,
+                  // 자식 요소들에게 같은 TextStyle 을 전달
+                  DefaultTextStyle(
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: 12,
+                          backgroundImage: NetworkImage(
+                            "https://avatars.githubusercontent.com/u/69029517",
+                          ),
+                        ),
+                        Gaps.h4,
+                        // row 내에서 가장 많은 공간을 차지 + TextOverflow 처리
+                        const Expanded(
+                          child: Text(
+                            "My avatar is going to be very long",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Gaps.h4,
+                        FaIcon(
+                          FontAwesomeIcons.heart,
+                          size: Sizes.size16,
+                          color: Colors.grey.shade600,
+                        ),
+                        Gaps.h2,
+                        const Text(
+                          "2.5M",
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
             for (var tab in tabs.skip(1)) // 첫 번째 항목은 제외
