@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -13,8 +14,32 @@ final tabs = [
   "Brands",
 ];
 
-class DiscoverScreen extends StatelessWidget {
+class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
+
+  @override
+  State<DiscoverScreen> createState() => _DiscoverScreenState();
+}
+
+class _DiscoverScreenState extends State<DiscoverScreen> {
+  // 검색 기본값 세팅 가능
+  final TextEditingController _textEditingController =
+      TextEditingController(text: "Initial Text");
+
+  void _onSearchChanged(String value) {
+    print("Searching form $value");
+  }
+
+  void _onSearchSubmitted(String value) {
+    print("Submitted $value");
+  }
+
+  @override
+  void dispose() {
+    // Controller 는 항상 dispose()
+    _textEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +47,16 @@ class DiscoverScreen extends StatelessWidget {
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
+        // 키보드가 열리면 화면 사이즈 조정하는 기본 세팅 해제
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          title: const Text('Discover'),
+          // title 위치에 검색창 배치
+          title: CupertinoSearchTextField(
+            controller: _textEditingController,
+            onChanged: _onSearchChanged,
+            onSubmitted: _onSearchSubmitted,
+          ),
           bottom: TabBar(
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(
@@ -50,9 +82,11 @@ class DiscoverScreen extends StatelessWidget {
           children: [
             // GridView builder 를 사용하는 것이 성능적으로 효과적
             GridView.builder(
+              // GridView 를 드래그하면 키보드가 사라지도록 설정
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               itemCount: 20,
               padding: const EdgeInsets.all(
-                Sizes.size8,
+                Sizes.size10,
               ),
               // gridDelegate : GridView 를 구성하는데 도움을 주는 역할
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -65,14 +99,21 @@ class DiscoverScreen extends StatelessWidget {
               itemBuilder: (context, index) => Column(
                 children: [
                   // 특정한 비율을 따르도록 설정할 수 있음
-                  AspectRatio(
-                    aspectRatio: 9 / 16,
-                    // FadeInImage.assetNetwork : 네트워크에서 이미지를 로딩하는 동안에는 assets 폴더 내의 이미지를 보여줌
-                    child: FadeInImage.assetNetwork(
-                      fit: BoxFit.cover, // 부모 요소에 어떻게 fit 시킬건지
-                      placeholder: "assets/images/kota.jpg",
-                      image:
-                          "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+                  Container(
+                    // 이미지가 Container 를 Overflow 하기 때문에 clipBehavior 설정 필요
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Sizes.size4),
+                    ),
+                    child: AspectRatio(
+                      aspectRatio: 9 / 16,
+                      // FadeInImage.assetNetwork : 네트워크에서 이미지를 로딩하는 동안에는 assets 폴더 내의 이미지를 보여줌
+                      child: FadeInImage.assetNetwork(
+                        fit: BoxFit.cover, // 부모 요소에 어떻게 fit 시킬건지
+                        placeholder: "assets/images/kota.jpg",
+                        image:
+                            "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+                      ),
                     ),
                   ),
                   Gaps.v10,
