@@ -51,13 +51,17 @@ class _ActivityScreenState extends State<ActivityScreen>
   // List.generate : 리스트 생성 -> 20개
   final List<String> _notifications = List.generate(20, (index) => "${index}h");
 
+  // 오버레이(overlay) : 패널 뒤에 있는 것 => 이 부분을 어둡게 만들기 위해 변수 선언
+  bool _showBarrier = false;
+
   // this 를 참조하려면, late 선언 후 initState() 에서 지정하거나, late 선언과 함께 사용해야 함-!
   late final AnimationController _animationController = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 200),
   );
 
-  // 숫자 값이 아닌 다른 애니메이션을 추가 (Color, Position, Turn 등)
+  /* ====== 숫자 값이 아닌 다른 애니메이션을 추가 (Color, Position, Turn 등) ====== */
+
   // Animation<double> 의 자료형과 begin/end 자료형이 동일해야 함
   late final Animation<double> _arrowAnimation = Tween(
     begin: 0.0,
@@ -70,18 +74,31 @@ class _ActivityScreenState extends State<ActivityScreen>
     end: Offset.zero,
   ).animate(_animationController);
 
+  // 오버레이(overlay) 어두워지는 효과 => AnimatedModalBarrier 위젯에 적용
+  late final Animation<Color?> _barrierAnimation = ColorTween(
+    begin: Colors.transparent,
+    end: Colors.black38,
+  ).animate(_animationController);
+
+  /* =========================================================================== */
+
   void _onDismissed(String notification) {
     // List 에서 제거
     _notifications.remove(notification);
     setState(() {});
   }
 
-  void _onTitleTap() {
+  void _toggleAnimations() async {
     if (_animationController.isCompleted) {
-      _animationController.reverse();
+      await _animationController.reverse();
     } else {
       _animationController.forward();
     }
+
+    setState(() {
+      // 사라질 때는 애니메이션 효과 후 사라져야 하기 때문에, setState 로 인해 바로 사라지는 것을 방지 => await
+      _showBarrier = !_showBarrier;
+    });
   }
 
   @override
@@ -89,7 +106,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _onTitleTap,
+          onTap: _toggleAnimations,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -216,6 +233,16 @@ class _ActivityScreenState extends State<ActivityScreen>
                 )
             ],
           ),
+          // 알림 목록의 터치를 막으므로, build 시 사라질 수 있도록 if 문 처리
+          if (_showBarrier)
+            // color 속성을 이용해 ModalBarrier 효과
+            // 모든 이벤트를 무시하도록 설정
+            AnimatedModalBarrier(
+              color: _barrierAnimation,
+              // onDismiss 시, 패널이 올라가고 ModalBarrier 가 꺼지는 등 효과를 주기 위해 true 로 설정
+              dismissible: true,
+              onDismiss: _toggleAnimations,
+            ),
           // position 속성을 이용해 Slide 효과
           SlideTransition(
             position: _panelAnimation,
@@ -223,8 +250,8 @@ class _ActivityScreenState extends State<ActivityScreen>
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(Sizes.size5),
-                  bottomRight: Radius.circular(Sizes.size5),
+                  bottomLeft: Radius.circular(Sizes.size7),
+                  bottomRight: Radius.circular(Sizes.size7),
                 ),
               ),
               child: Column(
