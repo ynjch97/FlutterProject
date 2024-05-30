@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 
 class InboxScreen extends StatelessWidget {
   const InboxScreen({super.key});
 
   void _onDmPressed() {}
+
+  void _onActivityTap(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ActivityScreen(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +27,7 @@ class InboxScreen extends StatelessWidget {
             onPressed: _onDmPressed,
             icon: const FaIcon(
               FontAwesomeIcons.paperPlane,
+              size: Sizes.size20,
             ),
           )
         ],
@@ -26,7 +36,7 @@ class InboxScreen extends StatelessWidget {
         children: [
           // ListView 내에서 ListTile 을 사용하여 관련 속성 사용 가능
           ListTile(
-            onTap: () {},
+            onTap: () => _onActivityTap(context),
             // selected: true,
             // selectedColor: Theme.of(context).primaryColor,
             title: const Text(

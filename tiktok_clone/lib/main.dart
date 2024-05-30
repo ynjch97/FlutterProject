@@ -29,6 +29,9 @@ class TikTokApp extends StatelessWidget {
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE9435A),
         ),
+        // 버튼 클릭 시 번쩍거리는 Splash 효과를 꺼줌
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
           // appBarTheme : AppBar 를 전역으로 꾸미기
           backgroundColor: Colors.white,
