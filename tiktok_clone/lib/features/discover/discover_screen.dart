@@ -46,7 +46,28 @@ class DiscoverScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            for (var tab in tabs)
+            // GridView builder 를 사용하는 것이 성능적으로 효과적
+            GridView.builder(
+              itemCount: 20,
+              padding: const EdgeInsets.all(
+                Sizes.size6,
+              ),
+              // gridDelegate : GridView 를 구성하는데 도움을 주는 역할
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: Sizes.size10,
+                mainAxisSpacing: Sizes.size10,
+                // 가로/세로 비율
+                childAspectRatio: 9 / 16,
+              ),
+              itemBuilder: (context, index) => Container(
+                color: Colors.indigo,
+                child: Center(
+                  child: Text("$index"),
+                ),
+              ),
+            ),
+            for (var tab in tabs.skip(1)) // 첫 번째 항목은 제외
               Center(
                 child: Text(
                   tab,
