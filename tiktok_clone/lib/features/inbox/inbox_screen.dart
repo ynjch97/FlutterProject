@@ -2,13 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/activity_screen.dart';
+import 'package:tiktok_clone/features/inbox/chats_screen.dart';
 
-class InboxScreen extends StatelessWidget {
+class InboxScreen extends StatefulWidget {
   const InboxScreen({super.key});
 
-  void _onDmPressed() {}
+  @override
+  State<InboxScreen> createState() => _InboxScreenState();
+}
 
-  void _onActivityTap(BuildContext context) {
+// BuildContext context 를 많이 사용할 바엔 StatefulWidget 이 좋지만,
+// StatelessWidget 를 사용하는 것을 권장
+class _InboxScreenState extends State<InboxScreen> {
+  // DM 전송 버튼
+  void _onDmPressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ChatsScreen(),
+      ),
+    );
+  }
+
+  // Activity 클릭
+  void _onActivityTap() {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const ActivityScreen(),
@@ -36,7 +52,7 @@ class InboxScreen extends StatelessWidget {
         children: [
           // ListView 내에서 ListTile 을 사용하여 관련 속성 사용 가능
           ListTile(
-            onTap: () => _onActivityTap(context),
+            onTap: _onActivityTap,
             // selected: true,
             // selectedColor: Theme.of(context).primaryColor,
             title: const Text(

@@ -108,6 +108,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         title: GestureDetector(
           onTap: _toggleAnimations,
           child: Row(
+            mainAxisSize: MainAxisSize.min, // 뒤로가기 버튼이 있어도 가운데 정렬
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text("All activity"),
