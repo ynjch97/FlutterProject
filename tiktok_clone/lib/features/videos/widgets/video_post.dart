@@ -1,5 +1,6 @@
 // ignore_for_file: slash_for_doc_comments
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -24,6 +25,8 @@ class VideoPost extends StatefulWidget {
   State<VideoPost> createState() => _VideoPostState();
 }
 
+/**Chrome 등의 브라우저에서는 소리가 있는 영상을 즉시 재생하면 오류를 반환하도록 되어있음 */
+
 /**With ~Mixin : 해당 클래스를 복사해오겠다는 의미 
  * vsync : 불필요한 리소스 사용을 방지 (위젯이 안보일 때는 애니메이션이 작동하지 않음)
  * SingleTickerProviderStateMixin : 매 프레임마다 callback 을 호출
@@ -39,7 +42,9 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
+
   bool _isPaused = false;
+  bool _isMuted = false;
 
   @override
   void initState() {
@@ -79,10 +84,18 @@ class _VideoPostState extends State<VideoPost>
 
     // 영상이 반복되도록 설정 (7.8 Video UI)
     await _videoPlayerController.setLooping(true);
-    setState(() {});
 
     // 영상이 끝났는지 확인하기 위한 Listener
     _videoPlayerController.addListener(_onVideoChange);
+
+    // k~ : Framework 가 가지고 있는 constant 변수들을 확인할 수 있음
+    if (kIsWeb) {
+      // 웹 여부
+      await _videoPlayerController.setVolume(0);
+      _isMuted = true;
+    }
+
+    setState(() {});
   }
 
   void _onVideoChange() {
@@ -139,6 +152,17 @@ class _VideoPostState extends State<VideoPost>
       builder: (context) => const VideoComments(),
     );
     _onTogglePause();
+  }
+
+  void _onToggleMute() async {
+    if (_videoPlayerController.value.volume == 0) {
+      await _videoPlayerController.setVolume(1);
+    } else {
+      await _videoPlayerController.setVolume(0);
+    }
+    setState(() {
+      _isMuted = !_isMuted;
+    });
   }
 
   @override
@@ -213,6 +237,19 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 )
               ],
+            ),
+          ),
+          Positioned(
+            top: 40,
+            right: 25,
+            child: GestureDetector(
+              onTap: _onToggleMute,
+              child: VideoButton(
+                icon: _isMuted
+                    ? FontAwesomeIcons.volumeXmark
+                    : FontAwesomeIcons.volumeHigh,
+                text: "",
+              ),
             ),
           ),
           Positioned(
