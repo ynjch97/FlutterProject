@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
 void main() async {
@@ -61,13 +60,15 @@ class TikTokApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const LayoutBuilderCodeLab(),
+      home: const MainNavigationScreen(),
     );
   }
 }
 
 /**LayoutBuilder 
  * - 화면 크기가 아닌 box 의 최대 크기를 알기 위해 사용함
+ * - 전체 화면 사이즈보다 Widget 이 어느 정도 크기인지 중요
+ * - 테스트를 위해 home 의 속성값으로 넣고 화면 확인하였음 
  */
 class LayoutBuilderCodeLab extends StatelessWidget {
   const LayoutBuilderCodeLab({super.key});
