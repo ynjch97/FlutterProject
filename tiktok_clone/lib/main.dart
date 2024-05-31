@@ -1,10 +1,22 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
+import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 
-void main() {
+void main() async {
+  /**앱 시작 전에 바꾸고 싶은 state 가 있다면
+   * engine 자체와 engine-widget 연결을 확실히 초기화해야 함
+   * WidgetsFlutterBinding : This is the glue that binds the framework to the Flutter engine.
+   */
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // SystemChrome : main() 에서 기본값으로 설정해도 되고, 페이지마다 다르게 설정해도 됨
+  await SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp],
+  );
+
   runApp(const TikTokApp());
 }
 
@@ -21,6 +33,8 @@ class TikTokApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // 상단 debug 리본 제거
+      debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
       theme: ThemeData(
         primaryColor: const Color(0xFFE9435A),
@@ -46,7 +60,7 @@ class TikTokApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MainNavigationScreen(),
+      home: const SignUpScreen(),
     );
   }
 }
