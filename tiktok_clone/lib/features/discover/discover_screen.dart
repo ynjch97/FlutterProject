@@ -46,12 +46,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /**Media Query
-     * - 화면 사이즈가 변경될 때마다 스스로 다시 build
-     * - 화면의 사이즈, orientation(가로, 세로) 등을 알 수 있음
-     * - MediaQuery.of(context).platformBrightness // 다크모드 여부
-     * - padding : system UI(Status Bar 같은)에 의해 보이지 않는 부분 확인 가능
-     */
     final width = MediaQuery.of(context).size.width;
 
     // TabController 가 존재해야 함

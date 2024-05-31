@@ -61,7 +61,46 @@ class TikTokApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MainNavigationScreen(),
+      home: const LayoutBuilderCodeLab(),
+    );
+  }
+}
+
+/**LayoutBuilder 
+ * - 화면 크기가 아닌 box 의 최대 크기를 알기 위해 사용함
+ */
+class LayoutBuilderCodeLab extends StatelessWidget {
+  const LayoutBuilderCodeLab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    /**Media Query
+     * - 화면 사이즈가 변경될 때마다 스스로 다시 build
+     * - 화면의 사이즈, orientation(가로, 세로) 등 기기에 대한 정보를 알 수 있음
+     * - MediaQuery.of(context).platformBrightness // 다크모드 여부
+     * - padding : system UI(Status Bar 같은)에 의해 보이지 않는 부분 확인 가능
+     */
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: LayoutBuilder(
+        // constraints: box 가 커질 수 있는 최대치
+        builder: (context, constraints) {
+          return Container(
+            width: constraints.maxWidth, // size.width
+            height: constraints.maxHeight, // size.height
+            color: Colors.teal,
+            child: Center(
+              child: Text(
+                "${size.width}",
+                style: const TextStyle(
+                  fontSize: Sizes.size40,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
