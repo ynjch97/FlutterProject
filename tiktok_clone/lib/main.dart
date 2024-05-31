@@ -65,7 +65,7 @@ class TikTokApp extends StatelessWidget {
   }
 }
 
-/**LayoutBuilder 
+/**LayoutBuilder (반응형)
  * - 화면 크기가 아닌 box 의 최대 크기를 알기 위해 사용함
  * - 전체 화면 사이즈보다 Widget 이 어느 정도 크기인지 중요
  * - 테스트를 위해 home 의 속성값으로 넣고 화면 확인하였음 
@@ -75,7 +75,7 @@ class LayoutBuilderCodeLab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /**Media Query
+    /**Media Query (반응형)
      * - 화면 사이즈가 변경될 때마다 스스로 다시 build
      * - 화면의 사이즈, orientation(가로, 세로) 등 기기에 대한 정보를 알 수 있음
      * - MediaQuery.of(context).platformBrightness // 다크모드 여부

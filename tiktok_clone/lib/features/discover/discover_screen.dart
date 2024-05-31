@@ -57,13 +57,21 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         appBar: AppBar(
           elevation: 1,
           // title 위치에 검색창 배치
-          title: CupertinoSearchTextField(
-            controller: _textEditingController,
-            onChanged: _onSearchChanged,
-            onSubmitted: _onSearchSubmitted,
+          /**ConstrainedBox (반응형) 
+           * - BoxConstraints 를 이용해 box 의 크기를 제한함
+           * - Container 같은 decorated box 는 BoxConstraints 를 받으므로 감쌀 필요는 없음
+          */
+          title: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: Breakpoints.sm),
+            child: CupertinoSearchTextField(
+              controller: _textEditingController,
+              onChanged: _onSearchChanged,
+              onSubmitted: _onSearchSubmitted,
+            ),
           ),
           bottom: TabBar(
             splashFactory: NoSplash.splashFactory,
+            tabAlignment: TabAlignment.center,
             padding: const EdgeInsets.symmetric(
               horizontal: Sizes.size10,
             ),
