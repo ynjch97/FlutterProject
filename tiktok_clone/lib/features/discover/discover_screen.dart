@@ -1,6 +1,9 @@
+// ignore_for_file: slash_for_doc_comments
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
@@ -43,6 +46,14 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /**Media Query
+     * - 화면 사이즈가 변경될 때마다 스스로 다시 build
+     * - 화면의 사이즈, orientation(가로, 세로) 등을 알 수 있음
+     * - MediaQuery.of(context).platformBrightness // 다크모드 여부
+     * - padding : system UI(Status Bar 같은)에 의해 보이지 않는 부분 확인 가능
+     */
+    final width = MediaQuery.of(context).size.width;
+
     // TabController 가 존재해야 함
     return DefaultTabController(
       length: tabs.length,
@@ -89,8 +100,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                 Sizes.size10,
               ),
               // gridDelegate : GridView 를 구성하는데 도움을 주는 역할
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: width > Breakpoints.md ? 5 : 2,
                 crossAxisSpacing: Sizes.size10,
                 mainAxisSpacing: Sizes.size10,
                 // 가로/세로 비율
