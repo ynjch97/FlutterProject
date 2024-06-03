@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/settings/settings_screen.dart';
-import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -13,14 +9,6 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  void _onGearPressed() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const SettingsScreen(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -28,8 +16,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       slivers: [
         SliverAppBar(
           // SliverAppBar 가 숨겨지거나 보여지는 방식
-          snap: true, // 살짝만 올라가도 appbar 전체가 바로 보여짐
-          floating: true, // 스크롤을 내렸다가 올라가면 다시 보여짐
+          // snap: true, // 살짝만 올라가도 appbar 전체가 바로 보여짐
+          // floating: true, // 스크롤을 내렸다가 올라가면 다시 보여짐
           stretch: true,
           pinned: true, // FlexibleSpaceBar 를 볼 수 있게 유지
           backgroundColor: Theme.of(context).primaryColor,
@@ -46,7 +34,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ),
         SliverFixedExtentList(
           delegate: SliverChildBuilderDelegate(
-            childCount: 50, // 50개 제한
+            childCount: 20, // 20개 제한
             (context, index) => Container(
               color: Colors.amber[100 * (index % 9)],
               child: Align(
@@ -56,6 +44,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ),
           ),
           itemExtent: 100, // item 의 height
+        ),
+        SliverGrid(
+          delegate: SliverChildBuilderDelegate(
+            childCount: 50, // 50개 제한
+            (context, index) => Container(
+              color: Colors.blue[100 * (index % 9)],
+              child: Align(
+                alignment: Alignment.center,
+                child: Text("Item $index"),
+              ),
+            ),
+          ),
+          // 허용된 만큼의 무한한 grid 를 생성
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 100,
+            mainAxisSpacing: Sizes.size20,
+            crossAxisSpacing: Sizes.size20,
+            childAspectRatio: 1,
+          ),
         ),
       ],
     );
