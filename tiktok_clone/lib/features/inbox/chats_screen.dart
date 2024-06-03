@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
+import 'chat_detail_screen.dart';
+
 class ChatsScreen extends StatefulWidget {
   const ChatsScreen({super.key});
 
@@ -14,16 +16,81 @@ class _ChatsScreenState extends State<ChatsScreen> {
 
   final List<int> _items = [];
 
+  final Duration _duration = const Duration(milliseconds: 300);
+
+  // 아이템 추가
   void _addItem() {
     if (_key.currentState != null) {
       _key.currentState!.insertItem(
         _items.length,
-        duration: const Duration(
-          milliseconds: 500,
-        ),
+        duration: _duration,
       );
       _items.add(_items.length);
     }
+  }
+
+  // 아이템 삭제
+  void _deleteItem(int index) {
+    if (_key.currentState != null) {
+      _key.currentState!.removeItem(
+        index,
+        // 아이템이 사라질 때 보여질 Widget 설정
+        (context, animation) => SizeTransition(
+          sizeFactor: animation,
+          child: Container(
+            color: Colors.red,
+            child: _makeTile(index),
+          ),
+        ),
+        duration: _duration,
+      );
+      _items.removeAt(index);
+    }
+  }
+
+  void _onChatTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ChatDetailScreen(),
+      ),
+    );
+  }
+
+  Widget _makeTile(int index) {
+    return ListTile(
+      onLongPress: () => _deleteItem(index),
+      onTap: _onChatTap,
+      leading: const CircleAvatar(
+        radius: 30,
+        foregroundImage: NetworkImage(
+          "https://avatars.githubusercontent.com/u/69029517",
+        ),
+        child: Text(
+          "YNJCH",
+          style: TextStyle(fontSize: Sizes.size10),
+        ),
+      ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            "YNJCH ($index)",
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Text(
+            "2:54 PM",
+            style: TextStyle(
+              color: Colors.grey.shade500,
+              fontSize: Sizes.size12,
+            ),
+          ),
+        ],
+      ),
+      subtitle: const Text("Don't forget to make video 🎞️"),
+    );
   }
 
   @override
@@ -51,38 +118,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
             opacity: animation,
             child: SizeTransition(
               sizeFactor: animation,
-              child: ListTile(
-                leading: const CircleAvatar(
-                  radius: 30,
-                  foregroundImage: NetworkImage(
-                    "https://avatars.githubusercontent.com/u/69029517",
-                  ),
-                  child: Text(
-                    "YNJCH",
-                    style: TextStyle(fontSize: Sizes.size10),
-                  ),
-                ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      "YNJCH ($index)",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      "2:54 PM",
-                      style: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontSize: Sizes.size12,
-                      ),
-                    ),
-                  ],
-                ),
-                subtitle: const Text("Don't forget to make video 🎞️"),
-              ),
+              child: _makeTile(index),
             ),
           );
         },
