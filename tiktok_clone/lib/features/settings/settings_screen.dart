@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -50,7 +51,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             subtitle: const Text("About this app....."),
           ),
-          const AboutListTile(), // showAboutDialog 를 자동으로 생성
+          const AboutListTile(
+            applicationVersion: "1.0",
+            applicationLegalese: "Don't copy me.",
+          ), // showAboutDialog 를 자동으로 생성
           // 날짜 선택 기능 추가
           ListTile(
             onTap: () async {
@@ -92,14 +96,65 @@ class _SettingsScreenState extends State<SettingsScreen> {
             checkColor: Colors.black,
             value: _notifications,
             onChanged: _onNotificationsChanged,
-            title: const Text("Enable notifications"),
+            title: const Text("Marketing emails"),
+            subtitle: const Text("We won't spam you."),
           ),
           // CupertinoSwitch(iOS), Switch(Android) 환경에 맞는 아이콘으로 표시함
           SwitchListTile.adaptive(
             value: _notifications,
             onChanged: _onNotificationsChanged,
-            title: const Text("Enable notifications title"),
-            subtitle: const Text("Enable notifications subtitle"),
+            title: const Text("Enable notifications"),
+            subtitle: const Text("They will be cute."),
+          ),
+          ListTile(
+            title: const Text("Log out (iOS)"),
+            textColor: Colors.red,
+            onTap: () {
+              showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: const Text("Are you sure?"),
+                  content: const Text("Plx dont go"),
+                  actions: [
+                    CupertinoDialogAction(
+                      // pop-up 을 제거하려면 Navigator pop
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("No"),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                      isDestructiveAction: true,
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Log out (Android)"),
+            textColor: Colors.red,
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  icon: const FaIcon(FontAwesomeIcons.skull),
+                  title: const Text("Are you sure?"),
+                  content: const Text("Plx dont go"),
+                  actions: [
+                    // 원하는 아무 Widget 렌더링 가능
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const FaIcon(FontAwesomeIcons.car),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
