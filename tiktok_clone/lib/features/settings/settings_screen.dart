@@ -14,29 +14,31 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Settings'),
-        ),
-        body: ListWheelScrollView(
-          diameterRatio: 2.0,
-          offAxisFraction: 1.5,
-          itemExtent: 200,
-          children: [
-            for (var x in [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-              FractionallySizedBox(
-                widthFactor: 1,
-                child: Container(
-                  color: Colors.teal,
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'Pick me',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              )
-          ],
-        ));
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            /**app 정보 표시를 위한 팝업
+             * View licenses : 현재 앱에서 사용 중인 모든 오픈소스 소프트웨어 관련 내용 포함
+             */
+            onTap: () => showAboutDialog(
+              context: context,
+              applicationVersion: "1.0",
+              applicationLegalese: "All rights reseverd. Please dont copy me.",
+            ),
+            title: const Text(
+              "About",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: const Text("About this app....."),
+          ),
+          const AboutListTile(), // showAboutDialog 를 자동으로 생성
+        ],
+      ),
+    );
   }
 }
