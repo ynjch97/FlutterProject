@@ -97,8 +97,9 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
-    // 마운트되었는지 확인
-    // if (!mounted) return;
+    // 모든 StatefulWidget 위젯에는 mounted 프로퍼티 존재
+    // mounted : Widget 이 마운트되었는지 확인 (마운트 되지 않았다면 사용자들에게 더 이상 보이지 않는 것)
+    if (!mounted) return;
 
     // Widget 이 다 보이는데, 동영상이 재생 중이 아니면 재생하기
     if (info.visibleFraction == 1 &&
