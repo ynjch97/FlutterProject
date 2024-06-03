@@ -90,6 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               print(booking);
             },
             title: const Text("What is your birthday?"),
+            subtitle: const Text("I need to know!"),
           ),
           CheckboxListTile(
             activeColor: Theme.of(context).primaryColor,
@@ -108,6 +109,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: const Text("Log out (iOS)"),
+            subtitle: const Text("showCupertinoDialog 는 팝업 바깥을 눌러 팝업을 끌 수 없음"),
             textColor: Colors.red,
             onTap: () {
               showCupertinoDialog(
@@ -148,6 +150,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       icon: const FaIcon(FontAwesomeIcons.car),
                     ),
                     TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Log out (iOS / Bottom)"),
+            subtitle:
+                const Text("showCupertinoModalPopup 은 팝업 바깥을 눌러 팝업을 끌 수 있음"),
+            textColor: Colors.red,
+            onTap: () {
+              showCupertinoModalPopup(
+                context: context,
+                builder: (context) => CupertinoActionSheet(
+                  title: const Text("Are you sure?"),
+                  actions: [
+                    CupertinoActionSheetAction(
+                      isDefaultAction: true,
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("Not Log Out"),
+                    ),
+                    CupertinoActionSheetAction(
+                      isDestructiveAction: true,
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Text("Yes"),
                     ),
