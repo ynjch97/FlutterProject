@@ -98,8 +98,8 @@ class _VideoPostState extends State<VideoPost>
 
   void _onVisibilityChanged(VisibilityInfo info) {
     // 마운트되었는지 확인
-    if (!mounted) return;
-    
+    // if (!mounted) return;
+
     // Widget 이 다 보이는데, 동영상이 재생 중이 아니면 재생하기
     if (info.visibleFraction == 1 &&
         !_isPaused &&
