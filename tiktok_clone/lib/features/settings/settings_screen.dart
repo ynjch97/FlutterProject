@@ -13,9 +13,18 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   /**CloseButton() : 이 코드만으로도 닫기 버튼을 만들 수 있음 
    * CupertinoActivityIndicator(), CircularProgressIndicator() : 로딩 중임을 표시
-   * CircularProgressIndicator.adaptive() : 안드로이드, iOS 환경에 맞는 아이콘으로 표시함
+   * CircularProgressIndicator.adaptive() : Android, iOS 환경에 맞는 아이콘으로 표시함
    * ListWheelScrollView : 휠 모양의 ScrollView 사용 가능
   */
+  bool _notifications = false;
+
+  void _onNotificationsChanged(bool? newValue) {
+    if (newValue == null) return;
+    setState(() {
+      _notifications = newValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,13 +61,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 firstDate: DateTime(1980),
                 lastDate: DateTime(2030),
               );
-              print(date);
               if (!context.mounted) return;
               final time = await showTimePicker(
                 context: context,
                 initialTime: TimeOfDay.now(),
               );
-              print(time);
               if (!context.mounted) return;
               final booking = await showDateRangePicker(
                 context: context,
@@ -74,10 +81,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   );
                 },
               );
+              print(date);
+              print(time);
               print(booking);
             },
             title: const Text("What is your birthday?"),
-          )
+          ),
+          CheckboxListTile(
+            activeColor: Theme.of(context).primaryColor,
+            checkColor: Colors.black,
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+            title: const Text("Enable notifications"),
+          ),
+          // CupertinoSwitch(iOS), Switch(Android) 환경에 맞는 아이콘으로 표시함
+          SwitchListTile.adaptive(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+            title: const Text("Enable notifications title"),
+            subtitle: const Text("Enable notifications subtitle"),
+          ),
         ],
       ),
     );
