@@ -2,8 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/login_screen.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
+import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
 void main() async {
@@ -61,7 +64,13 @@ class TikTokApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const SignUpScreen(),
+      // 17.3 route 설정 (home 은 사용하지 않게 됨)
+      initialRoute: Routes.signUpScreen,
+      routes: {
+        Routes.signUpScreen: (context) => const SignUpScreen(),
+        Routes.usernameScreen: (context) => const UsernameScreen(),
+        Routes.loginScreen: (context) => const LoginScreen(),
+      },
     );
   }
 }

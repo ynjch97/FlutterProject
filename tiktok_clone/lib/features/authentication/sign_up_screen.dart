@@ -1,13 +1,10 @@
 // ignore_for_file: slash_for_doc_comments
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/authentication/login_screen.dart';
-import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -15,17 +12,16 @@ class SignUpScreen extends StatelessWidget {
 
   // 메서드, 프로퍼티 앞에 _ 를 붙여 private type 으로 선언
   void _onLoginTap(BuildContext context) async {
-    // 17.1 push 는 Future 이므로 await 할 수 있음
-    final result = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
-
-    print(result); // pop()으로 돌아올 때 LoginScreen 에서 지정한 문구(result)가 출력됨
+    /**17.1 push 는 Future 이므로 await 할 수 있음
+     * - pop()으로 돌아올 때 LoginScreen 에서 지정한 문구를 가져옴 => result
+     * 17.3 route push 대신 pushNamed 방법 이용
+     */
+    final result = await Navigator.of(context).pushNamed(Routes.loginScreen);
+    print(result);
   }
 
   void _onEmailTap(BuildContext context) {
+    /*
     Navigator.of(context).push(
       // 17.2 MaterialPageRoute 대신, PageRouteBuilder 로 애니메이션 효과를 추가
       PageRouteBuilder(
@@ -50,6 +46,10 @@ class SignUpScreen extends StatelessWidget {
             const UsernameScreen(),
       ),
     );
+    */
+
+    // 17.3 route push 대신 pushNamed 방법 이용
+    Navigator.of(context).pushNamed(Routes.usernameScreen);
   }
 
   @override
