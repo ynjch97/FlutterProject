@@ -18,7 +18,7 @@ class SignUpScreen extends StatelessWidget {
      * - pop()으로 돌아올 때 LoginScreen 에서 지정한 문구를 가져옴 => result
      * 17.3 route push 대신 pushNamed 방법 이용
      */
-    final result = await Navigator.of(context).pushNamed(Routes.loginScreen);
+    final result = await Navigator.pushNamed(context, Routes.loginScreen);
     print(result);
   }
 
@@ -51,7 +51,7 @@ class SignUpScreen extends StatelessWidget {
     */
 
     // 17.3 route push 대신 pushNamed 방법 이용
-    Navigator.of(context).pushNamed(Routes.usernameScreen);
+    Navigator.pushNamed(context, Routes.usernameScreen);
   }
 
   @override
