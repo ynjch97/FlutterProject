@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/login_screen.dart';
+import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -18,8 +21,10 @@ class SignUpScreen extends StatelessWidget {
      * - pop()으로 돌아올 때 LoginScreen 에서 지정한 문구를 가져옴 => result
      * 17.3 route push 대신 pushNamed 방법 이용
      */
-    final result = await Navigator.pushNamed(context, Routes.loginScreen);
-    print(result);
+    // final result = await Navigator.pushNamed(context, Routes.loginScreen);
+
+    // 18.0 pushNamed 대신 context.push() 사용 (go_router 패키지가 context 를 확장시킴)
+    context.push(LoginScreen.routeName);
   }
 
   void _onEmailTap(BuildContext context) {
@@ -50,8 +55,7 @@ class SignUpScreen extends StatelessWidget {
     );
     */
 
-    // 17.3 route push 대신 pushNamed 방법 이용
-    Navigator.pushNamed(context, Routes.usernameScreen);
+    context.push(UsernameScreen.routeName);
   }
 
   @override

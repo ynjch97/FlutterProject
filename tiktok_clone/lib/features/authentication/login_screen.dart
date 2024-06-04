@@ -1,8 +1,8 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
    * Navigator.pop : Navigator 가장 상단의 화면 즉, 유저가 현재 보고있는 화면을 stack 에서 제거
    */
   void _onSignUpTap(BuildContext context) {
-    Navigator.of(context).pop("hello!");
+    context.pop(); // 18.0 context.pop() 사용 (go_router 패키지가 context 를 확장시킴)
   }
 
   void _onEmailLoginTap(BuildContext context) {
