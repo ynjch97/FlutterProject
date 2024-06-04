@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/login_screen.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
-import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
 void main() async {
   /**앱 시작 전에 바꾸고 싶은 state 가 있다면
@@ -65,11 +65,12 @@ class TikTokApp extends StatelessWidget {
         ),
       ),
       // 17.3 route 설정 (home 은 사용하지 않게 됨)
-      initialRoute: Routes.signUpScreen,
+      initialRoute: SignUpScreen.routeName,
       routes: {
-        Routes.signUpScreen: (context) => const SignUpScreen(),
-        Routes.usernameScreen: (context) => const UsernameScreen(),
-        Routes.loginScreen: (context) => const LoginScreen(),
+        SignUpScreen.routeName: (context) => const SignUpScreen(),
+        UsernameScreen.routeName: (context) => const UsernameScreen(),
+        LoginScreen.routeName: (context) => const LoginScreen(),
+        EmailScreen.routeName: (context) => const EmailScreen(),
       },
     );
   }

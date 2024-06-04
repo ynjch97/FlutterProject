@@ -7,4 +7,5 @@ class Routes {
   static const signUpScreen = "/";
   static const usernameScreen = "/username";
   static const loginScreen = "/login";
+  static const emailScreen = "/email";
 }

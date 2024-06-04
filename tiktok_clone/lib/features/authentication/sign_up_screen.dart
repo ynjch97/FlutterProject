@@ -8,6 +8,8 @@ import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 
 class SignUpScreen extends StatelessWidget {
+  static const routeName = Routes.signUpScreen;
+
   const SignUpScreen({super.key});
 
   // 메서드, 프로퍼티 앞에 _ 를 붙여 private type 으로 선언

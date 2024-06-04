@@ -2,12 +2,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/password_screen.dart';
 
 import 'widgets/form_button.dart';
 
+// 17.4 pushNamed Args 변수를 받기 위한 클래스 생성
+class EmailScreenArgs {
+  final String username;
+
+  EmailScreenArgs({required this.username});
+}
+
 class EmailScreen extends StatefulWidget {
+  static String routeName = Routes.emailScreen;
+
   const EmailScreen({super.key});
 
   @override
@@ -68,6 +78,9 @@ class _EmailScreenState extends State<EmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // 17.4 pushNamed Args 변수를 사용하기 위해 ModalRoute as EmailScreenArgs 사용
+    final args = ModalRoute.of(context)!.settings.arguments as EmailScreenArgs;
+
     return GestureDetector(
       onTap: _onScaffoldTap,
       child: Scaffold(
@@ -80,9 +93,9 @@ class _EmailScreenState extends State<EmailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gaps.v20,
-              const Text(
-                "What is your Email?",
-                style: TextStyle(
+              Text(
+                "What is your Email, ${args.username}?",
+                style: const TextStyle(
                   fontSize: Sizes.size24,
                   fontWeight: FontWeight.w700,
                 ),
