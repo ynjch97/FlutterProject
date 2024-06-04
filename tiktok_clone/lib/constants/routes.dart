@@ -8,4 +8,5 @@ class Routes {
   static const usernameScreen = "/username";
   static const loginScreen = "/login";
   static const emailScreen = "/email";
+  static const userProfileScreen = "/users/:username";
 }

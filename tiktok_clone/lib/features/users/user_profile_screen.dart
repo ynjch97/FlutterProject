@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/settings/settings_screen.dart';
 import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  final String username;
+  static String routeName = Routes.userProfileScreen;
 
-  const UserProfileScreen({super.key, required this.username});
+  final String username;
+  final String tab;
+
+  const UserProfileScreen({
+    super.key,
+    required this.username,
+    required this.tab,
+  });
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -28,6 +36,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return SafeArea(
       child: DefaultTabController(
         length: 2,
+        initialIndex: widget.tab == "likes" ? 1 : 0,
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
@@ -92,6 +101,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 "Following",
                                 style: TextStyle(
                                   color: Colors.grey.shade500,
+                                  fontSize: Sizes.size14,
                                 ),
                               )
                             ],
@@ -118,6 +128,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 "Followers",
                                 style: TextStyle(
                                   color: Colors.grey.shade500,
+                                  fontSize: Sizes.size14,
                                 ),
                               ),
                             ],
@@ -143,6 +154,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 "Likes",
                                 style: TextStyle(
                                   color: Colors.grey.shade500,
+                                  fontSize: Sizes.size14,
                                 ),
                               ),
                             ],
@@ -168,6 +180,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
+                            fontSize: Sizes.size14,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -181,6 +194,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       child: Text(
                         "All highlights and where to watch live matches on FIFA+ I wonder how it would loook",
                         textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: Sizes.size14,
+                        ),
                       ),
                     ),
                     Gaps.v12,
@@ -196,6 +212,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           "https://nomadcoders.co",
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
+                            fontSize: Sizes.size14,
                           ),
                         ),
                       ],

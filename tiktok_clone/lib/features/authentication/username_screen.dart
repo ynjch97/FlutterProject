@@ -1,6 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -50,10 +51,17 @@ class _UsernameScreenState extends State<UsernameScreen> {
     if (_username.isEmpty) return;
 
     // 17.4 pushNamed Args 변수 실어보내기 => 클래스 생성하여 변수로 사용
-    Navigator.pushNamed(
+    /*Navigator.pushNamed(
       context,
       EmailScreen.routeName,
       arguments: EmailScreenArgs(username: _username),
+    );
+    */
+
+    // 18.3 Extra Parameter -> URL 에 담지 않고 데이터를 전달할 수 있음
+    context.push(
+      EmailScreen.routeName,
+      extra: EmailScreenArgs(username: _username),
     );
   }
 
