@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
    * Navigator.pop : Navigator 가장 상단의 화면 즉, 유저가 현재 보고있는 화면을 stack 에서 제거
    */
   void _onSignUpTap(BuildContext context) {
-    Navigator.of(context).pop();
+    Navigator.of(context).pop("hello!");
   }
 
   void _onEmailLoginTap(BuildContext context) {

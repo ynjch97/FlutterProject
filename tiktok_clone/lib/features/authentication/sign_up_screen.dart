@@ -14,12 +14,15 @@ class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   // 메서드, 프로퍼티 앞에 _ 를 붙여 private type 으로 선언
-  void _onLoginTap(BuildContext context) {
-    Navigator.of(context).push(
+  void _onLoginTap(BuildContext context) async {
+    // 17.1 push 는 Future 이므로 await 할 수 있음
+    final result = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const LoginScreen(),
       ),
     );
+
+    print(result); // pop()으로 돌아올 때 LoginScreen 에서 지정한 문구(result)가 출력됨
   }
 
   void _onEmailTap(BuildContext context) {
