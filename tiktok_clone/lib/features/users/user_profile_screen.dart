@@ -6,7 +6,9 @@ import 'package:tiktok_clone/features/settings/settings_screen.dart';
 import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  final String username;
+
+  const UserProfileScreen({super.key, required this.username});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -30,7 +32,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                title: const Text('YNJCH'),
+                title: Text(widget.username),
                 actions: [
                   IconButton(
                     onPressed: _onGearPressed,
@@ -44,20 +46,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 50,
-                      foregroundImage: NetworkImage(
+                      foregroundImage: const NetworkImage(
                         "https://avatars.githubusercontent.com/u/69029517",
                       ),
-                      child: Text("YNJCH"),
+                      child: Text(widget.username),
                     ),
                     Gaps.v20,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "@ynjch",
-                          style: TextStyle(
+                        Text(
+                          "@${widget.username}",
+                          style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: Sizes.size18,
                           ),

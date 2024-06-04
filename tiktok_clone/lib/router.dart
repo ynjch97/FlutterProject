@@ -5,6 +5,7 @@ import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/login_screen.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
+import 'package:tiktok_clone/features/users/user_profile_screen.dart';
 
 /**18.0 NAVIGATOR 2 
  * - NAVIGATOR 1 버전(Navigator.pushNamed)은 브라우저에서 사용 시, 앞으로 가기 버튼을 지원하지 않으므로 비추천..
@@ -30,5 +31,12 @@ final router = GoRouter(
       path: EmailScreen.routeName,
       builder: (context, state) => const EmailScreen(),
     ),
+    GoRoute(
+      path: "/users/:username", // parameter 를 받아옴
+      builder: (context, state) {
+        final username = state.params['username'];
+        return UserProfileScreen(username: username!);
+      },
+    )
   ],
 );
