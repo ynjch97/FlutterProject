@@ -1,5 +1,6 @@
 // ignore_for_file: slash_for_doc_comments
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/login_screen.dart';
@@ -16,25 +17,51 @@ import 'package:tiktok_clone/features/users/user_profile_screen.dart';
 final router = GoRouter(
   routes: [
     GoRoute(
-      path: SignUpScreen.routeName,
+      name: SignUpScreen.routeName,
+      path: SignUpScreen.routeURL,
       builder: (context, state) => const SignUpScreen(),
+      // 18.4 route 중첩시키기 (URL 경로도 / 제거하여 세팅)
+      routes: [
+        GoRoute(
+          name: UsernameScreen.routeName,
+          path: UsernameScreen.routeURL,
+          /**18.4 CustomTransitionPage
+           * - 애니메이션 효과 추가
+           */
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              child: const UsernameScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  ),
+                );
+              },
+            );
+          },
+          routes: [
+            GoRoute(
+              name: EmailScreen.routeName,
+              path: EmailScreen.routeURL,
+              builder: (context, state) {
+                final args = state.extra as EmailScreenArgs;
+                return EmailScreen(
+                  username: args.username,
+                );
+              },
+            ),
+          ],
+        ),
+      ],
     ),
     GoRoute(
-      path: LoginScreen.routeName,
+      name: LoginScreen.routeName,
+      path: LoginScreen.routeURL,
       builder: (context, state) => const LoginScreen(),
-    ),
-    GoRoute(
-      path: UsernameScreen.routeName,
-      builder: (context, state) => const UsernameScreen(),
-    ),
-    GoRoute(
-      path: EmailScreen.routeName,
-      builder: (context, state) {
-        final args = state.extra as EmailScreenArgs;
-        return EmailScreen(
-          username: args.username,
-        );
-      },
     ),
     GoRoute(
       path: "/users/:username", // parameter 를 받아옴

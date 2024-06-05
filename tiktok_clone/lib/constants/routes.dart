@@ -5,8 +5,16 @@
  */
 class Routes {
   static const signUpScreen = "/";
-  static const usernameScreen = "/username";
+  static const usernameScreen = "username";
+  static const emailScreen = "email";
   static const loginScreen = "/login";
-  static const emailScreen = "/email";
   static const userProfileScreen = "/users/:username";
+}
+
+class RoutesName {
+  static const signUpScreen = "signUpScreen";
+  static const usernameScreen = "usernameScreen";
+  static const emailScreen = "emailScreen";
+  static const loginScreen = "loginScreen";
+  static const userProfileScreen = "userProfileScreen";
 }

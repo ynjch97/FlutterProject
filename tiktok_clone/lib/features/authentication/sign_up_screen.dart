@@ -9,10 +9,10 @@ import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/login_screen.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
-import 'package:tiktok_clone/features/users/user_profile_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
-  static const routeName = Routes.signUpScreen;
+  static const routeURL = Routes.signUpScreen;
+  static const routeName = RoutesName.signUpScreen;
 
   const SignUpScreen({super.key});
 
@@ -22,10 +22,10 @@ class SignUpScreen extends StatelessWidget {
      * - pop()으로 돌아올 때 LoginScreen 에서 지정한 문구를 가져옴 => result
      * 17.3 route push 대신 pushNamed 방법 이용
      */
-    // final result = await Navigator.pushNamed(context, LoginScreen.routeName);
+    // final result = await Navigator.pushNamed(context, LoginScreen.routeURL);
 
     // 18.0 pushNamed 대신 context.push() 사용 (go_router 패키지가 context 를 확장시킴)
-    context.push(LoginScreen.routeName);
+    context.push(LoginScreen.routeURL);
   }
 
   void _onEmailTap(BuildContext context) {
@@ -56,7 +56,8 @@ class SignUpScreen extends StatelessWidget {
     );
     */
 
-    context.push(UsernameScreen.routeName);
+    // 18.4 GoRoute > name 으로 pushNamed
+    context.pushNamed(UsernameScreen.routeName);
   }
 
   @override
