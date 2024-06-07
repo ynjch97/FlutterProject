@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/video_preview_screen.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
   const VideoRecordingScreen({super.key});
@@ -37,10 +38,37 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   late final AnimationController _progressAnimationController =
       AnimationController(
     vsync: this,
-    duration: const Duration(seconds: 10), // 10초 녹화
+    duration: const Duration(seconds: 3), // 10초 녹화
     lowerBound: 0.0, // 최솟값
     upperBound: 1.0, // 최댓값
   );
+
+  @override
+  void initState() {
+    super.initState();
+    initPermissions();
+
+    // lowerBound~upperBound 까지 매 순간마다 setState
+    _progressAnimationController.addListener(() {
+      setState(() {});
+    });
+
+    // Status 에 대한 리스너 추가 => 10초 경과 후 녹화 종료
+    _progressAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _stopRecording();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _buttonAnimationController.dispose();
+    _progressAnimationController.dispose();
+    _cameraController.dispose();
+
+    super.dispose();
+  }
 
   Future<void> initCamera() async {
     /**사용 가능한 카메라 리스트 확인
@@ -64,9 +92,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       // CameraDescription
       cameras[_isSelfieMode ? _cameraMode[0] : _cameraMode[1]],
       ResolutionPreset.ultraHigh,
+      // 공식 문서상, 애뮬레이터에서 enableAudio true 상태로 녹화하면, camera > MediaRecorder 가 제대로 작동하지 않는다고 함
+      // enableAudio: false,
     );
 
     await _cameraController.initialize();
+
+    // for iOS only (영상과 소리 싱크 문제 해결)
+    await _cameraController.prepareForVideoRecording();
 
     // 핸드폰의 카메라가 가진 flashMode 값으로 초기화
     _flashMode = _cameraController.value.flashMode;
@@ -96,39 +129,37 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     setState(() {});
   }
 
-  @override
-  void initState() {
-    super.initState();
-    initPermissions();
-
-    // lowerBound~upperBound 까지 매 순간마다 setState
-    _progressAnimationController.addListener(() {
-      setState(() {});
-    });
-
-    // Status 에 대한 리스너 추가 => 10초 경과 후 녹화 종료
-    _progressAnimationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _stopRecording();
-      }
-    });
-  }
-
   Future<void> _setFlashMode(FlashMode newFlashMode) async {
     await _cameraController.setFlashMode(newFlashMode);
     _flashMode = newFlashMode;
     setState(() {});
   }
 
-  void _startRecording(TapDownDetails _) {
+  Future<void> _startRecording(TapDownDetails _) async {
+    // 녹화 중이 아니라면 녹화 시작
+    if (_cameraController.value.isRecordingVideo) return;
+    await _cameraController.startVideoRecording();
+
     _buttonAnimationController.forward();
     _progressAnimationController.forward();
   }
 
-  void _stopRecording() {
+  Future<void> _stopRecording() async {
     // 리스너에서도 쓰기 위해 TapDownDetails 파라미터를 제거함
     _buttonAnimationController.reverse();
     _progressAnimationController.reset();
+
+    // 녹화 중이라면 녹화 종료 후 XFile 을 리턴
+    if (!_cameraController.value.isRecordingVideo) return;
+    final video = await _cameraController.stopVideoRecording();
+    // await _cameraController.takePicture(); 로도 비디오 파일 얻을 수 있음
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoPreviewScreen(video: video),
+      ),
+    );
   }
 
   @override
