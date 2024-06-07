@@ -13,7 +13,9 @@ class VideoRecordingScreen extends StatefulWidget {
   State<VideoRecordingScreen> createState() => _VideoRecordingScreenState();
 }
 
-class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
+// AnimationController 가 2개 이상이면 SingleTickerProviderStateMixin 사용 X
+class _VideoRecordingScreenState extends State<VideoRecordingScreen>
+    with TickerProviderStateMixin {
   bool _hasPermission = false;
 
   bool _isSelfieMode = false;
@@ -22,6 +24,23 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   late FlashMode _flashMode;
 
   late CameraController _cameraController;
+
+  late final AnimationController _buttonAnimationController =
+      AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 200),
+  );
+
+  late final Animation<double> _buttonAnimation =
+      Tween(begin: 1.0, end: 1.3).animate(_buttonAnimationController);
+
+  late final AnimationController _progressAnimationController =
+      AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 10), // 10초 녹화
+    lowerBound: 0.0, // 최솟값
+    upperBound: 1.0, // 최댓값
+  );
 
   Future<void> initCamera() async {
     /**사용 가능한 카메라 리스트 확인
@@ -81,12 +100,35 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   void initState() {
     super.initState();
     initPermissions();
+
+    // lowerBound~upperBound 까지 매 순간마다 setState
+    _progressAnimationController.addListener(() {
+      setState(() {});
+    });
+
+    // Status 에 대한 리스너 추가 => 10초 경과 후 녹화 종료
+    _progressAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _stopRecording();
+      }
+    });
   }
 
   Future<void> _setFlashMode(FlashMode newFlashMode) async {
     await _cameraController.setFlashMode(newFlashMode);
     _flashMode = newFlashMode;
     setState(() {});
+  }
+
+  void _startRecording(TapDownDetails _) {
+    _buttonAnimationController.forward();
+    _progressAnimationController.forward();
+  }
+
+  void _stopRecording() {
+    // 리스너에서도 쓰기 위해 TapDownDetails 파라미터를 제거함
+    _buttonAnimationController.reverse();
+    _progressAnimationController.reset();
   }
 
   @override
@@ -125,53 +167,104 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                             icon: const Icon(Icons.cameraswitch),
                           ),
                           Gaps.v10,
-                          IconButton(
-                            color: _flashMode == FlashMode.off
-                                ? Colors.amber.shade200
-                                : Colors.white,
-                            onPressed: () => _setFlashMode(FlashMode.off),
-                            icon: const Icon(
-                              Icons.flash_off_rounded,
-                            ),
+                          FlashButton(
+                            onPressedFunction: () =>
+                                _setFlashMode(FlashMode.off),
+                            isSelected: _flashMode == FlashMode.off,
+                            icon: Icons.flash_off_rounded,
                           ),
                           Gaps.v10,
-                          IconButton(
-                            color: _flashMode == FlashMode.always
-                                ? Colors.amber.shade200
-                                : Colors.white,
-                            onPressed: () => _setFlashMode(FlashMode.always),
-                            icon: const Icon(
-                              Icons.flash_on_rounded,
-                            ),
+                          FlashButton(
+                            onPressedFunction: () =>
+                                _setFlashMode(FlashMode.always),
+                            isSelected: _flashMode == FlashMode.always,
+                            icon: Icons.flash_on_rounded,
                           ),
                           Gaps.v10,
-                          IconButton(
-                            color: _flashMode == FlashMode.auto
-                                ? Colors.amber.shade200
-                                : Colors.white,
-                            onPressed: () => _setFlashMode(FlashMode.auto),
-                            icon: const Icon(
-                              Icons.flash_auto_rounded,
-                            ),
+                          FlashButton(
+                            onPressedFunction: () =>
+                                _setFlashMode(FlashMode.auto),
+                            isSelected: _flashMode == FlashMode.auto,
+                            icon: Icons.flash_auto_rounded,
                           ),
                           Gaps.v10,
-                          IconButton(
+                          FlashButton(
                             // 손전등 모드
-                            color: _flashMode == FlashMode.torch
-                                ? Colors.amber.shade200
-                                : Colors.white,
-                            onPressed: () => _setFlashMode(FlashMode.torch),
-                            icon: const Icon(
-                              Icons.flashlight_on_rounded,
-                            ),
+                            onPressedFunction: () =>
+                                _setFlashMode(FlashMode.torch),
+                            isSelected: _flashMode == FlashMode.torch,
+                            icon: Icons.flashlight_on_rounded,
                           ),
                         ],
+                      ),
+                    ),
+                    Positioned(
+                      bottom: Sizes.size40,
+                      child: GestureDetector(
+                        onTapDown: _startRecording,
+                        onTapUp: (details) => _stopRecording(),
+                        child: ScaleTransition(
+                          scale: _buttonAnimation,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              const SizedBox(
+                                width: Sizes.size94,
+                                height: Sizes.size94,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: Sizes.size6,
+                                  value: 1.0,
+                                ),
+                              ),
+                              SizedBox(
+                                width: Sizes.size94,
+                                height: Sizes.size94,
+                                child: CircularProgressIndicator(
+                                  color: Colors.red.shade400.withOpacity(0.8),
+                                  strokeWidth: Sizes.size6,
+                                  value: _progressAnimationController.value,
+                                ),
+                              ),
+                              Container(
+                                width: Sizes.size80,
+                                height: Sizes.size80,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red.shade400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
         ),
       ),
+    );
+  }
+}
+
+class FlashButton extends StatelessWidget {
+  final void Function() onPressedFunction;
+  final bool isSelected;
+  final IconData icon;
+
+  const FlashButton({
+    super.key,
+    required this.onPressedFunction,
+    required this.isSelected,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      color: isSelected ? Colors.amber.shade200 : Colors.white,
+      onPressed: onPressedFunction,
+      icon: Icon(icon),
     );
   }
 }
