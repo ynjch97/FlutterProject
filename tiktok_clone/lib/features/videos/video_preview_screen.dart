@@ -46,6 +46,7 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
     if (_isSavedVideo) return;
 
     // 파일 저장 전, 권한 요청이 수락되어야 함
+    // Todo: .temp 파일로 저장되고 있어서 saveVideo 에 type 불일치 오류 발생
     await GallerySaver.saveVideo(
       widget.video.path,
       albumName: "TikTok Clone", // 저장할 앨범 위치
