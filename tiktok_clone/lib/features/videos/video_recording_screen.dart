@@ -1,7 +1,5 @@
 // ignore_for_file: slash_for_doc_comments
 
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

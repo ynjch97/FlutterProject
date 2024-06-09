@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
-import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/password_screen.dart';
 
@@ -16,9 +15,6 @@ class EmailScreenArgs {
 }
 
 class EmailScreen extends StatefulWidget {
-  static String routeURL = Routes.emailScreen;
-  static String routeName = RoutesName.emailScreen;
-
   final String username;
 
   const EmailScreen({super.key, required this.username});
@@ -72,7 +68,8 @@ class _EmailScreenState extends State<EmailScreen> {
 
   void _onSubmit() {
     if (_email.isEmpty || _isEmailValid() != null) return;
-    Navigator.of(context).push(
+    Navigator.push(
+      context,
       MaterialPageRoute(
         builder: (context) => const PasswordScreen(),
       ),

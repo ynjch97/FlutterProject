@@ -1,18 +1,13 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
-import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/email_screen.dart';
 
 import 'widgets/form_button.dart';
 
 class UsernameScreen extends StatefulWidget {
-  static String routeURL = Routes.usernameScreen;
-  static String routeName = RoutesName.usernameScreen;
-
   const UsernameScreen({super.key});
 
   @override
@@ -60,9 +55,17 @@ class _UsernameScreenState extends State<UsernameScreen> {
     */
 
     // 18.3 Extra Parameter -> URL 에 담지 않고 데이터를 전달할 수 있음
-    context.pushNamed(
+    /*context.pushNamed(
       EmailScreen.routeName,
       extra: EmailScreenArgs(username: _username),
+    );*/
+
+    // 20.2 URL이 바뀌지 않는 방법으로 변경
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EmailScreen(username: _username),
+      ),
     );
   }
 

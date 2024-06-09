@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/onboarding/tutorial_screen.dart';
 
@@ -47,6 +48,9 @@ const interests = [
 ];
 
 class InterestsScreen extends StatefulWidget {
+  static const routeURL = Routes.interestsScreen;
+  static const routeName = RoutesName.interestsScreen;
+
   const InterestsScreen({super.key});
 
   @override
@@ -86,7 +90,8 @@ class _InterestsScreenState extends State<InterestsScreen> {
 
   // StatefulWidget > BuildContext context 받지 않아도 됨
   void _onNextTap() {
-    Navigator.of(context).push(
+    Navigator.push(
+      context,
       MaterialPageRoute(
         builder: (context) => const TutorialScreen(),
       ),

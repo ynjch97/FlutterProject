@@ -25,7 +25,9 @@ class SignUpScreen extends StatelessWidget {
     // final result = await Navigator.pushNamed(context, LoginScreen.routeURL);
 
     // 18.0 pushNamed 대신 context.push() 사용 (go_router 패키지가 context 를 확장시킴)
-    context.push(LoginScreen.routeURL);
+    // context.push(LoginScreen.routeURL);
+
+    context.pushNamed(LoginScreen.routeName);
   }
 
   void _onEmailTap(BuildContext context) {
@@ -57,7 +59,15 @@ class SignUpScreen extends StatelessWidget {
     */
 
     // 18.4 GoRoute > name 으로 pushNamed
-    context.pushNamed(UsernameScreen.routeName);
+    // context.pushNamed(UsernameScreen.routeName);
+
+    // 20.2 URL이 바뀌지 않는 방법으로 변경
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const UsernameScreen(),
+      ),
+    );
   }
 
   @override
@@ -67,9 +77,9 @@ class SignUpScreen extends StatelessWidget {
         // print(orientation); => Orientation.portrait or Orientation.landscape
         return Scaffold(
           /**SafeArea
-         * - 그 안에 있는 모든 것은 특정 공간에 있을 것이라고 보장
-         * - 상태바 아래로 내려올 수 있게 해줌
-         */
+           * - 그 안에 있는 모든 것은 특정 공간에 있을 것이라고 보장
+           * - 상태바 아래로 내려올 수 있게 해줌
+           */
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: Sizes.size40),

@@ -3,6 +3,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
@@ -41,12 +42,17 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
    * StatefulWidget > State 안에 있다면 어디서든 context 사용 가능
    */
   void _onNextTap() {
-    Navigator.of(context).pushAndRemoveUntil(
+    /*Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => const InterestsScreen(),
       ),
       (route) => false,
-    );
+    );*/
+
+    /**20.2 GoRoute 방식으로 변경 (context 확장)
+     * - push 는 되지만 뒤로가기가 되지 않음
+     */
+    context.pushReplacementNamed(InterestsScreen.routeName);
   }
 
   void _setTextFieldDate(DateTime date) {

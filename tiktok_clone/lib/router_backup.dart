@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/login_screen.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
@@ -23,8 +24,8 @@ final routerBackup = GoRouter(
       // 18.4 route 중첩시키기 (URL 경로도 / 제거하여 세팅)
       routes: [
         GoRoute(
-          name: UsernameScreen.routeName,
-          path: UsernameScreen.routeURL,
+          name: RoutesName.usernameScreen,
+          path: Routes.usernameScreen,
           /**18.4 CustomTransitionPage
            * - 애니메이션 효과 추가
            */
@@ -45,8 +46,8 @@ final routerBackup = GoRouter(
           },
           routes: [
             GoRoute(
-              name: EmailScreen.routeName,
-              path: EmailScreen.routeURL,
+              name: RoutesName.emailScreen,
+              path: Routes.emailScreen,
               builder: (context, state) {
                 final args = state.extra as EmailScreenArgs;
                 return EmailScreen(
