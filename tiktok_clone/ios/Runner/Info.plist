@@ -31,15 +31,17 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
+		<!-- 가로 모드를 지원하고 싶지 않다면 LandscapeLeft, LandscapeRight 삭제 -->
+		<!-- <string>UIInterfaceOrientationLandscapeLeft</string> -->
+		<!-- <string>UIInterfaceOrientationLandscapeRight</string> -->
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
+		<!-- 가로 모드를 지원하고 싶지 않다면 LandscapeLeft, LandscapeRight 삭제 -->
+		<!-- <string>UIInterfaceOrientationLandscapeLeft</string> -->
+		<!-- <string>UIInterfaceOrientationLandscapeRight</string> -->
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>

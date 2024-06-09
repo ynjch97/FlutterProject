@@ -1,6 +1,9 @@
 // ignore_for_file: slash_for_doc_comments
 
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -24,6 +27,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   late FlashMode _flashMode;
 
+  late final bool _noCamera = kDebugMode; // 디버그 모드인지 확인
+  // && Platform.isIOS; // iOS 에서 구동 중인지 확인
+
   late CameraController _cameraController;
 
   late final AnimationController _buttonAnimationController =
@@ -46,7 +52,11 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   @override
   void initState() {
     super.initState();
-    initPermissions();
+    if (!_noCamera) {
+      initPermissions();
+    } else {
+      _hasPermission = true;
+    }
 
     // lowerBound~upperBound 까지 매 순간마다 setState
     _progressAnimationController.addListener(() {
@@ -186,49 +196,51 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
               : Stack(
                   alignment: Alignment.center,
                   children: [
-                    CameraPreview(_cameraController),
-                    Positioned(
-                      top: Sizes.size20,
-                      right: Sizes.size20,
-                      child: Column(
-                        children: [
-                          IconButton(
-                            onPressed: _toggleSelfieMode,
-                            color: Colors.white,
-                            icon: const Icon(Icons.cameraswitch),
-                          ),
-                          Gaps.v10,
-                          FlashButton(
-                            onPressedFunction: () =>
-                                _setFlashMode(FlashMode.off),
-                            isSelected: _flashMode == FlashMode.off,
-                            icon: Icons.flash_off_rounded,
-                          ),
-                          Gaps.v10,
-                          FlashButton(
-                            onPressedFunction: () =>
-                                _setFlashMode(FlashMode.always),
-                            isSelected: _flashMode == FlashMode.always,
-                            icon: Icons.flash_on_rounded,
-                          ),
-                          Gaps.v10,
-                          FlashButton(
-                            onPressedFunction: () =>
-                                _setFlashMode(FlashMode.auto),
-                            isSelected: _flashMode == FlashMode.auto,
-                            icon: Icons.flash_auto_rounded,
-                          ),
-                          Gaps.v10,
-                          FlashButton(
-                            // 손전등 모드
-                            onPressedFunction: () =>
-                                _setFlashMode(FlashMode.torch),
-                            isSelected: _flashMode == FlashMode.torch,
-                            icon: Icons.flashlight_on_rounded,
-                          ),
-                        ],
+                    if (!_noCamera && _cameraController.value.isInitialized)
+                      CameraPreview(_cameraController),
+                    if (!_noCamera)
+                      Positioned(
+                        top: Sizes.size20,
+                        right: Sizes.size20,
+                        child: Column(
+                          children: [
+                            IconButton(
+                              onPressed: _toggleSelfieMode,
+                              color: Colors.white,
+                              icon: const Icon(Icons.cameraswitch),
+                            ),
+                            Gaps.v10,
+                            FlashButton(
+                              onPressedFunction: () =>
+                                  _setFlashMode(FlashMode.off),
+                              isSelected: _flashMode == FlashMode.off,
+                              icon: Icons.flash_off_rounded,
+                            ),
+                            Gaps.v10,
+                            FlashButton(
+                              onPressedFunction: () =>
+                                  _setFlashMode(FlashMode.always),
+                              isSelected: _flashMode == FlashMode.always,
+                              icon: Icons.flash_on_rounded,
+                            ),
+                            Gaps.v10,
+                            FlashButton(
+                              onPressedFunction: () =>
+                                  _setFlashMode(FlashMode.auto),
+                              isSelected: _flashMode == FlashMode.auto,
+                              icon: Icons.flash_auto_rounded,
+                            ),
+                            Gaps.v10,
+                            FlashButton(
+                              // 손전등 모드
+                              onPressedFunction: () =>
+                                  _setFlashMode(FlashMode.torch),
+                              isSelected: _flashMode == FlashMode.torch,
+                              icon: Icons.flashlight_on_rounded,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                     Positioned(
                       bottom: Sizes.size40,
                       child: GestureDetector(
