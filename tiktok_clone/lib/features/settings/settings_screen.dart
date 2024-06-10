@@ -36,22 +36,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          // VideoConfigData 음소거 정보 (ChangeNotifier)
-          /* 20.7 InheritedWidget + StatefulWidget
-          SwitchListTile.adaptive(
-            value: VideoConfigData.of(context).autoMute,
-            onChanged: (value) {
-              VideoConfigData.of(context).toggleMuted();
-            },
-            title: const Text("Auto Mute"),
-            subtitle: const Text("Videos will be muted by default."),
-          ),
-          */
+          // VideoConfigData 음소거 정보 (ValueNotifier)
+          /* 20.9 ChangeNotifier
           AnimatedBuilder(
             animation: videoConfig,
             builder: (context, child) => SwitchListTile.adaptive(
               value: videoConfig.autoMute,
               onChanged: (value) => videoConfig.toggleAutoMute(),
+              title: const Text("Auto Mute"),
+              subtitle: const Text("Videos will be muted by default."),
+            ),
+          ),
+          */
+          ValueListenableBuilder(
+            valueListenable: videoConfig,
+            builder: (context, value, child) => SwitchListTile.adaptive(
+              value: videoConfig.value,
+              onChanged: (value) => videoConfig.value = !videoConfig.value,
               title: const Text("Auto Mute"),
               subtitle: const Text("Videos will be muted by default."),
             ),

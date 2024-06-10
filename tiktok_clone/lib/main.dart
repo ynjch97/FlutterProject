@@ -32,8 +32,6 @@ class TikTokApp extends StatelessWidget {
    */
   @override
   Widget build(BuildContext context) {
-    // 20.6 video_post.dart 에서 autoMute 값을 알도록 함 (이 StatefulWidget이 모든 위젯의 최상위에 위치)
-    /* return VideoConfig( */
     return MaterialApp.router(
       routerConfig: router,
       // 상단 debug 리본 제거
