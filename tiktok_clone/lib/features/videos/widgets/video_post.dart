@@ -47,6 +47,8 @@ class _VideoPostState extends State<VideoPost>
   bool _isPaused = false;
   bool _isMuted = false;
 
+  bool _autoMute = videoConfig.autoMute;
+
   @override
   void initState() {
     super.initState();
@@ -69,6 +71,12 @@ class _VideoPostState extends State<VideoPost>
     // _animationController.addListener(() {
     //   setState(() {});
     // });
+
+    videoConfig.addListener(() {
+      setState(() {
+        _autoMute = videoConfig.autoMute;
+      });
+    });
   }
 
   @override
@@ -262,11 +270,22 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
                 Gaps.v24,
-                // 음소거 버튼 > VideoConfigData 값에 따른 설정
+                // 음소거 버튼 > VideoConfigData 값에 따른 설정 (ChangeNotifier)
+                /* 20.7 InheritedWidget + StatefulWidget
                 GestureDetector(
                   onTap: VideoConfigData.of(context).toggleMuted,
                   child: VideoButton(
                     icon: VideoConfigData.of(context).autoMute
+                        ? FontAwesomeIcons.volumeXmark
+                        : FontAwesomeIcons.volumeHigh,
+                    text: "",
+                  ),
+                ),
+                */
+                GestureDetector(
+                  onTap: videoConfig.toggleAutoMute,
+                  child: VideoButton(
+                    icon: _autoMute
                         ? FontAwesomeIcons.volumeXmark
                         : FontAwesomeIcons.volumeHigh,
                     text: "",
