@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/main_navigation_screen.dart';
@@ -46,12 +47,18 @@ class _TutorialScreenState extends State<TutorialScreen> {
   }
 
   void _onEnterAppTap() {
-    Navigator.of(context).pushAndRemoveUntil(
+    /*Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => const MainNavigationScreen(),
       ),
       (route) => false,
-    );
+    );*/
+
+    /**20.2 GoRoute 방식으로 변경 (context 확장)
+     * - push : 데이터를 Stack 에 쌓기 때문에 pop 가능 (뒤로가기 가능)
+     * - go : 기존 Stack 에 추가가 아닌 교체 -> 경로를 바꿈
+     */
+    context.go("/home");
   }
 
   @override

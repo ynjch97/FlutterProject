@@ -50,7 +50,8 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
     );*/
 
     /**20.2 GoRoute 방식으로 변경 (context 확장)
-     * - push 는 되지만 뒤로가기가 되지 않음
+     * - pushReplacementNamed : push 는 되지만 뒤로가기가 되지 않음
+     *   - goNamed 와 동일하게 작동함
      */
     context.pushReplacementNamed(InterestsScreen.routeName);
   }

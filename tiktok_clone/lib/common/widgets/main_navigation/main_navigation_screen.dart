@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/discover/discover_screen.dart';
 import 'package:tiktok_clone/features/inbox/inbox_screen.dart';
@@ -11,17 +13,27 @@ import '../../../features/users/user_profile_screen.dart';
 import 'widgets/nav_tab.dart';
 
 class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({super.key});
+  static const routeURL = Routes.mainScreen;
+  static const routeName = RoutesName.mainScreen;
+
+  final String tab;
+
+  const MainNavigationScreen({
+    super.key,
+    required this.tab,
+  });
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 4;
+  late int _selectedIndex = Tabs.mainTabs.indexOf(widget.tab);
   bool _isTapDown = false;
 
   void _onNavTap(int index) {
+    context.go("/${Tabs.mainTabs[index]}"); // URL 도 이동
+
     setState(() {
       _selectedIndex = index;
     });
