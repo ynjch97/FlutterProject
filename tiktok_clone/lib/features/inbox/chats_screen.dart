@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
 import 'chat_detail_screen.dart';
 
 class ChatsScreen extends StatefulWidget {
+  static const routeURL = Routes.chatsScreen;
+  static const routeName = RoutesName.chatsScreen;
+
   const ChatsScreen({super.key});
 
   @override
@@ -48,18 +53,29 @@ class _ChatsScreenState extends State<ChatsScreen> {
     }
   }
 
-  void _onChatTap() {
-    Navigator.of(context).push(
+  void _onChatTap(int index) {
+    /*Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const ChatDetailScreen(),
       ),
+    );*/
+
+    /**20.4 ":chatId" 에 params 전달하는 방법
+     * - context.push("ID"); => 바로 URL 작성
+     * - context.pushNamed() => routeName 으로 push 하면서 params 전달
+     */
+    context.pushNamed(
+      ChatDetailScreen.routeName,
+      params: {
+        "chatId": "ID_$index",
+      },
     );
   }
 
   Widget _makeTile(int index) {
     return ListTile(
       onLongPress: () => _deleteItem(index),
-      onTap: _onChatTap,
+      onTap: () => _onChatTap(index),
       leading: const CircleAvatar(
         radius: 30,
         foregroundImage: NetworkImage(

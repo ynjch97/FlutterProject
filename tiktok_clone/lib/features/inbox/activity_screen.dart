@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
 final List<Map<String, dynamic>> _tabs = [
@@ -33,6 +34,9 @@ final List<Map<String, dynamic>> _tabs = [
 ];
 
 class ActivityScreen extends StatefulWidget {
+  static const routeURL = Routes.activityScreen;
+  static const routeName = RoutesName.activityScreen;
+
   const ActivityScreen({super.key});
 
   @override
