@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -47,8 +48,6 @@ class _VideoPostState extends State<VideoPost>
   bool _isPaused = false;
   bool _isMuted = false;
 
-  bool _autoMute = videoConfig.value;
-
   @override
   void initState() {
     super.initState();
@@ -71,12 +70,6 @@ class _VideoPostState extends State<VideoPost>
     // _animationController.addListener(() {
     //   setState(() {});
     // });
-
-    videoConfig.addListener(() {
-      setState(() {
-        _autoMute = videoConfig.value;
-      });
-    });
   }
 
   @override
@@ -270,22 +263,11 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
                 Gaps.v24,
-                // 음소거 버튼 > VideoConfigData 값에 따른 설정 (ValueNotifier)
-                /* 20.9 ChangeNotifier
+                // 음소거 버튼 > VideoConfigData 값에 따른 설정 (ChangeNotifier + Provider)
                 GestureDetector(
-                  onTap: videoConfig.toggleAutoMute,
+                  onTap: () => context.read<VideoConfig>().toggleIsMuted(),
                   child: VideoButton(
-                    icon: _autoMute
-                        ? FontAwesomeIcons.volumeXmark
-                        : FontAwesomeIcons.volumeHigh,
-                    text: "",
-                  ),
-                ),
-                */
-                GestureDetector(
-                  onTap: () => videoConfig.value = !videoConfig.value,
-                  child: VideoButton(
-                    icon: _autoMute
+                    icon: context.watch<VideoConfig>().isMuted
                         ? FontAwesomeIcons.volumeXmark
                         : FontAwesomeIcons.volumeHigh,
                     text: "",

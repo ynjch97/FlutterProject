@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/router.dart';
 
@@ -32,32 +34,41 @@ class TikTokApp extends StatelessWidget {
    */
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: router,
-      // 상단 debug 리본 제거
-      debugShowCheckedModeBanner: false,
-      title: 'TikTok Clone',
-      theme: ThemeData(
-        primaryColor: const Color(0xFFE9435A),
-        scaffoldBackgroundColor: Colors.white,
-        // TextField 스타일 조정
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Color(0xFFE9435A),
-        ),
-        // 버튼 클릭 시 번쩍거리는 Splash 효과를 꺼줌
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        appBarTheme: const AppBarTheme(
-          // appBarTheme : AppBar 를 전역으로 꾸미기
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          surfaceTintColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          titleTextStyle: TextStyle(
-            fontSize: Sizes.size18,
-            fontWeight: FontWeight.w800,
-            color: Colors.black,
+    // 20.11 VideoConfig ChangeNotifier 를 앱 전체에 제공
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => VideoConfig(),
+        )
+      ],
+      // 18.0 NAVIGATOR 2 -> MaterialApp.router 사용
+      child: MaterialApp.router(
+        routerConfig: router,
+        // 상단 debug 리본 제거
+        debugShowCheckedModeBanner: false,
+        title: 'TikTok Clone',
+        theme: ThemeData(
+          primaryColor: const Color(0xFFE9435A),
+          scaffoldBackgroundColor: Colors.white,
+          // TextField 스타일 조정
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Color(0xFFE9435A),
+          ),
+          // 버튼 클릭 시 번쩍거리는 Splash 효과를 꺼줌
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          appBarTheme: const AppBarTheme(
+            // appBarTheme : AppBar 를 전역으로 꾸미기
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            surfaceTintColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            titleTextStyle: TextStyle(
+              fontSize: Sizes.size18,
+              fontWeight: FontWeight.w800,
+              color: Colors.black,
+            ),
           ),
         ),
       ),

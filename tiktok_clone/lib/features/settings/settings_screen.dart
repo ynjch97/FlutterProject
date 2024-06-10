@@ -3,8 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
-import 'package:tiktok_clone/common/widgets/video_configuration/video_config_backup.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -36,26 +36,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          // VideoConfigData 음소거 정보 (ValueNotifier)
-          /* 20.9 ChangeNotifier
-          AnimatedBuilder(
-            animation: videoConfig,
-            builder: (context, child) => SwitchListTile.adaptive(
-              value: videoConfig.autoMute,
-              onChanged: (value) => videoConfig.toggleAutoMute(),
-              title: const Text("Auto Mute"),
-              subtitle: const Text("Videos will be muted by default."),
-            ),
-          ),
-          */
-          ValueListenableBuilder(
-            valueListenable: videoConfig,
-            builder: (context, value, child) => SwitchListTile.adaptive(
-              value: videoConfig.value,
-              onChanged: (value) => videoConfig.value = !videoConfig.value,
-              title: const Text("Auto Mute"),
-              subtitle: const Text("Videos will be muted by default."),
-            ),
+          // VideoConfigData 음소거 정보 (ChangeNotifier + Provider)
+          SwitchListTile.adaptive(
+            value: context.watch<VideoConfig>().isMuted,
+            onChanged: (value) => context.read<VideoConfig>().toggleIsMuted(),
+            title: const Text("Auto Mute"),
+            subtitle: const Text("Videos will be muted by default."),
           ),
           ListTile(
             /**app 정보 표시를 위한 팝업
