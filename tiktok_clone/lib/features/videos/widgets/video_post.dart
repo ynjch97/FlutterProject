@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:video_player/video_player.dart';
@@ -158,6 +159,7 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause();
   }
 
+  // 음소거
   void _onToggleMute() async {
     if (_videoPlayerController.value.volume == 0) {
       await _videoPlayerController.setVolume(1);
@@ -245,15 +247,29 @@ class _VideoPostState extends State<VideoPost>
           ),
           Positioned(
             top: 40,
-            right: 25,
-            child: GestureDetector(
-              onTap: _onToggleMute,
-              child: VideoButton(
-                icon: _isMuted
-                    ? FontAwesomeIcons.volumeXmark
-                    : FontAwesomeIcons.volumeHigh,
-                text: "",
-              ),
+            left: 25,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // 음소거 버튼 > 토글 기능
+                GestureDetector(
+                  onTap: _onToggleMute,
+                  child: VideoButton(
+                    icon: _isMuted
+                        ? FontAwesomeIcons.volumeXmark
+                        : FontAwesomeIcons.volumeHigh,
+                    text: "",
+                  ),
+                ),
+                Gaps.v24,
+                // 음소거 버튼 > VideoConfig 값에 따른 설정
+                VideoButton(
+                  icon: VideoConfig.of(context).autoMute
+                      ? FontAwesomeIcons.volumeXmark
+                      : FontAwesomeIcons.volumeHigh,
+                  text: "",
+                ),
+              ],
             ),
           ),
           Positioned(

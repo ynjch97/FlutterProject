@@ -23,7 +23,7 @@ import 'package:tiktok_clone/features/videos/video_recording_screen.dart';
  * => 위와 같은 경우 URL이 변경되지 않도록 Navigator API 사용, 이외의 경우 GoRouter 사용
  */
 final router = GoRouter(
-  initialLocation: "/inbox", // 시작 화면 설정
+  initialLocation: "/home", // 시작 화면 설정
   routes: [
     // 회원가입
     GoRoute(
