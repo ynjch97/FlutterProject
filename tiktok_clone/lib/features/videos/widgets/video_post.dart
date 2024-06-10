@@ -262,12 +262,15 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
                 Gaps.v24,
-                // 음소거 버튼 > VideoConfig 값에 따른 설정
-                VideoButton(
-                  icon: VideoConfig.of(context).autoMute
-                      ? FontAwesomeIcons.volumeXmark
-                      : FontAwesomeIcons.volumeHigh,
-                  text: "",
+                // 음소거 버튼 > VideoConfigData 값에 따른 설정
+                GestureDetector(
+                  onTap: VideoConfigData.of(context).toggleMuted,
+                  child: VideoButton(
+                    icon: VideoConfigData.of(context).autoMute
+                        ? FontAwesomeIcons.volumeXmark
+                        : FontAwesomeIcons.volumeHigh,
+                    text: "",
+                  ),
                 ),
               ],
             ),
