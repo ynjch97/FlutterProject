@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -46,7 +46,7 @@ class _VideoPostState extends State<VideoPost>
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
   bool _isPaused = false;
-  bool _isMuted = false;
+  final bool _isMuted = false;
 
   @override
   void initState() {
@@ -70,6 +70,11 @@ class _VideoPostState extends State<VideoPost>
     // _animationController.addListener(() {
     //   setState(() {});
     // });
+
+    // 21.4 값 변경에 따른 리스너
+    context
+        .read<PlaybackConfigViewModel>()
+        .addListener(_onPlaybackConfigChanged);
   }
 
   @override
@@ -90,11 +95,11 @@ class _VideoPostState extends State<VideoPost>
     // 영상이 끝났는지 확인하기 위한 Listener
     _videoPlayerController.addListener(_onVideoChange);
 
-    // k~ : Framework 가 가지고 있는 constant 변수들을 확인할 수 있음
+    // 웹 여부 확인 (k~ : Framework 가 가지고 있는 constant 변수들을 확인할 수 있음)
     if (kIsWeb) {
-      // 웹 여부
       await _videoPlayerController.setVolume(0);
-      _isMuted = true;
+      if (!mounted) return;
+      context.read<PlaybackConfigViewModel>().setMuted(true);
     }
 
     setState(() {});
@@ -120,7 +125,9 @@ class _VideoPostState extends State<VideoPost>
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.play();
+      // 자동재생 사용 중일 때만 재생하기
+      final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
+      if (autoplay) _videoPlayerController.play();
     }
     // Offstage 위젯을 사용했기 때문에, 모든 화면들이 dispose 되지 않고 살아있음 => 다른 탭으로 이동 시 멈추게 함
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -160,16 +167,15 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause();
   }
 
-  // 음소거
-  void _onToggleMute() async {
-    if (_videoPlayerController.value.volume == 0) {
-      await _videoPlayerController.setVolume(1);
+  // 21.4 음소거 토글
+  void _onPlaybackConfigChanged() async {
+    if (!mounted) return;
+    final muted = context.read<PlaybackConfigViewModel>().muted;
+    if (muted) {
+      _videoPlayerController.setVolume(0);
     } else {
-      await _videoPlayerController.setVolume(0);
+      _videoPlayerController.setVolume(1);
     }
-    setState(() {
-      _isMuted = !_isMuted;
-    });
   }
 
   @override
@@ -252,22 +258,15 @@ class _VideoPostState extends State<VideoPost>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // 음소거 버튼 > 토글 기능
-                GestureDetector(
-                  onTap: _onToggleMute,
-                  child: VideoButton(
-                    icon: _isMuted
-                        ? FontAwesomeIcons.volumeXmark
-                        : FontAwesomeIcons.volumeHigh,
-                    text: "",
-                  ),
-                ),
-                Gaps.v24,
                 // 음소거 버튼 > SharedPreferences 값에 따른 설정 (MVVM + ChangeNotifier + Provider)
                 GestureDetector(
-                  onTap: () {},
-                  child: const VideoButton(
-                    icon: false
+                  onTap: () {
+                    context.read<PlaybackConfigViewModel>().setMuted(!context
+                        .read<PlaybackConfigViewModel>()
+                        .muted); // 파라미터 값은 굳이 watch 로 안줘도 됨
+                  },
+                  child: VideoButton(
+                    icon: context.watch<PlaybackConfigViewModel>().muted
                         ? FontAwesomeIcons.volumeXmark
                         : FontAwesomeIcons.volumeHigh,
                     text: "",
