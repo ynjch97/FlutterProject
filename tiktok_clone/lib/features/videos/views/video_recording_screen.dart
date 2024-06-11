@@ -32,7 +32,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   List<dynamic> _cameraMode = [];
 
   late FlashMode _flashMode;
-  late Future<double> _maxZoomLevel;
+  // late Future<double> _maxZoomLevel;
 
   // 디버그 모드인지 확인 && iOS 에서 구동 중인지 확인
   late final bool _noCamera = kDebugMode && Platform.isIOS;
@@ -135,7 +135,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _flashMode = _cameraController.value.flashMode;
 
     // Zoom 가능한 최대 레벨
-    _maxZoomLevel = _cameraController.getMaxZoomLevel();
+    // _maxZoomLevel = _cameraController.getMaxZoomLevel();
     // _cameraController.setZoomLevel(1.0);
 
     setState(() {});

@@ -46,7 +46,7 @@ class _VideoPostState extends State<VideoPost>
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
   bool _isPaused = false;
-  final bool _isMuted = false;
+  // final bool _isMuted = false;
 
   @override
   void initState() {
@@ -95,11 +95,19 @@ class _VideoPostState extends State<VideoPost>
     // 영상이 끝났는지 확인하기 위한 Listener
     _videoPlayerController.addListener(_onVideoChange);
 
-    // 웹 여부 확인 (k~ : Framework 가 가지고 있는 constant 변수들을 확인할 수 있음)
+    // muted 초기값 세팅
     if (kIsWeb) {
+      // 웹 여부 확인 (k~ : Framework 가 가지고 있는 constant 변수들을 확인할 수 있음)
       await _videoPlayerController.setVolume(0);
       if (!mounted) return;
       context.read<PlaybackConfigViewModel>().setMuted(true);
+    } else {
+      if (!mounted) return;
+      if (context.read<PlaybackConfigViewModel>().muted) {
+        _videoPlayerController.setVolume(0);
+      } else {
+        _videoPlayerController.setVolume(1);
+      }
     }
 
     setState(() {});
@@ -169,6 +177,7 @@ class _VideoPostState extends State<VideoPost>
 
   // 21.4 음소거 토글
   void _onPlaybackConfigChanged() async {
+    print('_onPlaybackConfigChanged');
     if (!mounted) return;
     final muted = context.read<PlaybackConfigViewModel>().muted;
     if (muted) {
