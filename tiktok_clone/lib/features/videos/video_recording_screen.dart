@@ -32,6 +32,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   List<dynamic> _cameraMode = [];
 
   late FlashMode _flashMode;
+  late Future<double> _maxZoomLevel;
 
   // 디버그 모드인지 확인 && iOS 에서 구동 중인지 확인
   late final bool _noCamera = kDebugMode && Platform.isIOS;
@@ -89,8 +90,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print(state);
-
     if (!_hasPermission) return;
     if (!_cameraController.value.isInitialized) return;
     if (_noCamera) return;
@@ -134,6 +133,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
     // 핸드폰의 카메라가 가진 flashMode 값으로 초기화
     _flashMode = _cameraController.value.flashMode;
+
+    // Zoom 가능한 최대 레벨
+    _maxZoomLevel = _cameraController.getMaxZoomLevel();
+    // _cameraController.setZoomLevel(1.0);
 
     setState(() {});
   }
@@ -298,6 +301,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                           // 변형 가능한 빈 공간을 제공
                           const Spacer(),
                           GestureDetector(
+                            // Todo: 누른 채 손가락을 위/아래로 움직여서 Zoom In/Out 하기 Code Challenge
+                            // onPanUpdate: (DragUpdateDetails details) => ,
                             onTapDown: _startRecording,
                             onTapUp: (details) => _stopRecording(),
                             child: ScaleTransition(
