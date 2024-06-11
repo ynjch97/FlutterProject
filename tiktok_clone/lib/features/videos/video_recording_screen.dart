@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/routes.dart';
@@ -175,10 +177,30 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     final video = await _cameraController.stopVideoRecording();
     // await _cameraController.takePicture(); 로도 비디오 파일 얻을 수 있음
 
+    if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => VideoPreviewScreen(video: video),
+        builder: (context) => VideoPreviewScreen(
+          video: video,
+          isPicked: false,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onPickVideoPressed() async {
+    final video = await ImagePicker().pickVideo(source: ImageSource.gallery);
+    if (video == null) return;
+
+    if (!mounted) return;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoPreviewScreen(
+          video: video,
+          isPicked: true, // 저장 버튼 숨기기
+        ),
       ),
     );
   }
@@ -260,43 +282,63 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                       ),
                     Positioned(
                       bottom: Sizes.size40,
-                      child: GestureDetector(
-                        onTapDown: _startRecording,
-                        onTapUp: (details) => _stopRecording(),
-                        child: ScaleTransition(
-                          scale: _buttonAnimation,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              const SizedBox(
-                                width: Sizes.size94,
-                                height: Sizes.size94,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: Sizes.size6,
-                                  value: 1.0,
-                                ),
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          // 변형 가능한 빈 공간을 제공
+                          const Spacer(),
+                          GestureDetector(
+                            onTapDown: _startRecording,
+                            onTapUp: (details) => _stopRecording(),
+                            child: ScaleTransition(
+                              scale: _buttonAnimation,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  const SizedBox(
+                                    width: Sizes.size94,
+                                    height: Sizes.size94,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: Sizes.size6,
+                                      value: 1.0,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: Sizes.size94,
+                                    height: Sizes.size94,
+                                    child: CircularProgressIndicator(
+                                      color:
+                                          Colors.red.shade400.withOpacity(0.8),
+                                      strokeWidth: Sizes.size6,
+                                      value: _progressAnimationController.value,
+                                    ),
+                                  ),
+                                  Container(
+                                    width: Sizes.size80,
+                                    height: Sizes.size80,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.red.shade400,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                width: Sizes.size94,
-                                height: Sizes.size94,
-                                child: CircularProgressIndicator(
-                                  color: Colors.red.shade400.withOpacity(0.8),
-                                  strokeWidth: Sizes.size6,
-                                  value: _progressAnimationController.value,
-                                ),
-                              ),
-                              Container(
-                                width: Sizes.size80,
-                                height: Sizes.size80,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red.shade400,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: IconButton(
+                                onPressed: _onPickVideoPressed,
+                                icon: const FaIcon(
+                                  FontAwesomeIcons.image,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

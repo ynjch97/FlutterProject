@@ -53,5 +53,8 @@
 	<string>your usage description here</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app required NSPhotoLibraryUsageDescription permission</string>
+	<!-- ImageSource.camera는 제대로 작동, ImageSource.gallery로 바꾸고 실행하면 튕기는 경우 -->
+	<key>FLTEnableImpeller</key>
+	<false />
 </dict>
 </plist>
