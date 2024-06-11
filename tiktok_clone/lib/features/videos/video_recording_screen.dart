@@ -25,7 +25,7 @@ class VideoRecordingScreen extends StatefulWidget {
 
 // AnimationController 가 2개 이상이면 SingleTickerProviderStateMixin 사용 X
 class _VideoRecordingScreenState extends State<VideoRecordingScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _hasPermission = false;
 
   bool _isSelfieMode = false;
@@ -63,6 +63,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     } else {
       _hasPermission = true;
     }
+    WidgetsBinding.instance.addObserver(this);
 
     // lowerBound~upperBound 까지 매 순간마다 setState
     _progressAnimationController.addListener(() {
@@ -86,13 +87,20 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     super.dispose();
   }
 
-  /*
-  20.5 먼저 수행함
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+
+    if (!_hasPermission) return;
+    if (!_cameraController.value.isInitialized) return;
     if (_noCamera) return;
+
+    if (state == AppLifecycleState.inactive) {
+      _cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      initCamera();
+    }
   }
-  */
 
   Future<void> initCamera() async {
     /**사용 가능한 카메라 리스트 확인
@@ -126,6 +134,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
     // 핸드폰의 카메라가 가진 flashMode 값으로 초기화
     _flashMode = _cameraController.value.flashMode;
+
+    setState(() {});
   }
 
   Future<void> initPermissions() async {
