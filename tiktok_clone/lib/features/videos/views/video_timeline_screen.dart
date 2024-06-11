@@ -1,7 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/features/videos/widgets/video_post.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/video_post.dart';
 
 class VideoTimelineScreen extends StatefulWidget {
   const VideoTimelineScreen({super.key});

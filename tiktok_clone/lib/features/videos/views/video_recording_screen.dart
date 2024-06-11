@@ -11,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/videos/video_preview_screen.dart';
+import 'package:tiktok_clone/features/videos/views/video_preview_screen.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
   static const routeURL = Routes.videoRecordingScreen;

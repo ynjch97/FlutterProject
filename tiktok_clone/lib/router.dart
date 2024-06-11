@@ -9,7 +9,7 @@ import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 import 'package:tiktok_clone/features/inbox/chat_detail_screen.dart';
 import 'package:tiktok_clone/features/inbox/chats_screen.dart';
 import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
-import 'package:tiktok_clone/features/videos/video_recording_screen.dart';
+import 'package:tiktok_clone/features/videos/views/video_recording_screen.dart';
 
 /**#19 VIDEO RECORDING => 기존 개발 내용 지우고 VideoRecordingScreen 만 사용 (백업 : router_backup.dart)
  */
@@ -23,7 +23,7 @@ import 'package:tiktok_clone/features/videos/video_recording_screen.dart';
  * => 위와 같은 경우 URL이 변경되지 않도록 Navigator API 사용, 이외의 경우 GoRouter 사용
  */
 final router = GoRouter(
-  initialLocation: "/home", // 시작 화면 설정
+  initialLocation: "/upload", // 시작 화면 설정
   routes: [
     // 회원가입
     GoRoute(
