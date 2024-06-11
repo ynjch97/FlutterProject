@@ -2,6 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 
+// #21 MVVM WITH PROVIDER => 더이상 사용하지 않음
+
 // 20.9 ChangeNotifier 사용
 /*
 class VideoConfig extends ChangeNotifier {

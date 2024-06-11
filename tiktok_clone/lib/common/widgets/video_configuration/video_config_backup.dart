@@ -2,6 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 
+// #21 MVVM WITH PROVIDER => 더이상 사용하지 않음
+
 // 20.6 video_post.dart 에서 autoMute 값을 알도록 함
 class VideoConfigData extends InheritedWidget {
   final bool autoMute;

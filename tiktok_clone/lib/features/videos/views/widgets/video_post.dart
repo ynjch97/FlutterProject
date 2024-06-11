@@ -263,11 +263,11 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
                 Gaps.v24,
-                // 음소거 버튼 > VideoConfigData 값에 따른 설정 (ChangeNotifier + Provider)
+                // 음소거 버튼 > SharedPreferences 값에 따른 설정 (MVVM + ChangeNotifier + Provider)
                 GestureDetector(
-                  onTap: () => context.read<VideoConfig>().toggleIsMuted(),
-                  child: VideoButton(
-                    icon: context.watch<VideoConfig>().isMuted
+                  onTap: () {},
+                  child: const VideoButton(
+                    icon: false
                         ? FontAwesomeIcons.volumeXmark
                         : FontAwesomeIcons.volumeHigh,
                     text: "",

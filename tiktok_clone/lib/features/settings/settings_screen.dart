@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -36,12 +36,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          // VideoConfigData 음소거 정보 (ChangeNotifier + Provider)
+          // CupertinoSwitch(iOS), Switch(Android) 환경에 맞는 아이콘으로 표시함
+          // SharedPreferences 음소거 정보 (MVVM + ChangeNotifier + Provider)
           SwitchListTile.adaptive(
-            value: context.watch<VideoConfig>().isMuted,
-            onChanged: (value) => context.read<VideoConfig>().toggleIsMuted(),
-            title: const Text("Auto Mute"),
+            value: context.watch<PlaybackConfigViewModel>().muted,
+            onChanged: (value) => context.read<PlaybackConfigViewModel>().setMuted(value),
+            title: const Text("Mute video"),
             subtitle: const Text("Videos will be muted by default."),
+          ),
+          // SharedPreferences 자동재생 정보 (MVVM + ChangeNotifier + Provider)
+          SwitchListTile.adaptive(
+            value: context.watch<PlaybackConfigViewModel>().autoplay,
+            onChanged: (value) => context.read<PlaybackConfigViewModel>().setAutoplay(value),
+            title: const Text("Autoplay"),
+            subtitle: const Text("Video will start playing automatically."),
           ),
           ListTile(
             /**app 정보 표시를 위한 팝업
@@ -108,13 +116,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: _onNotificationsChanged,
             title: const Text("Marketing emails"),
             subtitle: const Text("We won't spam you."),
-          ),
-          // CupertinoSwitch(iOS), Switch(Android) 환경에 맞는 아이콘으로 표시함
-          SwitchListTile.adaptive(
-            value: _notifications,
-            onChanged: _onNotificationsChanged,
-            title: const Text("Enable notifications"),
-            subtitle: const Text("They will be cute."),
           ),
           ListTile(
             title: const Text("Log out (iOS)"),
