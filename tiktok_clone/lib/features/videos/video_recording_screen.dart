@@ -1,5 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +31,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   late FlashMode _flashMode;
 
-  late final bool _noCamera = kDebugMode; // 디버그 모드인지 확인
-  // && Platform.isIOS; // iOS 에서 구동 중인지 확인
+  // 디버그 모드인지 확인 && iOS 에서 구동 중인지 확인
+  late final bool _noCamera = kDebugMode && Platform.isIOS;
 
   late CameraController _cameraController;
 
@@ -98,15 +100,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
      * - sort => CameraLensDirection.front 일 때 0으로 세팅
      */
     final cameras = await availableCameras();
-    cameras
-        .sort((a, b) => a.lensDirection == CameraLensDirection.front ? 0 : 1);
-
-    // 0이면 front, 1이면 back 이 되도록 => 실제 핸드폰은 CameraDescription 이 4개 => 1 : 3 분기 처리
-    _cameraMode = [0, (cameras.length == 2 ? 1 : 3)];
-
     if (cameras.isEmpty) {
       return;
     }
+
+    // 0이면 front, 1이면 back 이 되도록 => 실제 핸드폰은 CameraDescription 이 4개 => 1 : 3 분기 처리
+    cameras
+        .sort((a, b) => a.lensDirection == CameraLensDirection.front ? 0 : 1);
+    _cameraMode = [0, (cameras.length == 2 ? 1 : 3)];
 
     _cameraController = CameraController(
       // CameraDescription
