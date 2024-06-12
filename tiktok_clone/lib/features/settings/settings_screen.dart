@@ -40,7 +40,7 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         children: [
           // CupertinoSwitch(iOS), Switch(Android) 환경에 맞는 아이콘으로 표시함
-          // SharedPreferences 음소거 정보 (MVVM + ChangeNotifier + Provider)
+          // SharedPreferences 음소거 정보 (Riverpod + WidgetRef)
           SwitchListTile.adaptive(
             value: ref.watch(playbackConfigProvider).muted,
             onChanged: (value) =>
@@ -48,7 +48,7 @@ class SettingsScreen extends ConsumerWidget {
             title: const Text("Mute video"),
             subtitle: const Text("Videos will be muted by default."),
           ),
-          // SharedPreferences 자동재생 정보 (MVVM + ChangeNotifier + Provider)
+          // SharedPreferences 자동재생 정보 (Riverpod + WidgetRef)
           SwitchListTile.adaptive(
             value: ref.watch(playbackConfigProvider).autoplay,
             onChanged: (value) =>

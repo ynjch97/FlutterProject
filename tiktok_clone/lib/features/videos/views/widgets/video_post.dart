@@ -2,8 +2,8 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
@@ -13,7 +13,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'video_button.dart';
 import 'video_comments.dart';
 
-class VideoPost extends StatefulWidget {
+class VideoPost extends ConsumerStatefulWidget {
   final Function onVideoFinished;
   final int index;
 
@@ -24,7 +24,7 @@ class VideoPost extends StatefulWidget {
   });
 
   @override
-  State<VideoPost> createState() => _VideoPostState();
+  VideoPostState createState() => VideoPostState();
 }
 
 /**Chrome 등의 브라우저에서는 소리가 있는 영상을 즉시 재생하면 오류를 반환하도록 되어있음 */
@@ -35,7 +35,7 @@ class VideoPost extends StatefulWidget {
  * - 단, 위젯이 화면에 있을 때만 작동함
  * - 애니메이션이 여러 개라면, TickerProviderStateMixin 사용
  */
-class _VideoPostState extends State<VideoPost>
+class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
   // VideoPlayerController 사용 시, initialize() 로 초기화 해주어야 영상을 불러올 수 있음
   // final VideoPlayerController _videoPlayerController = VideoPlayerController.asset("assets/videos/video01.mp4");
@@ -102,11 +102,10 @@ class _VideoPostState extends State<VideoPost>
       // 웹 여부 확인 (k~ : Framework 가 가지고 있는 constant 변수들을 확인할 수 있음)
       await _videoPlayerController.setVolume(0);
       if (!mounted) return;
-      // context.read<PlaybackConfigViewModel>().setMuted(true);
+      ref.read<PlaybackConfigViewModel>().setMuted(true);
     } else {
       if (!mounted) return;
-      if (false) {
-        // if (context.read<PlaybackConfigViewModel>().muted) {
+        if (context.read<PlaybackConfigViewModel>().muted) {
         _videoPlayerController.setVolume(0);
       } else {
         _videoPlayerController.setVolume(1);
@@ -137,8 +136,8 @@ class _VideoPostState extends State<VideoPost>
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
       // 자동재생 사용 중일 때만 재생하기
-      // final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
-      if (false) _videoPlayerController.play();
+      final autoplay = ref.read(playbackConfigProvider).autoplay;
+      if (autoplay) _videoPlayerController.play();
     }
     // Offstage 위젯을 사용했기 때문에, 모든 화면들이 dispose 되지 않고 살아있음 => 다른 탭으로 이동 시 멈추게 함
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -180,10 +179,10 @@ class _VideoPostState extends State<VideoPost>
 
   // 21.4 음소거 토글
   void _onPlaybackConfigChanged() async {
-    print('_onPlaybackConfigChanged');
     if (!mounted) return;
-    // final muted = context.read<PlaybackConfigViewModel>().muted;
-    if (false) {
+    final muted = ref.read(playbackConfigProvider).muted;
+    ref.read(playbackConfigProvider.notifier).setMuted(!muted);
+    if (muted) {
       _videoPlayerController.setVolume(0);
     } else {
       _videoPlayerController.setVolume(1);
@@ -270,11 +269,11 @@ class _VideoPostState extends State<VideoPost>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // 음소거 버튼 > SharedPreferences 값에 따른 설정 (MVVM + ChangeNotifier + Provider)
+                // 음소거 버튼 > SharedPreferences 값에 따른 설정 (Riverpod + WidgetRef)
                 GestureDetector(
-                  onTap: () {},
-                  child: const VideoButton(
-                    icon: false
+                  onTap: _onPlaybackConfigChanged,
+                  child: VideoButton(
+                    icon: ref.watch(playbackConfigProvider).muted
                         ? FontAwesomeIcons.volumeXmark
                         : FontAwesomeIcons.volumeHigh,
                     text: "",
