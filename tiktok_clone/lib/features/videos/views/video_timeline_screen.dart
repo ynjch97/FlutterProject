@@ -1,16 +1,18 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tiktok_clone/features/videos/view_models/timeline_vm.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_post.dart';
 
-class VideoTimelineScreen extends StatefulWidget {
+class VideoTimelineScreen extends ConsumerStatefulWidget {
   const VideoTimelineScreen({super.key});
 
   @override
-  State<VideoTimelineScreen> createState() => _VideoTimelineScreenState();
+  VideoTimelineScreenState createState() => VideoTimelineScreenState();
 }
 
-class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
+class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   int _itemCount = 4;
 
   final PageController _pageController = PageController();
@@ -73,22 +75,33 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Scaffold 안에서 렌더링 되고 있으므로 바로 Widget 사용
-    // RefreshIndicator : 당겨서 타임라인을 새로고침할 때 사용
-    return RefreshIndicator(
-      onRefresh: _onRefresh,
-      displacement: 50, // 화면을 당긴 후 indicator 돌아갈 위치
-      edgeOffset: 20, // 어디에서 부터 시작할 것인지
-      color: Theme.of(context).primaryColor,
-      // PageView.builder : itemBuilder 를 이용해 필요한 만큼만 렌더링
-      child: PageView.builder(
-        controller: _pageController,
-        scrollDirection: Axis.vertical,
-        onPageChanged: _onPageChanged,
-        itemCount: _itemCount,
-        itemBuilder: (context, index) =>
-            VideoPost(onVideoFinished: _onVideoFinished, index: index),
-      ),
-    );
+    return ref.watch(timelineProvider).when(
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (error, stackTrace) => Center(
+            child: Text(
+              'Could not load videos: $error',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+          // Scaffold 안에서 렌더링 되고 있으므로 바로 Widget 사용
+          // RefreshIndicator : 당겨서 타임라인을 새로고침할 때 사용
+          data: (videos) => RefreshIndicator(
+            onRefresh: _onRefresh,
+            displacement: 50, // 화면을 당긴 후 indicator 돌아갈 위치
+            edgeOffset: 20, // 어디에서 부터 시작할 것인지
+            color: Theme.of(context).primaryColor,
+            // PageView.builder : itemBuilder 를 이용해 필요한 만큼만 렌더링
+            child: PageView.builder(
+              controller: _pageController,
+              scrollDirection: Axis.vertical,
+              onPageChanged: _onPageChanged,
+              itemCount: videos.length,
+              itemBuilder: (context, index) =>
+                  VideoPost(onVideoFinished: _onVideoFinished, index: index),
+            ),
+          ),
+        );
   }
 }

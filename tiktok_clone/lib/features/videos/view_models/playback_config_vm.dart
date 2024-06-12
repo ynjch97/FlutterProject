@@ -44,6 +44,7 @@ class PlaybackConfigViewModel extends Notifier<PlaybackConfigModel> {
 }
 
 // NotifierProvider<데이터 변화를 통지, Provider 가 expose 할 데이터>
+// PlaybackConfigViewModel(repository) 가 필요한데 여기에 repository 를 쓸 수 없어서 에러를 내고, main.dart 에서 받아옴
 final playbackConfigProvider =
     NotifierProvider<PlaybackConfigViewModel, PlaybackConfigModel>(
   () => throw UnimplementedError(),

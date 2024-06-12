@@ -20,16 +20,6 @@ class SettingsScreen extends ConsumerWidget {
    * CircularProgressIndicator.adaptive() : Android, iOS 환경에 맞는 아이콘으로 표시함
    * ListWheelScrollView : 휠 모양의 ScrollView 사용 가능
   */
-  /*
-  bool _notifications = false;
-
-  void _onNotificationsChanged(bool? newValue) {
-    if (newValue == null) return;
-    setState(() {
-      _notifications = newValue;
-    });
-  }
-  */
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
