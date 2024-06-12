@@ -2,23 +2,25 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
-class SettingsScreen extends StatefulWidget {
+/**ConsumerWidget, ConsumerStatefulWidget
+ * - Riverpod 에서 오는 위젯
+ * - WidgetRef ref : Provide 를 가져오고, 읽을 수 있는 레퍼런스
+ *   - ref.watch : 변화를 listen 하기 위함
+ *   - ref.read : 한 번 읽는 것
+ */
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
   /**CloseButton() : 이 코드만으로도 닫기 버튼을 만들 수 있음 
    * CupertinoActivityIndicator(), CircularProgressIndicator() : 로딩 중임을 표시
    * CircularProgressIndicator.adaptive() : Android, iOS 환경에 맞는 아이콘으로 표시함
    * ListWheelScrollView : 휠 모양의 ScrollView 사용 가능
   */
+  /*
   bool _notifications = false;
 
   void _onNotificationsChanged(bool? newValue) {
@@ -27,9 +29,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _notifications = newValue;
     });
   }
+  */
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -39,15 +42,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // CupertinoSwitch(iOS), Switch(Android) 환경에 맞는 아이콘으로 표시함
           // SharedPreferences 음소거 정보 (MVVM + ChangeNotifier + Provider)
           SwitchListTile.adaptive(
-            value: false,
-            onChanged: (value) {},
+            value: ref.watch(playbackConfigProvider).muted,
+            onChanged: (value) =>
+                ref.read(playbackConfigProvider.notifier).setMuted(value),
             title: const Text("Mute video"),
             subtitle: const Text("Videos will be muted by default."),
           ),
           // SharedPreferences 자동재생 정보 (MVVM + ChangeNotifier + Provider)
           SwitchListTile.adaptive(
-            value: false,
-            onChanged: (value) {},
+            value: ref.watch(playbackConfigProvider).autoplay,
+            onChanged: (value) =>
+                ref.read(playbackConfigProvider.notifier).setAutoplay(value),
             title: const Text("Autoplay"),
             subtitle: const Text("Video will start playing automatically."),
           ),
@@ -82,12 +87,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 firstDate: DateTime(1980),
                 lastDate: DateTime(2030),
               );
-              if (!context.mounted) return;
               final time = await showTimePicker(
                 context: context,
                 initialTime: TimeOfDay.now(),
               );
-              if (!context.mounted) return;
               final booking = await showDateRangePicker(
                 context: context,
                 firstDate: DateTime(1980),
@@ -112,8 +115,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           CheckboxListTile(
             activeColor: Theme.of(context).primaryColor,
             checkColor: Colors.black,
-            value: _notifications,
-            onChanged: _onNotificationsChanged,
+            value: false,
+            onChanged: (value) {},
             title: const Text("Marketing emails"),
             subtitle: const Text("We won't spam you."),
           ),

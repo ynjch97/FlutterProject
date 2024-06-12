@@ -27,6 +27,7 @@ class PlaybackConfigViewModel extends Notifier<PlaybackConfigModel> {
 
   void setMuted(bool value) {
     _repository.setMuted(value);
+    // 상태 변경하면 모든 listener 들이 자동으로 통지 받음
     state = PlaybackConfigModel(
       muted: value,
       autoplay: state.autoplay,
@@ -42,7 +43,7 @@ class PlaybackConfigViewModel extends Notifier<PlaybackConfigModel> {
   }
 }
 
-// NotifierProvider<expose 하고 싶은 Provder, Provider 가 expose 할 데이터>
+// NotifierProvider<데이터 변화를 통지, Provider 가 expose 할 데이터>
 final playbackConfigProvider =
     NotifierProvider<PlaybackConfigViewModel, PlaybackConfigModel>(
   () => throw UnimplementedError(),
