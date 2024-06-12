@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/repos/playback_config_repo.dart';
@@ -25,14 +25,14 @@ void main() async {
   final preferences = await SharedPreferences.getInstance();
   final repository = PlaybackConfigRepository(preferences);
 
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(
-        create: (context) => PlaybackConfigViewModel(repository),
-      )
-    ],
-    child: const TikTokApp(),
-  ));
+  // 22.1 Riverpod 사용 가능한 환경으로 설정
+  runApp(
+    ProviderScope(overrides: [
+      playbackConfigProvider.overrideWith(
+        () => PlaybackConfigViewModel(repository),
+      ),
+    ], child: const TikTokApp()),
+  );
 }
 
 /**TikTok UX/UI 참고 사이트 (iOS, Android 확인) : https://mobbin.com/

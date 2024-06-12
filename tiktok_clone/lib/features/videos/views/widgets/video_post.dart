@@ -72,9 +72,11 @@ class _VideoPostState extends State<VideoPost>
     // });
 
     // 21.4 값 변경에 따른 리스너
+    /*
     context
         .read<PlaybackConfigViewModel>()
         .addListener(_onPlaybackConfigChanged);
+    */
   }
 
   @override
@@ -100,10 +102,11 @@ class _VideoPostState extends State<VideoPost>
       // 웹 여부 확인 (k~ : Framework 가 가지고 있는 constant 변수들을 확인할 수 있음)
       await _videoPlayerController.setVolume(0);
       if (!mounted) return;
-      context.read<PlaybackConfigViewModel>().setMuted(true);
+      // context.read<PlaybackConfigViewModel>().setMuted(true);
     } else {
       if (!mounted) return;
-      if (context.read<PlaybackConfigViewModel>().muted) {
+      if (false) {
+        // if (context.read<PlaybackConfigViewModel>().muted) {
         _videoPlayerController.setVolume(0);
       } else {
         _videoPlayerController.setVolume(1);
@@ -134,8 +137,8 @@ class _VideoPostState extends State<VideoPost>
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
       // 자동재생 사용 중일 때만 재생하기
-      final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
-      if (autoplay) _videoPlayerController.play();
+      // final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
+      if (false) _videoPlayerController.play();
     }
     // Offstage 위젯을 사용했기 때문에, 모든 화면들이 dispose 되지 않고 살아있음 => 다른 탭으로 이동 시 멈추게 함
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -179,8 +182,8 @@ class _VideoPostState extends State<VideoPost>
   void _onPlaybackConfigChanged() async {
     print('_onPlaybackConfigChanged');
     if (!mounted) return;
-    final muted = context.read<PlaybackConfigViewModel>().muted;
-    if (muted) {
+    // final muted = context.read<PlaybackConfigViewModel>().muted;
+    if (false) {
       _videoPlayerController.setVolume(0);
     } else {
       _videoPlayerController.setVolume(1);
@@ -269,13 +272,9 @@ class _VideoPostState extends State<VideoPost>
               children: [
                 // 음소거 버튼 > SharedPreferences 값에 따른 설정 (MVVM + ChangeNotifier + Provider)
                 GestureDetector(
-                  onTap: () {
-                    context.read<PlaybackConfigViewModel>().setMuted(!context
-                        .read<PlaybackConfigViewModel>()
-                        .muted); // 파라미터 값은 굳이 watch 로 안줘도 됨
-                  },
-                  child: VideoButton(
-                    icon: context.watch<PlaybackConfigViewModel>().muted
+                  onTap: () {},
+                  child: const VideoButton(
+                    icon: false
                         ? FontAwesomeIcons.volumeXmark
                         : FontAwesomeIcons.volumeHigh,
                     text: "",

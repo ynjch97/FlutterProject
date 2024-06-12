@@ -39,17 +39,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // CupertinoSwitch(iOS), Switch(Android) 환경에 맞는 아이콘으로 표시함
           // SharedPreferences 음소거 정보 (MVVM + ChangeNotifier + Provider)
           SwitchListTile.adaptive(
-            value: context.watch<PlaybackConfigViewModel>().muted,
-            onChanged: (value) =>
-                context.read<PlaybackConfigViewModel>().setMuted(value),
+            value: false,
+            onChanged: (value) {},
             title: const Text("Mute video"),
             subtitle: const Text("Videos will be muted by default."),
           ),
           // SharedPreferences 자동재생 정보 (MVVM + ChangeNotifier + Provider)
           SwitchListTile.adaptive(
-            value: context.watch<PlaybackConfigViewModel>().autoplay,
-            onChanged: (value) =>
-                context.read<PlaybackConfigViewModel>().setAutoplay(value),
+            value: false,
+            onChanged: (value) {},
             title: const Text("Autoplay"),
             subtitle: const Text("Video will start playing automatically."),
           ),
