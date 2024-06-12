@@ -102,10 +102,10 @@ class VideoPostState extends ConsumerState<VideoPost>
       // 웹 여부 확인 (k~ : Framework 가 가지고 있는 constant 변수들을 확인할 수 있음)
       await _videoPlayerController.setVolume(0);
       if (!mounted) return;
-      ref.read<PlaybackConfigViewModel>().setMuted(true);
+      ref.read(playbackConfigProvider.notifier).setMuted(true);
     } else {
       if (!mounted) return;
-        if (context.read<PlaybackConfigViewModel>().muted) {
+      if (ref.read(playbackConfigProvider).muted) {
         _videoPlayerController.setVolume(0);
       } else {
         _videoPlayerController.setVolume(1);
