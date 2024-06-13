@@ -45,7 +45,7 @@ void main() async {
 /**TikTok UX/UI 참고 사이트 (iOS, Android 확인) : https://mobbin.com/
  * 강의 기준 스크린샷 : https://nomadcoders.co/downloads/tiktok.zip
  */
-class TikTokApp extends StatelessWidget {
+class TikTokApp extends ConsumerWidget {
   const TikTokApp({super.key});
 
   /**Scaffold
@@ -53,9 +53,9 @@ class TikTokApp extends StatelessWidget {
    * - Text 방향, 사이즈 등을 설정
    */
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: ref.watch(routerProvider),
       // 상단 debug 리본 제거
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
