@@ -12,6 +12,7 @@ import 'package:tiktok_clone/features/inbox/chat_detail_screen.dart';
 import 'package:tiktok_clone/features/inbox/chats_screen.dart';
 import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 import 'package:tiktok_clone/features/videos/views/video_recording_screen.dart';
+import 'package:tiktok_clone/features/videos/views/video_timeline_screen.dart';
 
 /**#23 FIREBASE SETUP
  * => 기존 개발 내용을 Provider 로 감싸서 사용 (백업 : router_backup2.dart)
@@ -63,6 +64,12 @@ final routerProvider = Provider((ref) {
             tab: tab,
           );
         },
+      ),
+      // Home
+      GoRoute(
+        name: VideoTimelineScreen.routeName,
+        path: VideoTimelineScreen.routeURL,
+        builder: (context, state) => const VideoTimelineScreen(),
       ),
       // Inbox > Activity
       GoRoute(

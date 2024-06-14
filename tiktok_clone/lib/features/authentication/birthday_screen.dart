@@ -46,8 +46,8 @@ class BirthdayScreenState extends ConsumerState<BirthdayScreen> {
      *   - goNamed 와 동일하게 작동함
      */
     // context.pushReplacementNamed(InterestsScreen.routeName);
-
-    ref.read(signUpProvider.notifier).signUp();
+    // InterestsScreen 화면으로 이동 포함
+    ref.read(signUpProvider.notifier).signUp(context);
   }
 
   void _setTextFieldDate(DateTime date) {

@@ -1,8 +1,10 @@
 // ignore_for_file: slash_for_doc_comments
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/view_models/login_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 
@@ -11,14 +13,14 @@ import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
  * - Form 의 State 에 접근 가능 / Method Trigger 실행 가능 
  * - Controller 를 이용해 추적할 필요가 없음
  */
-class LoginFormScreen extends StatefulWidget {
+class LoginFormScreen extends ConsumerStatefulWidget {
   const LoginFormScreen({super.key});
 
   @override
-  State<LoginFormScreen> createState() => _LoginFormScreenState();
+  LoginFormScreenState createState() => LoginFormScreenState();
 }
 
-class _LoginFormScreenState extends State<LoginFormScreen> {
+class LoginFormScreenState extends ConsumerState<LoginFormScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Map<String, String> formData = {};
@@ -35,23 +37,20 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
 
         /**로그인이 완료되면 InterestsScreen 으로 이동
          * But, 뒤로가기를 눌러도 로그인 화면으로 다시 돌아오면 안됨
-         * 
-         * pushAndRemoveUntil
-         * - push 와 동시에 모든 화면 기록을 삭제 
-         * - stack 위에 새 화면을 추가하고, 뒤에 있는 screen 중 지우고 싶은 화면 수 선택
-         * 
-         * bool Function(Route<dynamic>) predicate
-         * - 함수가 false return 시 Route 를 삭제, true return 시 Route 유지
          */
         /*
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const InterestsScreen(),
-          ),
+          MaterialPageRoute( builder: (context) => const InterestsScreen(), ),
           (route) => false,
         );
         */
-        context.goNamed(InterestsScreen.routeName);
+        // context.goNamed(VideoTimelineScreen.routeName);
+        // VideoTimelineScreen 화면으로 이동 포함
+        ref.read(loginProvider.notifier).login(
+              formData["email"]!,
+              formData["password"]!,
+              context,
+            );
       }
     }
   }
@@ -110,8 +109,8 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
               Gaps.v28,
               GestureDetector(
                 onTap: _onSubmitTap,
-                child: const FormButton(
-                  disabled: false,
+                child: FormButton(
+                  disabled: ref.watch(loginProvider).isLoading,
                   label: "Log in",
                 ),
               ),

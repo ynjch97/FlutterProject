@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/views/video_timeline_screen.dart';
 
 enum Direction { right, left }
 
@@ -59,7 +60,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
      * - push : 데이터를 Stack 에 쌓기 때문에 pop 가능 (뒤로가기 가능)
      * - go : 기존 Stack 에 추가가 아닌 교체 -> 경로를 바꿈
      */
-    context.go("/home");
+    context.go(VideoTimelineScreen.routeURL);
   }
 
   @override

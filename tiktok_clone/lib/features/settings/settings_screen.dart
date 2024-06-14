@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
+import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 /**ConsumerWidget, ConsumerStatefulWidget
@@ -132,7 +133,7 @@ class SettingsScreen extends ConsumerWidget {
                       // 로그아웃 처리 및 홈으로 돌아가기
                       onPressed: () {
                         ref.read(authRepo).signOut();
-                        context.go("/");
+                        context.goNamed(SignUpScreen.routeName);
                       },
                       isDestructiveAction: true,
                       child: const Text("Yes"),

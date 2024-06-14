@@ -9,6 +9,9 @@ class Routes {
   static const interestsScreen = "/tutorial";
   static const mainScreen = "/:tab(home|discover|inbox|profile)"; // 네 가지 값만 받음
 
+  // Home
+  static const videoTimelineScreen = "/home";
+
   // Inbox
   static const activityScreen = "/activity";
   static const chatsScreen = "/chats";
@@ -27,6 +30,9 @@ class RoutesName {
   static const loginScreen = "loginScreen";
   static const interestsScreen = "interests";
   static const mainScreen = "mainNavigation";
+
+  // Home
+  static const videoTimelineScreen = "home";
 
   // Inbox
   static const activityScreen = "activity";
