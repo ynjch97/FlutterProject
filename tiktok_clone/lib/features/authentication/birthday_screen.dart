@@ -3,21 +3,20 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-
-import '../onboarding/interests_screen.dart';
+import 'package:tiktok_clone/features/authentication/view_models/signup_view_model.dart';
 import 'widgets/form_button.dart';
 
-class BirthdayScreen extends StatefulWidget {
+class BirthdayScreen extends ConsumerStatefulWidget {
   const BirthdayScreen({super.key});
 
   @override
-  State<BirthdayScreen> createState() => _BirthdayScreenState();
+  BirthdayScreenState createState() => BirthdayScreenState();
 }
 
-class _BirthdayScreenState extends State<BirthdayScreen> {
+class BirthdayScreenState extends ConsumerState<BirthdayScreen> {
   final TextEditingController _birthdayController = TextEditingController();
 
   // format : 2024-05-24 01:45:31.204298
@@ -42,18 +41,13 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
    * StatefulWidget > State 안에 있다면 어디서든 context 사용 가능
    */
   void _onNextTap() {
-    /*Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (context) => const InterestsScreen(),
-      ),
-      (route) => false,
-    );*/
-
     /**20.2 GoRoute 방식으로 변경 (context 확장)
      * - pushReplacementNamed : push 는 되지만 뒤로가기가 되지 않음
      *   - goNamed 와 동일하게 작동함
      */
-    context.pushReplacementNamed(InterestsScreen.routeName);
+    // context.pushReplacementNamed(InterestsScreen.routeName);
+
+    ref.read(signUpProvider.notifier).signUp();
   }
 
   void _setTextFieldDate(DateTime date) {
@@ -109,8 +103,8 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             Gaps.v28,
             GestureDetector(
               onTap: _onNextTap,
-              child: const FormButton(
-                disabled: false,
+              child: FormButton(
+                disabled: ref.watch(signUpProvider).isLoading,
                 label: "Next",
               ), // 항상 활성화
             ),
