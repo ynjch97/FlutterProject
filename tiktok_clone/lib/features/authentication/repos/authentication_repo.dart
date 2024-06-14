@@ -13,12 +13,24 @@ class AuthenticationRepository {
   bool get isLoggedIn => user != null;
   User? get user => _firebaseAuth.currentUser; // 로그인한 사용자는 Nullable
 
+  Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
+
   Future<void> signUp(String email, String password) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
   }
+
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
+  }
 }
 
 final authRepo = Provider((ref) => AuthenticationRepository());
+
+// StreamProvider : 변화를 바로 감지할 수 있음 => 유저 인증 상태 변경을 감지 (로그인/로그아웃)
+final authStateStream = StreamProvider((ref) {
+  final repo = ref.read(authRepo);
+  return repo.authStateChanges();
+});

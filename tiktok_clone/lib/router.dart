@@ -18,8 +18,11 @@ import 'package:tiktok_clone/features/videos/views/video_recording_screen.dart';
  * => ref.watch, ref.read 로 다른 Provider 에 접근할 수 있게 됨
  */
 final routerProvider = Provider((ref) {
+  // Stream 변화가 있으면 바로 rebuild 될 것임
+  // ref.watch(authStateStream);
+
   return GoRouter(
-    initialLocation: "/inbox", // 시작 화면 설정
+    initialLocation: "/profile", // 시작 화면 설정
     redirect: (context, state) {
       final isLoggedIn = ref.read(authRepo).isLoggedIn;
       if (!isLoggedIn) {
