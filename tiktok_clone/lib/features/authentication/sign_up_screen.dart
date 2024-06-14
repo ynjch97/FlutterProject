@@ -1,6 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -8,9 +9,10 @@ import 'package:tiktok_clone/constants/routes.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/login_screen.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
+import 'package:tiktok_clone/features/authentication/view_models/social_auth_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends ConsumerWidget {
   static const routeURL = Routes.signUpScreen;
   static const routeName = RoutesName.signUpScreen;
 
@@ -71,7 +73,7 @@ class SignUpScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return OrientationBuilder(
       builder: (context, orientation) {
         // print(orientation); => Orientation.portrait or Orientation.landscape
@@ -113,9 +115,14 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     Gaps.v16,
                     AuthButton(
-                      text: 'Continue with Google',
-                      icon: const FaIcon(FontAwesomeIcons.google),
-                      onTapFunction: (context) {},
+                      text: 'Continue with Github',
+                      icon: const FaIcon(FontAwesomeIcons.github),
+                      onTapFunction: (context) {
+                        // 깃허브 로그인
+                        ref
+                            .read(socialAuthProvider.notifier)
+                            .githubSignIn(context);
+                      },
                     ),
                   ],
                   if (orientation == Orientation.landscape)
@@ -132,9 +139,14 @@ class SignUpScreen extends StatelessWidget {
                         Gaps.h16,
                         Expanded(
                           child: AuthButton(
-                            text: 'Continue with Google',
-                            icon: const FaIcon(FontAwesomeIcons.google),
-                            onTapFunction: (context) {},
+                            text: 'Continue with Github',
+                            icon: const FaIcon(FontAwesomeIcons.github),
+                            onTapFunction: (context) {
+                              // 깃허브 로그인
+                              ref
+                                  .read(socialAuthProvider.notifier)
+                                  .githubSignIn(context);
+                            },
                           ),
                         ),
                       ],

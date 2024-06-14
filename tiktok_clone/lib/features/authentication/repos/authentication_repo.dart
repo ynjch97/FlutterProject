@@ -32,6 +32,11 @@ class AuthenticationRepository {
       password: password,
     );
   }
+
+  Future<void> githubSignIn() async {
+    // 각 소셜미디어 로그인에 따른 Provider 를 넣어주면 됨
+    await _firebaseAuth.signInWithProvider(GithubAuthProvider());
+  }
 }
 
 final authRepo = Provider((ref) => AuthenticationRepository());
