@@ -35,7 +35,7 @@ class SignUpViewModel extends AsyncNotifier<void> {
       );
 
       // 에러 없으면 이미 실행되었다는 뜻이므로 검사 생략
-      users.createProfile(userCredential);
+      users.createProfile(userCredential, form);
     });
     // state = const AsyncValue.data(null); // 로딩 상태 제거
     if (state.hasError) {

@@ -41,6 +41,10 @@ class BirthdayScreenState extends ConsumerState<BirthdayScreen> {
    * StatefulWidget > State 안에 있다면 어디서든 context 사용 가능
    */
   void _onNextTap() {
+    // StateProvider signUpForm > state > 기존 state 에 email 값 전달
+    final state = ref.read(signUpForm.notifier).state;
+    ref.read(signUpForm.notifier).state = {...state, "birthday": _birthdayController.text};
+    
     /**20.2 GoRoute 방식으로 변경 (context 확장)
      * - pushReplacementNamed : push 는 되지만 뒤로가기가 되지 않음
      *   - goNamed 와 동일하게 작동함
