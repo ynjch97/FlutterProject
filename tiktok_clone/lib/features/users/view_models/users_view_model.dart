@@ -46,10 +46,20 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
       bio: "undefined",
       link: "undefined",
       birthday: form["birthday"] ?? "undefined",
+      hasAvatar: false,
     );
 
     await _userRepo.createProfile(profile); // 회원가입 정보 insert
     state = AsyncValue.data(profile); // state 에 profile 담기
+  }
+
+  // 아바타 이미지 업로드 후 state 업데이트
+  Future<void> onAvatarUpload() async {
+    if (state.value == null) return;
+    // state = AsyncValue.loading(); 전체 화면이 로딩되므로 로딩하지 않음
+    state = AsyncValue.data(state.value!.copyWith(hasAvatar: true));
+    await _userRepo.updateUser(
+        state.value!.uid, {"hasAvatar": true}); // uid, Firebase 로 보내려는 Map
   }
 }
 

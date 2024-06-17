@@ -10,6 +10,7 @@ class UserProfileModel {
   final String bio;
   final String link;
   final String birthday;
+  final bool hasAvatar;
 
   UserProfileModel({
     required this.uid,
@@ -18,6 +19,7 @@ class UserProfileModel {
     required this.bio,
     required this.link,
     required this.birthday,
+    required this.hasAvatar,
   });
 
   UserProfileModel.empty()
@@ -26,7 +28,8 @@ class UserProfileModel {
         name = "",
         bio = "",
         link = "",
-        birthday = "";
+        birthday = "",
+        hasAvatar = false;
 
   // JSON 가져오기
   UserProfileModel.fromJson(Map<String, dynamic> json)
@@ -35,10 +38,11 @@ class UserProfileModel {
         name = json["name"],
         bio = json["bio"],
         link = json["link"],
-        birthday = json["birthday"];
+        birthday = json["birthday"],
+        hasAvatar = json["hasAvatar"];
 
   // JSON 으로 변경하기
-  Map<String, String> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       "uid": uid,
       "email": email,
@@ -46,6 +50,28 @@ class UserProfileModel {
       "bio": bio,
       "link": link,
       "birthday": birthday,
+      "hasAvatar": hasAvatar,
     };
+  }
+
+  // 똑같은 모델을 복제
+  UserProfileModel copyWith({
+    String? uid,
+    String? email,
+    String? name,
+    String? bio,
+    String? link,
+    String? birthday,
+    bool? hasAvatar,
+  }) {
+    return UserProfileModel(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      bio: bio ?? this.bio,
+      link: link ?? this.link,
+      birthday: birthday ?? this.birthday,
+      hasAvatar: hasAvatar ?? this.hasAvatar,
+    );
   }
 }

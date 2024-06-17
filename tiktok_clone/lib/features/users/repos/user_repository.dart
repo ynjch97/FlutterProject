@@ -31,6 +31,9 @@ class UserRepository {
   }
 
   // update profile
+  Future<void> updateUser(String uid, Map<String, dynamic> data) async {
+    await _db.collection("users").doc(uid).update(data);
+  }
 }
 
 final userRepo = Provider((ref) => UserRepository());

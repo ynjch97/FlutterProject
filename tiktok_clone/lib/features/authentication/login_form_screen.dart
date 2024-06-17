@@ -73,6 +73,7 @@ class LoginFormScreenState extends ConsumerState<LoginFormScreen> {
           child: Column(
             children: [
               TextFormField(
+                initialValue: "ynjch6@gmail.com",
                 cursorColor: Theme.of(context).primaryColor,
                 decoration: InputDecoration(
                   hintText: "Email",
@@ -91,6 +92,7 @@ class LoginFormScreenState extends ConsumerState<LoginFormScreen> {
               ),
               Gaps.v16,
               TextFormField(
+                initialValue: "abcd1234",
                 cursorColor: Theme.of(context).primaryColor,
                 decoration: InputDecoration(
                   hintText: "Password",
