@@ -24,4 +24,15 @@ class UserProfileModel {
         name = "",
         bio = "",
         link = "";
+
+  // JSON 으로 변경하기
+  Map<String, String> toJson() {
+    return {
+      "uid": uid,
+      "email": email,
+      "name": name,
+      "bio": bio,
+      "link": link,
+    };
+  }
 }

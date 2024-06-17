@@ -8,7 +8,10 @@ class UserRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // create profile
-  Future<void> createProfile(UserProfileModel user) async {}
+  Future<void> createProfile(UserProfileModel user) async {
+    // set(Map<String, dynamic> data, [SetOptions? options])
+    await _db.collection("users").doc(user.uid).set(user.toJson());
+  }
   // get profile
   // update profile
 }

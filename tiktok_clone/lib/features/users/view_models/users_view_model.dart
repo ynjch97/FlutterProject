@@ -11,23 +11,32 @@ import 'package:tiktok_clone/features/users/repos/user_repository.dart';
  * 2. 계정이 있어서 이미 로그인한 상태 -> 유저 프로필 가져오기
  */
 class UsersViewModel extends AsyncNotifier<UserProfileModel> {
+  late final UserRepository _userRepo;
+
   @override
   FutureOr<UserProfileModel> build() {
+    _userRepo = ref.read(userRepo);
     return UserProfileModel.empty();
   }
 
   // AuthenticationRepository > 계정 생성 > UserCredential 타입으로 받음
   Future<void> createProfile(UserCredential credential) async {
+    if (credential.user == null) {
+      throw Exception("Account not created");
+    }
+
+    state = const AsyncValue.loading(); // 로딩 중
+
     final profile = UserProfileModel(
-      uid: credential.user!.uid,
+      uid: credential.user!.uid, // 회원가입 uid 를 키값으로 사용 예정
       email: credential.user!.email ?? "temp@gmail.com",
       name: credential.user!.displayName ?? "temp",
       bio: "undefined",
       link: "undefined",
     );
 
-    // state 에 profile 담기
-    state = AsyncValue.data(profile);
+    await _userRepo.createProfile(profile); // 회원가입 정보 insert
+    state = AsyncValue.data(profile); // state 에 profile 담기
   }
 }
 
