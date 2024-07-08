@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/video_model.dart';
 
 class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
-  List<VideoModel> _list = [VideoModel(title: "First video")];
+  // List<VideoModel> _list = [VideoModel(title: "First video")];
+  List<VideoModel> _list = [];
 
   // FutureOr : Future 또는 모델을 return
   @override
@@ -20,8 +21,9 @@ class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
     state = const AsyncValue.loading();
     await Future.delayed(const Duration(seconds: 2));
 
-    final newVideo = VideoModel(title: "${DateTime.now()}");
-    _list = [..._list, newVideo];
+    // final newVideo = VideoModel(title: "${DateTime.now()}");
+    // _list = [..._list, newVideo];
+    _list = [..._list];
 
     // AsyncNotifier 안에서 State 를 대체할 때
     state = AsyncValue.data(_list);
