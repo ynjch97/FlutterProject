@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"tiktokclone-3260b","appId":"1:562010341880:android:3b14a9e74190b8aa52160d","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"tiktokclone-3260b","configurations":{"android":"1:562010341880:android:3b14a9e74190b8aa52160d","ios":"1:562010341880:ios:a7bb709a9082937452160d","web":"1:562010341880:web:48ae00c848ec585a52160d"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "tiktokclone-3260b",
+          "appId": "1:562010341880:android:3b14a9e74190b8aa52160d",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "tiktokclone-3260b",
+          "configurations": {
+            "android": "1:562010341880:android:3b14a9e74190b8aa52160d",
+            "ios": "1:562010341880:ios:a7bb709a9082937452160d",
+            "web": "1:562010341880:web:48ae00c848ec585a52160d"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
+}
